@@ -1,0 +1,53 @@
+
+        $ ed
+        a
+        now is the time
+        for all good people
+        .
+        w junk
+        36
+        q
+        $ ls -l junk
+        -rw-rw-r-- 1 you        36 Sep 27 06:11 junk
+        $
+
+junk is a file with 36 bytes --- the 36 characters you typed while appending
+(except, of course, for correction of any typing mistakes). To see the file,
+
+        $ cat junk
+        now is the time
+        for all good people
+        $ 
+
+cat shows what the file looks like. The command od (octal dump) prints a visible
+representation of all the bytes of a file:
+
+        $ od -c junk
+        0000000   n   o   w       i   s       t   h   e       t   i   m   e  \n
+        0000020   f   o   r       a   l   l       g   o   o   d       p   e   o
+        0000040   p   l   e  \n
+        0000044
+        $ 
+
+the -c option means "interpret bytes as characters." Turning on the -b option
+will show the bytes as octal (base 8) numbers+ as well:
+
+        $ od -cb junk
+        0000000   n   o   w       i   s       t   h   e       t   i   m   e  \n
+                156 157 167 040 151 163 040 164 150 145 040 164 151 155 145 012
+        0000020   f   o   r       a   l   l       g   o   o   d       p   e   o
+                146 157 162 040 141 154 154 040 147 157 157 144 040 160 145 157
+        0000040   p   l   e  \n
+                160 154 145 012
+        0000044
+        $ 
+
+The 7-digit numbers down the left side are positions in the file, that is, the
+
+----------------
++Each byte in a file contains a number large enough to encode a printable
+character. The encoding on most UNIX systems is called ASCII (American Standard
+Code for Information Interchange), but some machines, particularly those
+manufactured by IBM, use an encoding called EBCDIC(Extended Binary-Coded-Decimal
+Interchange Code). Throughout this book, we will assume the ASCII encoding; cat
+/usr/pub/ascii or read ascci(7) to see the octal values of the characters.

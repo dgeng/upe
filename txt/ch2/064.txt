@@ -1,0 +1,47 @@
+
++------------------------------------------------------------------------------+
+|      	      Table 2.1: Interesting Directories (see also hier(7))  	       |
+|      								   	       |
+| /    	       	       	root of the file system                                |
+| /bin 			essential programs in executable from ("binaries")     |
+| /dev 			device files	       	       	       	       	       |
+| /etc 			system miscellany				       |
+| /etc/motd		login message of the day			       |
+| /etc/passwd		password file					       |
+| /lib 	     		essential libraries, etc.			       |
+| /tmp			temporary files; cleaned when system is restarted      |
+| /unix			executable form of the operating system	               |
+| /usr			user file system				       |
+| /usr/adm		system administration: accounting info., etc.	       |
+| /usr/bin		user binaries: troff, etc.			       |
+| /usr/dict 		dictionary (words) and support for spell(1)   	       |
+| /usr/games		game programs 				     	       |
+| /usr/include		header files for C programs, e.g. math.h 	       |
+| /usr/include/sys	system header files for C programs, e.g. inode.h       |
+| /usr/lib     	  	libraries for C, FORTRAN, etc.			       |
+| /usr/man		on-line manual					       |
+| /usr/man/man1		manual pages for section 1 of manual		       |
+| /usr/mdec    		hardware diagnostics, bootstrap programs, etc.	       |
+| /usr/news		community service messages			       |
+| /usr/pub 		public oddments: see ascii(7) and eqnchar(7)	       |
+| /usr/src		source code for utilities and libraries		       |
+| /usr/src/cmd		source for commands in /bin and /usr/bin	       |
+| /usr/src/lib		source code for subroutine libraries		       |
+| /usr/spool  		working directories for communications programs	       |
+| /usr/spool/lpd 	line printer temporary directory		       |
+| /usr/spool/mail	mail in-boxes					       |
+| /usr/spool/uucp	working directory for the uucp programs		       |
+| /usr/sys     	 	source for the operating system kernel		       |
+| /usr/tmp		alternate temporary directory (little used)	       |
+| /usr/you		your login directory				       |
+| /usr/you/bin		your personal programs				       |
++------------------------------------------------------------------------------+
+
+execution of a program. When you start up the editor ed, for example, it creates
+a file with a name like /tmp/e00512 to hold its copy of the file that you are
+editing, rather than working with the original file. It could, of course, create
+the file in your current directory, but there are advantages to placing it in
+/tmp; although it is unlikely, you might already have a file called e00512 in
+your directory; /tmp is cleaned up automatically when the system starts, so your
+directory doesn't get an unwanted file if the system crashes; and often /tmp is
+arranged on the disc for fast access.

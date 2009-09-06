@@ -1,0 +1,59 @@
+
+Given the capability of redirecting output with >, it becomes possible to
+combine commands to achieve effects not possible otherwise. For example, to
+print an alphabetical list of users,
+
+        $ who >temp
+        $ sort <temp
+
+Since who prints one line of output per logged-on user, and wc -l counts lines
+(suppressing the word and character counts), you can count users with
+
+        $ who >temp
+        $ wc -l <temp
+
+You can count the files in the current directory with
+
+        $ ls >temp
+        $ wc -l temp
+
+though this includes the filename temp itself in the count. You can print the
+filenames in three columns with
+
+        $ ls >temp
+        $ pr -3 <temp
+
+And you can see if a particular user is logged on by combining who and grep:
+
+        $ who >temp
+        $ grep mary <temp
+
+In all of these examples, as with filename pattern characters like *, it's
+important to remember that the interpretation of > and < is being done by the
+shell, not by the individual programs. Centralizing the ability in the shell
+means that input and output redirection can be used with any program; the
+program itself isn't aware that something unusual has happened.
+
+This brings up an important convention. The command
+
+        $ sort <temp
+
+sorts the contents of the file temp, as does
+
+        $ sort temp
+
+but there is a difference. Because the string <temp is interpreted by the shell,
+sort does not see the filename temp as an argument; it instead sorts its
+standard input, which the shell has redirected so it comes from the file. The
+later example, however, passes the name temp as an argument to sort, which reads
+the file and sorts it. sort can be given a list of filenames, as in 
+
+        $ sort temp1 temp2 temp3
+
+but if no filenames are given, it sorts its standard input. This is an essential
+property of most commands: if no filenames are specified, the standard input is
+processed. This means that you can simply type at commands to see how they
+
+
+
+

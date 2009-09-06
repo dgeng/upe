@@ -1,0 +1,51 @@
+
+        $ cat                           Buffered output from cat
+        123
+        456
+        789
+        ctl-d
+        123
+        456
+        789
+        $ cat -u                        Unbuffered output from cat
+        123
+        123
+        456
+        456
+        789
+        789
+        ctl-d
+        $ 
+
+cat receives each time when you press RETURN; without buffering, it prints the
+data as it is received.
+
+Now try something different: type some characters and then a ctl-d rather than a
+RETURN
+
+        $ cat -u
+        123ctl-d123
+
+cat prints the characters out immediately. ctl-d says, "immediately send the
+characters I have typed to the program that is reading from my terminal." The
+ctl-d itself is not sent to the program, unlike a newline. Now type a second
+ctl-d, with no other characters:
+
+        $ cat -u
+        123ctl-d123ctl-d$ 
+
+The shell responds with a prompt, because cat read no characters, decided that
+meant the end of file, and stopped. ctl-d sends whatever you have typed to the
+program that is reading from the terminal. If you haven't typed anything, the
+program will therefore read no characters, and that looks like the end of the
+file. This is why typing ctl-d logs out you --- the shell sees no more input. Of
+course, ctl-d is usually used to signal an end-of-file but it is interesting
+that it has a more general function.
+
+Exercise 2-1. What happens when you type ctl-d to ed? Compare this to the
+command
+
+        $ ed <file
+
+
+

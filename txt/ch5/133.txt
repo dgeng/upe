@@ -1,0 +1,37 @@
+
+                          CHAPTER 5: SHELL PROGRAMMING
+
+Although most users think of the shell as an interactive command interpreter, it
+is really a programming language in which each statement runs a command. Because
+it must satisfy both the interactive and programming aspects of command
+execution, it is a strange language, shaped as much by history as by design. The
+range of its application leads to an unsettling quantity of detail in the
+language, but you don't need to understand every nuance to use it
+effectively. This chapter explains the basics of shell programming by showing
+the evolution of some useful shell programs. It is not a manual for the
+shell. That is in the manual page sh(1) of the Unix Programmer's Manual, which
+you should have handy while you are reading.
+
+With the shell, as with most commands, the details of behavior can often be most
+quickly discovered by experimentation. The manual can be cryptic, and there is
+nothing better than a good example to clear things up. For that reason, this
+chapter is organized around examples rather than shell features; it is a guide
+to using the shell for programming, rather than an encyclopedia of its
+capabilities. We will talk not only about what the shell can do, but also about
+developing and writing shell programs, with an emphasis on testing ideas
+interactively.
+
+When you've written a program, in the shell or any other language, it may be
+helpful enough that other people on your system would like to use it. But the
+standards other people expect of a program are usually more rigorous than those
+you apply for yourself. A major theme in shell programming is therefore making
+programs robust so they can handle improper input and give helpful information
+when things go wrong.
+
+
+5.1 Customizing the cal command
+
+One common use of a shell program is to enhance or to modify the user interface
+to a program. As an example of a program that could stand enhancement, consider
+the cal(1) command:
+

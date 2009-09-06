@@ -1,0 +1,59 @@
+
+a bother to have to type this every time you log in.
+
+The shell comes to the rescue. If there is a file named .profile in your login
+directory, the shell will execute the commands in it when you log in, before
+printing the first prompt. So you can put commands into .profile to set up your
+environment as you like it, and they will be executed every time you log in.
+
+The first thing most people put their .profile is
+
+        stty erase <-
+
+We're using <- here so you can see it, but you could put a literal backspace in
+your .profile. stty also understands the notation ^x for ctl-x, so you can get
+the same effect with
+
+        stty erase '^h'
+
+because ctl-h is backspace. (The ^ character is an obsolete synonym for the pipe
+operator |, so you must protect it with quotes.)
+
+If your terminal doesn't have sensible tab stops, you can add -tabs to the stty
+line:
+
+        stty erase '^h' -tabs
+
+If you like to see how busy the system is when you log in, add
+
+        who | wc -l
+
+to count the users. If there's a news service, you can add news. Some people
+like a fortune cookie:
+
+        /usr/games/fortune
+
+After a while you may decide that it is taking too long to log i, and cut your
+.profile back to the bare necessities.
+
+Some of the properties of the shell are actually controlled by so-called shell
+variables, with values that you can access and set yourself. For example, the
+prompt string, which we have been showing as $, is actually stored in a shell
+variable called PS1, and you can set it to anything you like, like this:
+
+        PS1='Yes dear? '
+
+The quotes are necessary since there are spaces in the prompt string. Spaces are
+not permitted around the = in this construction.
+
+The shell also treats the variable HOME and MAIL specially, HOME is name of your
+home directory; it is normally set properly without having to be in
+.profile. The variable MAIL names the standard file where your mail is kept. If
+you define it for the shell, you will be notified after each command if new mail
+has arrived.+
+
+
+----------------
++ This is implemented badly in the shell. Looking at the file after every
+command adds perceptibly to the system load. Also, if you are working in an
+editor for a long time you won't learn about

@@ -1,0 +1,53 @@
+
+        $ sed -n '20,30p'        Print only lines 20 through 30
+        $ sed '1,10d'            Delete lines 1 through 10 (= tail +11)
+        $ sed '1,/^$/d'          Delete up to and including first blank line
+        $ sed -n '/^$/,/^end/p'  Print each group of lines from
+                                   an empty line to line starting with end
+        $ sed '$d'               Delete the last line
+
+Line numbers go from the beginning of the input; they do not reset at the
+beginning of a new file.
+
+There is a fundamental limitation of sed that is not shared by ed, however:
+relative line numbers are not supported. In particular, + and - are not
+understood in line number expressions, so it is impossible to reach backwards in
+the input:
+
+        $ sed '$-1d'                    Illegal: can't refer backward
+        Unrecognized command: $-1d
+        $
+
+Once a line is read, the previous line is gone forever: there is no way to
+identify the next-to-last line, which is what this command requires. (In
+fairness, there is a way to handle this with sed, but it is pretty
+advanced. Look up the "hold" command in the manual.) There is also no way to do
+relative addressing forward:
+
+        $ sed '/thing/+1d'              Illegal: can't refer forward
+
+sed provides the ability to write on multiple output files. For example,
+
+        $ sed -n '/pat/w file1
+        >         /pat/!w file2' filenames ...
+
+writes lines matching pat on file1 and lines not matching pat on file2. Or, to
+revisit our first example,
+
+        $ sed 's/UNIX/UNIX(TM)/gw u.out' filenames ... >output
+
+writes the entire output to file output as before, but also writes just the
+changed lines to file u.out.
+
+Sometimes it's necessary to cooperate with the shell to get shell file arguments
+into the middle of a sed command. One example is the program newer, which lists
+all files in a directory that are newer that a specified one.
+
+        $ cat newer
+        # newer f: list files newer than f
+        ls -t | sed '/^'$1'$/q'
+
+The quotes protect the various special characters aimed at sed, while leaving
+the $1 exposed so the shell will replace it by the filename. An alternative way
+to write the argument is
+

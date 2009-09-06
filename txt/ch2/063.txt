@@ -1,0 +1,55 @@
+
+Exercise 2-8. cp doesn't copy directories, it just copies files at the first
+level a hierarchy. What does it do if one of the argument files is a directory?
+Discuss the relative merits of three possibilities: an option to cp to descend
+directories, a separate command rcp (recursive copy) to do the job, or just
+having cp copy a directory recursively when it finds one. See Chapter 7 for help
+on providing this facility. What other program would profit from the ability to
+traverse the directory tree?
+
+
+2.6 The directory hierarchy
+
+In Chapter 1, we looked at the file system hierarchy rather informally, starting
+from /usr/you. We're now going to investigate it in a more orderly way, starting
+from the top of the tree, the root
+
+The top directory is /.
+
+        $ ls /
+        bin
+        boot
+        dev
+        etc
+        lib
+        tmp
+        unix
+        usr
+        $ 
+
+/unix is the program for the UNIX kernel itself: when the system starts, /unix
+is read from disc into memory and started. Actually, the process occurs in two
+steps: first the file /boot is read; it then reads in /unix. More information
+about this "bootstrap" process may be found in boot(8). The rest of the files in
+/, at least here, are directories, each a somewhat self-contained section of the
+total file system. In the following brief tour of the hierarchy, play along with
+the text: explore a bit in the directories mentioned. The more familiar you are
+with the layout of the file system, the more effectively you will be able to use
+it. Table 2.1 suggests good places to look, although some of the names are
+system dependent.
+
+/bin (binaries) we have seen before: it is the directory where the basic
+programs suck as who and ed reside.
+
+/dev (devices) we will discuss in the next section.
+
+/etc (et cetera) we have also seen before. It contains various administrative
+files such as the password file and some system programs such as /etc/getty,
+which initializes a terminal connection for /bin/login. /etc/rc is a file of
+shell commands that is executed after the system is bootstrapped. /etc/group
+lists the members of each group.
+
+/lib (library) contains primarily parts of the C compiler, such as /lib/cpp, the
+C prreprocessor, and /lib/libc.a, the C subroutine library.
+
+/tmp (temporaries) is a repository for short-lived files created during the

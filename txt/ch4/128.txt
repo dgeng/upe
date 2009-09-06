@@ -1,0 +1,49 @@
+
+If we restrict the format of calendar so each line begins with a month name and
+a day as produced by date, the first draft of the calendar program is easy:
+
+        $ date
+        Thu Sep 29 15:23:12 EDT 1983
+        $ cat bin/calendar
+        # calendar:  version 1 -- today only
+        awk <$HOME/calendar '
+                BEGIN { split("'"`date`"'", date) }
+                $1 == date[2] && $2 == date[3]
+        ' | mail $NAME
+        $
+
+The BEGIN block splits the date produced by date into an array; the second and
+third elements of the array are the month and the day. We are assuming that the
+shell variable NAME contains your login name.
+
+The remarkable sequence of quote characters is required to capture the date in a
+string in the middle of the awk program. An alternative that is easier to
+understand is to pass the date in as the first line of input:
+
+        $ cat /bin/calendar
+        # calendar:  version 2 -- today only, no quotes
+        (date; cat $HOME/calendar) |
+        awk '
+          NR == 1    { mon = $2; day = $3 } # set the date
+          NR > 1 && $1 == mon && $2 == day  # print calendar lines
+        ' | mail $NAME
+        $
+
+The next step is to arrange for calendar to look for tomorrow as well as
+today. Most of the time all that is needed is to take today's date and add 1 to
+the day. But at the end of the month, we have to get the next month and set the
+day back to 1. And of course each month has a different number of days.
+
+This is where the associative array comes in handy. Two arrays, days and
+nextmon, whose subscripts are month names, hold the number of days in the month
+and the name of the next month. Then days["Jan"] is 31, and nextmon["Jan"] is
+Feb. Rather than create a whole sequence of statements like
+
+        days["Jan"] = 31; nextmon["Jan"] = "Feb"
+        days["Feb"] = 28; nextmon["Feb"] = "Mar"
+
+we will use split to convert a convenient data structure into the one really
+needed:
+
+
+

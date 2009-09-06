@@ -1,0 +1,48 @@
+
++------------------------------------------------------------------------------+
+|                    Table 4.2: Summary of sed Commands                        |
+| a\                append lines to output until one not ending in \           |
+| b label           branch to command : label                                  |
+| c\                change lines to following text as in a                     |
+| d                 delete line; read next input line                          |
+| i\                insert following text before next output                   |
+| l                 list line, making all non-printing characters visible      |
+| p                 print line                                                 |
+| q                 quit                                                       |
+| r file            read file, copy contents to output                         |
+| s/old/new/f       substitute new for old. If f=g, replace all occurrences;   |
+|                     f=p, print; f=w file, write to file                      |
+| t label           test: branch to label if substitution made to current line |
+| w file            write line to file                                         |
+| y/str1/str2/      replace each character from str1 with corresponding        |
+|                     character from str2 (no ranges allowed)                  |
+| =                 print current input line number                            |
+| !cmd              do sed cmd only if line is not selected                    |
+| : label           set label for b and t commands                             |
+| {                 treat commands up to matching } as a group                 |
++------------------------------------------------------------------------------+
+
+        "/^$1\$/q"
+since the $1 will be replaced by the argument while the \$ becomes just $.
+
+In the same way, we can write older, which lists all the files older than the
+named one:
+
+        $ cat older
+        # older f: list files older than f
+        ls -tr | sed '/^'$1'$/q'
+        $
+
+The only difference is the -r option on ls, to reverse the order.
+
+Although sed will do much more than we have illustrated, including testing
+conditions, looping and branching, remembering previous lines, and of course
+many of the ed commands described in Appendix 1, most of the use of sed is
+similar to what we have shown here --- one or two simple editing commands ---
+rather than long or complicated sequences. Table 4.2 summarizes some of sed's
+capabilities, although it omits the multi-line functions.
+
+sed is convenient because it will handle arbitrarily long inputs, because it is
+fast, and because it is so similar to ed with its regular expressions and
+line-at-a-time processing. On the other side of the coin, sed provides a
+relatively limited form of memory (it's hard to remember text from one line to

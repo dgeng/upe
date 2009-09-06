@@ -1,0 +1,53 @@
+
+algorithm in diff. Binding it all together was a kernel with "features seldom
+found even in larger operating systems." As an example, consider the I/O
+structure: a hierarchical file system, rare at the time; devices installed as
+names in the file system, so they require no special utilities; and perhaps a
+dozen critical system calls, such as an open primitive with exactly two
+arguments. The software was all written in a high-level language and distributed
+with the system so it could be studied and modified.
+
+The UNIX system has since become one of the computer market's standard operating
+system, and with market dominance has come responsibility and the need for
+"features" provided by the operating system. As a result, the kernel has grown
+in size by a factor of 10 in the past decade, although it has certainly not
+improved by the same amount. This growth has been accompanied by a surfeit of
+ill-conceived programs that don't build on the existing environment. Creeping
+featurism encrusts commands with options that obscure the original intention of
+the programs. Because source code is often not distributed with the system,
+models of good style are harder come by.
+
+Fortunately, however, even the large versions are still suffused with the ideas
+that made the early versions so popular. The principles on which UNIX is based
+--- simplicity of structure, the lack of disproportionate means, building on
+existing programs rather than recreating, programmability of the command
+interpreter, a tree-structured file system, and so on --- are therefore
+spreading and displacing the ideas in the monolithic systems that preceded
+it. The UNIX system can't last forever, but systems that hope to supersede it
+will have to incorporate many of its fundamental ideas.
+
+We said in the preface that there is a UNIX approach or philosophy, a style of
+how to approach a programming task. Looking back over the book, you should be
+able to see the elements of that style illustrated in our examples.
+
+First, let the machine do the work. Use programs like grep and wc and awk to
+mechanize tasks that you might do by hand on other systems.
+
+Second, let other people do the work. Use programs that already exist as
+building blocks in your programs, with the shell and the programmable filters to
+glue them together. Write a small program to interface to an existing on that
+does the real work, as we did with idiff. The UNIX environment is rich in tools
+that can be combined in myriad ways; your job is often just to think of the
+right combination.
+
+Third, do the job in stages. Build the simplest thing that will be useful, and
+let your experience with that determine what (if anything) is worth doing
+next. Don't add features and options until usage patterns tell you which ones
+are needed.
+
+Forth, build tools. Write programs that mesh with the existing environment,
+enhancing it rather than merely adding to it. Built well, such programs
+themselves become a part of everyone's toolkit.
+
+We also said in the preface that the system was not perfect. After nine chapters
+describing programs that strange conventions, pointless differences,

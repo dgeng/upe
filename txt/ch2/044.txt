@@ -1,0 +1,49 @@
+
+output, the newline is expanded into carriage return and newline.
+
+the UNIX system is unusual in its approach to representing control information,
+particularly its use of newlines to terminate lines. Many systems instead
+provide "records," one per line, each of which contains not only your data but
+also a count of the number of characters in the line (and no newline). Other
+systems terminate each line with a carriage return and a newline, because that
+sequence is necessary for output on most terminals. (The word "linefeed" is
+synonym for new line, so this sequence is often called "CRLF", which is nearly
+pronounceable.)
+
+The UNIX system does neither --- there are no records, no record counts, and no
+bytes in any file that you or your programs did not put there. A newline is
+expanded into a carriage return and a newline when sent to a terminal, but
+programs need only deal with the single newline character, because that is all
+they see. For most purposes, this simple scheme is exactly what is wanted. When
+a more complicated structure is needed, it can easily be built on top of this;
+the converse, creating simplicity from complexity, is harder to achieve.
+
+Since the end of a line is marked by a newline character, you might expect a
+file to be terminated by another special character, say \e for "end of file."
+Looking at the output of od, though, you will see no special newline character
+at the end of the file --- it just stops. Rather than using a special code, the
+system signifies the end of a file by simply saying there is no more data in the
+file. The kernel keeps track of file lengths, so a program encounters
+end-of-file when it has processed all the bytes in file.
+
+Programs retrieve the data in a file by a system call (a subroutine in the
+kernel) called read. Each time read is called, it returns the next part of a
+file --- the next line of text typed on the terminal, for example. read also
+says how many bytes of the file were returned, so end of file is assumed when a
+read says "zero bytes are being returned." If there were any bytes left, read
+would have returned some of them. Actually, it makes sense not to represent end
+of file by a special byte value, because, as we said earlier, the meaning of the
+bytes depends on the interpretation of the file. But all files must end, and
+since all files must be accessed through read, returning zero is an
+interpretation-independent way to represent the end of a file without
+introducing a new special character.
+
+When a program reads from your terminal, each input line is given to the program
+by the kernel only when you type its newline (i.e., press RETURN). Therefore if
+you make a typing mistake, you can back up and correct it if you realize the
+mistake before you type newline. If you type newline before realizing the error,
+the line has been read by the system and you cannot correct it.
+
+We can see how this line-at-a-time input works using cat. cat normally saves up
+or buffers its output to write in large chunks for efficiency, but cat -u
+"unbuffers" the output, so it is printed immediately as it is read:

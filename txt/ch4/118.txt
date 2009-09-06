@@ -1,0 +1,60 @@
+
+The BEING and END patterns
+
+awk provides two special patterns, BEGIN and END. BEGIN actions are performed
+before the first input line has been read; you can use the BEGIN pattern to
+initialize variables, to print headings or to set the field separator by
+assigning to the variable FS:
+
+        $ awk 'BEGIN { FS = ":" }
+        >      $2 == "" ' /etc/passwd
+        $               No output: we all use passwords
+
+END actions are done after the last line of input has been processed:
+
+        $ awk 'END { print NR }' ...
+
+prints the number of lines of input.
+
+
+Arithmetic and variables
+
+The examples so far have involved only simple text manipulation. awk's real
+strength lies in its ability to do calculations on the input data as well; it is
+easy to count things, compute sums and averages, and the like. A common use of
+awk is to sum columns of numbers. For example, to add up all the numbers in the
+first column:
+
+                { s = s + $1 }
+        END     { print s }
+
+Since the number of values in available in the variable NR, changing the last
+line to
+
+        END     { print s, s/NR }
+
+prints both sum and average.
+
+This example also illustrates the use of variables in awk. s is not a built-in
+variable, but one defined by being used. Variables are initialized to zero by
+default so you usually don't have to worry about initialization.
+
+awk also provides the same shorthand arithmetic operators that C does, so the
+example would normally be written
+
+                { s += $1 }
+        END     { print s }
+
+s += $1 is the same as s = s + $1, but notationally more compact.
+
+You can generalize the example that counts input lines like this:
+
+                { nc += length($0) + 1  # number of chars, 1 for \n
+                  nw += NF              # number of words
+                }
+        END     { print NR, nw, nc }
+
+This counts the lines, words and characters in its input, so it does the same
+job as wc (although it doesn't break the total down by file).
+
+As another example of arithmetic, this program computes the number of

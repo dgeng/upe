@@ -1,0 +1,44 @@
+
+Why are there three grep programs? fgrep interprets no metacharacters, but can
+look efficiently for thousands of words in parallel (once initialized, its
+running time is independent of the number of words), and thus is used primarily
+for tasks like bibliographic searches. The size of typical fgrep patterns is
+beyond the capacity of the algorithms used in grep and egrep. The distinction
+between grep and egrep is harder to justify. grep came much earlier, uses the
+regular expressions familiar from ed, and has tagged regular expressions and a
+wider set of options. egrep interprets more general expressions (except for
+tagging), and runs significantly faster (with speed independent of the pattern),
+but the standard version takes longer to start when the expression is
+complicated. A newer version exists that starts immediately, so egrep and grep
+would now be combined into a single pattern matching program.
+
++------------------------------------------------------------------------------+
+|             Table 4.1: grep and egrep Regular Expressions                    |
+|                     (decreasing order of precedence)                         |
+|                                                                              |
+| c             any non-special character c matches itself                     |
+| \c            turn off any special meaning of character c                    |
+| ^             beginning of line                                              |
+| $             end of line                                                    |
+| .             any single character                                           |
+| [...]         any one of characters in ...; ranges like a-z are legal        |
+| [ ^...]       any single character not in ...; ranges are legal              |
+| \n            what the n'th \(...\) matched (grep only)                      |
+| r*            zero or more occurrences of r                                  |
+| r+            one or more occurrences of r (egrep only)                      |
+| r?            zero or one occurrences of r (egrep only)                      |
+| r1r2          r1 followed by r2                                              |
+| r1|r2         r1 or r2 (egrep only)                                          |
+| \(r\)         tagged regular expression r (grep only); can be nested         |
+| (r)           regular expression r (egrep only); can be nested               |
+|                                                                              |
+|               No regular expression matches a newline.                       |
++------------------------------------------------------------------------------+
+
+Exercise 4-1. Loop up tagged regular expressions (\( and \)) in Appendix 1 or
+ed(1), and use grep to search for palindromes --- words spelled the same
+backwards as forwards. Hint: write a different pattern for each length or word.
+
+Exercise 4-2. The structure of grep is to read a single line, check for a match,
+then loop. How would grep be affected if regular expressions could match
+newlines?

@@ -1,0 +1,13 @@
+
+and arbitrary limitations, you will surely agree. In spite of such blemishes,
+however, the positive benefits far outweigh the occasional irritating rough
+edges. The UNIX system is really good at what it was designed to do: providing a
+comfortable programming environment.
+
+So although UNIX has begun to show some signs of middle age, it's still viable
+and still gaining in popularity. And that popularity can be traced to the clear
+thinking of a few people in 1969, who sketched on the blackboard a design for a
+programming environment they would find comfortable. Although they didn't expect
+their system to spread to tens of thousands of computers, a generation of
+programmers is glad that it did.
+

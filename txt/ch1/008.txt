@@ -1,0 +1,54 @@
+
+hanging up the phone will stop most programs.
+
+If you just want output to pause, for example to keep something critical from
+disappearing off the screen, type ctl-s. The output will stop almost
+immediately; you program is suspended until you start it again. When you want to
+resume, type ctl-q.
+
+
+Logging out
+
+The proper way to log out is to type ctl-d instead of a command; this tells the
+shell that there is no more input. (How this actually works will be explained in
+the next chapter.) You can usually just turn off the terminal or hang up the
+phone, but whether this really logs you out depends on your system.
+
+Mail
+
+The system provides a postal system for communicating with other users, so some
+day when you log in, you will see the message
+
+        You have mail
+	
+before the first prompt. To read your mail, type
+
+        $ mail
+
+your mail will be printed, one message at a time, most recent first. After each
+item, mail waits for you to say what to do with it. The two basic responses are
+d, which deletes the message, and RETURN, which does not (so it will still be
+there the next time you read your mail). Other responses include p to reprint a
+message, s filename to save it in the file you named, and q to quit from
+mail. (If you don't know what a file is, think of it as a place where you can
+store information under a name of your choice, and retrieve it later. Files are
+the topics of Section 1.2 and indeed of much of this book.)
+
+Mail is one of those programs that is likely to differ from what we describe
+here; there are some variants. Look in your manual for details.
+
+Sending mail to someone is straightforward. Suppose it is to go to the person
+with the login name nico. The easiest way is this:
+
+        $ mail nico
+	how type in the text of the letter
+	on as many lines as you like ...
+	After the last line of the letter
+	type a control-d
+	ctl-d
+	$
+
+The ctl-d signals the end of the letter by telling the mail command that there
+is no more input. If you change your mind half-way through composing the letter,
+press DELETE instead of ctl-d. The half-formed letter will be stored in a file
+called dead.letter instead of being sent.

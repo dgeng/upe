@@ -1,0 +1,56 @@
+
+
+        $ echo 'chmod +x $1" >cx        Create cx originally
+        $ sh cx cx                      Make cx itself executable
+        $ echo echo Hi, there! >hello   Make a test program
+        $ hello                         Try it
+        hello: cannot execute
+        $ cx hello                      Make it executable
+        $ hello                         Try again
+        Hi, there!                      it works
+        $ mv cx /usr/you/bin            Install cx
+        $ rm hello                      Clean up
+        $
+
+Notice that we said
+
+        $ sh cx cx
+
+exactly as the shell would have automatically done if cx were already executable
+and we typed
+
+        $ cx cx
+
+What if you want to handle more than one argument, for example to make a program
+like cx handle several files at once? A crude first cut is to put nine arguments
+into the shell program, as in
+
+        chmod +x $1 $2 $3 $4 $5 $6 $7 $8 $9
+
+(If only works up to $9, because the string $10 is parsed as "first argument,
+$1, followed by a 0"!) If the user of this shell file provides fewer than nine
+arguments, the missing ones are null strings; the effect is that only the
+arguments that were actually provided are passed to chmod by the sub-shell. So
+this implementation works, but it's obviously unclean, and it fails if more than
+nine arguments are provided.
+
+Anticipating this problem, the shell provides a shorthand $* that means "all the
+arguments." The proper way to define cx, then, is
+
+        chmod +x $*
+
+which works regardless of how many arguments are provided.
+
+With $* added to your repertoire, you can make some convenient shell files, such
+as lc or m:
+
+        $ cd /usr/you/bin
+        $ cat lc
+        # lc: count number of lines in files
+        wc -l $*
+        $ cat m
+        # m: a concise way to type mail
+        mail $*
+        $
+
+Both can sensibly be used without arguments. If there are no arguments, $*

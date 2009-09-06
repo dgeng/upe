@@ -1,0 +1,48 @@
+
+        $ echo $PATH
+        :/usr/you/bin:/bin:/usr/bin              PATH unchanged
+        $ cat /usr/you/bin/games
+        PATH=$PATH:/usr/games                    games command still there
+        $ . games
+        $ fortune
+        Premature optimization is the root of all evil - Knuth
+        $ echo $PATH
+        :/usr/you/bin:/bin:/usr/bin:/usr/games       PATH changed this time
+        $
+
+It's possible to exploit both these mechanism in a single shell file. A slightly
+different games command can be used to run a single game without changing PATH,
+or can set PATH permanently to include /usr/games:
+
+        $ cat /usr/you/bin/games
+        PATH=$PATH:/usr/games $*                    Note the $*
+        $ cx /usr/you/bin/games
+        $ echo $PATH
+        :/usr/you/bin:/bin:/usr/bin                 Doesn't have /usr/games
+        $ games fortune
+        I'd give my right arm to be ambidextrous.
+        $ echo $PATH
+        :/usr/you/bin:/bin:/usr/bin                 Still doesn't
+        $ . games
+        $ echo $PATH
+        :/usr/you/bin:/bin:/usr/bin:/usr/games      Now it does
+        $ fortune
+        He who hesitates is sometimes saved.
+        $
+
+The first call to games ran the shell file in a sub-shell, where PATH was
+temporarily modified to include /usr/games. The second example instead
+interpreted the file in the current shell, with $* the empty string, so there
+was no command on the line, and PATH was modified. Using games in these two ways
+is tricky, but results in a facility that is convenient and natural to use.
+
+When you want to make the value a variable accessible in sub-shell, the shell''s
+export command should be used. (You might think about why there is no way to
+export the value of variable from a sub-shell to its parent.) Here is one of our
+earlier examples, this time with the variable exported:
+
+        $ x=Hello
+        $ export x
+        $ sh                              New shell
+        $ echo $x
+        Hello                             x known in sub-shell

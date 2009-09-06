@@ -1,0 +1,55 @@
+
+Mistakes in typing
+
+If you make a typing mistake, and see it before you have pressed RETURN, there
+are two ways to recover, erase characters one at a time or kill the whole line
+and re-type it.
+
+If you type the line kill character, by default an at-sign @, it causes the
+whole line to be discarded, just as if you'd never typed it, and starts you over
+on a new line:
+
+        $ ddtae@                    Completely botched; start over
+        date                          on a new line
+        Mon Sep 26 12:23:39 EDT 1983
+        $
+
+The sharp character # erases the last character typed; each # erases one more
+character, back to the beginning of the line (but not beyond). So if you type
+badly, you can correct as you go:
+
+        $ dd#atte##e                Fix it as you go
+        Mon Sep 26 12:23:39 EDT 1983
+        $
+
+The particular erase and line kill characters are very system dependent. On many
+systems (including the one we use), the erase character has been changed to
+backspace, which works nicely on video terminals. You can quickly check which is
+the case on your system:
+
+        $ datee<-                              Try <-
+        datee<-: not found                     It's not <-
+        $ datee#                               Try #
+        Mon Sep 26 12:23:39 EDT 1983           It is #
+        $
+
+(We printed the backspace character <- as you can see it.) Another common choice
+is ctl-u for line kill.
+
+We will use the sharp as the erase character for the rest of this section
+because it's visible, but make the mental adjustment if your system is
+different. Later on, in "tailoring the environment," we will tell you how to set
+the erase and line kill characters to whatever you like, once and for all.
+
+What if you must enter an erase or line kill character as part of the text? If
+you precede either # or @ by a backslash \, it loses its special meaning. So to
+enter a # or @, type \# or \@. The system may advance the terminal's cursor to
+the next line after your @, even if it was preceded by a backslash. Don't worry
+--- the at-sign has been recorded.
+
+The backslash, sometimes called the escape character, is used extensively to
+indicate that the following character is in some way special. To erase a
+backslash, you have to type two erase characters \##. Do you see why?
+
+The characters you type are examined and interpreted by a sequence of programs
+before they reach their destination, and exactly how they interpreted

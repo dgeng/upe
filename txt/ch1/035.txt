@@ -1,0 +1,57 @@
+
+you run commands, those processes are the direct children of your shell. If you
+run a program from within one of those, for example with the ! command to escape
+from ed, that creates its own child process which is thus a grandchild of the
+shell.
+
+Sometimes a process takes so long that you would like to start it running, then
+turn off the terminal and go home without waiting for it to finish. But if you
+turn off your terminal or break your connection, the process will normally be
+killed even if you used &. The command nohup ("no hangup") was created to deal
+with this situation: if you say
+
+        $ nohup command &
+
+the command will continue to run if you log out. And output from the command is
+saved in a file called nohup.out. There is no way to nohup a command
+retroactively.
+
+If your process will take a lot of processor resources, it is kind to those who
+share your system to run your job with lower than normal priority; this is done
+by another program called nice:
+
+        $ nice expensive-command &
+
+nohup automatically calls nice, because if you're going to log out you can
+afford to have the command take a little longer.
+
+Finally, you can simply tell the system to start your process at some wee hour
+of the morning when normal people are asleep not computing. The command is
+called at(1):
+
+        $ at time
+        whatever commands
+        you want ...
+        ctl-d
+        $
+
+This is the typical usage, but of course the commands could come from a file:
+
+        $ at 3am <file
+        $
+
+Times can be written in 24-hour style like 2130, or 12-hour style like 930pm.
+
+
+Tailoring the environment
+
+One of the virtues of the UNIX system is that there are several ways to bring it
+closer to your personal taste or the conventions of your local computing
+environment. For example, we mentioned earlier the problem of different
+standards for the erase and line kill characters, which by default are usually #
+and @. You can change these any time you want with
+
+        $ stty erase e kill k
+
+where e is whatever character you want for erase and k is for line kill. But
+it's

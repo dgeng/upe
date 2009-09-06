@@ -1,0 +1,46 @@
+
+concatenated when they are adjacent. Initially, blanks is a null string. The
+loop in the BEGIN part creates a long string of blanks by concatenation: each
+trip around the loop adds one more blank to the end of the blanks. The second
+loop processes the input line in chunks until the remaining part is short
+enough. As in C, an assignment statement can be used as an expression, so the
+construction
+
+        if ((n = length($0)) <= N) ...
+
+assigns the length of the input line to n before testing the value. Notice the
+parentheses.
+
+Exercise 4-10. Modify fold so that it will fold lines at blanks or tabs rather
+than splitting a word. Make it robust for long words.
+
+
+Interaction with the shell
+
+Suppose you want to write a program field n that will print the n-th field from
+each line of input, so that you could say, for example,
+
+        $ who | field 1
+
+to print only the login name. awk clearly provides the field selection
+capability; the main problem is passing the field number n to an awk
+program. Here is one implementation:
+
+        awk '{ print $'$1' }'
+
+The $1 is exposed (it's not inside any quotes) and thus becomes the field number
+seen by awk. Another approach uses double quotes:
+
+        awk "{ print \$$1 }"
+
+In this case, the argument is interpreted by the shell, so the \$ becomes a $
+and the $1 is replaced by the value of n. We prefer the single-quote style
+because so many extra \'s are needed with the double-quote style in a typical
+awk program.
+
+A second example is addup n, which adds up the numbers in the n-th field:
+
+        awk '{ s += $'$1' }
+         END { print s }'
+
+A third example forms separate sums of each of n columns, plus a grand total:

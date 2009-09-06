@@ -1,0 +1,45 @@
+
+files and the instructions to unpack it.
+
+A second insight is that the shell's here documents are a convenient way to
+combine a command invocation and the data for the command. The rest of the job
+is just getting the quotes right. Here's a working program, called bundle, that
+groups the files together into a self-explanatory shell file on its standard
+output:
+
+        $ cat bundle
+        # bundle: group files into distribution package
+        echo '# To unbundle, sh this file'
+        for i
+        do
+                echo "echo $i 1>&2"
+                echo "cat >$i <<'End of $i'"
+                cat $i
+                echo "End of $i"
+        done
+        $
+
+Quoting "End of $i" ensures that any shell metacharacters in the files will be
+ignored.
+
+Naturally, you should try it out before inflicting it on somewhere!bob:
+
+        $ bundle cx lc >junk                    Make a trial bundle
+        $ cat junk
+        # To unbundle, sh this file
+        echo cx 1>&2
+        cat >cx <<'End of cx'
+        chmod +x cx
+        End of cx
+        echo lc 1>&2
+        cat >lc <<'End of lc'
+        # lc: count number of lines in files
+        wc -l $*
+        End of lc
+        $ mkdir test
+        $ sh ../junk                            Tr it out
+        cx
+        lc
+        $ ls
+        cx
+        lc

@@ -1,0 +1,53 @@
+
+ordinal number of the next character shown, in octal. By the way, the emphasis
+on octal numbers is a holdover from the PDP-11, for which octal was the
+preferred notation. Hexadecimal is better suited for other machines; the -x
+option tells od to print in hex.
+
+Notice that there is a character after each line, with octal value 012. This is
+the ASCII newline character; it is what the system places in the input when you
+press the RETURN key. By a convention borrowed from C, the character
+representation of a newline is \n, but this is only a convention used by
+programs like od to make it easy to read --- the value stored in the file is the
+single byte 012.
+
+Newline is the most common example of a special character. Other characters
+associated with some terminal control operation include backspace (octal value
+-10, printed as \b), tab (011, \t), and carriage return (015, \r).
+
+It is important in each case to distinguish between how the character is stored
+in a file and how it is interpreted in various situations. For example, when you
+type a backspace on your keyboard (and assuming that your erase character is
+backspace), the kernel interprets it to mean that you want to discard whatever
+character you typed previously. Both that character and the backspace disappear,
+but the backspace is echoed to your terminal, where is makes the cursor move on
+position backwards.
+
+If you type the sequence
+
+        \<-
+
+(i.e., \ followed by a backspace), however, the kernel interprets that to mean
+that you want a literal backspace in your input, so the \ is discarded and the
+byte 010 winds up in your file. When the backspace is echoed on your terminal,
+it moves the cursor to sit on top of the \.
+
+When you print a file that contains a backspace, the backspace is passed
+uninterpreted to your terminal, which again will move the cursor one position
+backwards. When you use od to display a file that contains a backspace, it
+appears as a byte with value 010, or, with the -c option, as \b.
+
+The story for tabs is much the same: on input, a tab character is echoed to your
+terminal and sent to the program that is reading; on output, the tab is simply
+sent to the terminal for interpretation there. There is a difference, though ---
+you can tell the kernel that you want it to interpret tabs for you on output; in
+that case, each tab that would be printed is replaced by the right number of
+blanks to get to the next tab stop. Tab stops are set at columns 9, 17, 25,
+etc. The command
+
+        $ stty -tabs
+
+causes tabs to be replaced by spaces when printed on your terminal. See stty(1).
+
+The treatment of RETURN is analogous. The kernel echoes RETURN as a carriage
+return and a newline, but stores only the newline in the input. On

@@ -1,0 +1,53 @@
+
+protected from other users' access. But the set-uid concept is potentially
+dangerous. /bin/passwd has to be corret; if it were not, it could destroy system
+information under root's auspices. If it had the permissions -rwsrwxrwx, it
+could be overwritten by any user, who could therefore replace the file with a
+program that does anything. This is particularly serious for a set-uid program,
+because root has access permissions to every file on the system. (Some UNIX
+systems turn the set-uid bit off whenever a file is modified, to reduce the
+danger of a security hole.)
+
+The set-uid bit a powerful, but used primarily for a few system programs such as
+passwd. Let's look at a more ordinary file.
+
+        $ ls -l /bin/who
+        -rwxrwxr-x 1 root     6348 Mar 29  1983 /bin/who
+        $
+
+who is executable by everybody, and writable by root and the owner's group, What
+"executable" means is this: when you type
+
+        $ who
+
+to the shell, it looks in a set of directories, one of which is /bin, for a file
+named "who." If it finds such a file, and if the file has execute permission,
+the shell calls the kernel to run it. The kernel checks the permissions, and, if
+they are valid, runs the program. Note that a program is just a file with
+execute permission. In the next chapter we will show you programs that are just
+text files, but that can be executed as commands because they have execute
+permission set.
+
+Directory permissions operate a little differently, but the basic idea is the
+same.
+
+        $ ls -ld .
+        drwxrwxr-x 3 you        80 Sep 27 06:11 .
+        $
+
+The -d option of ls asks it to tell you about the directory itself, rather than
+its contents, and the leading d in the output signifies that '.' is indeed a
+directory. And r field means that you can read the directory, so you can find
+out what files are in it with ls (or od, for that matter). A w means that you
+can create and delete files in this directory, because that requires modifying
+and therefore writing the directory file.
+
+Actually, you cannot simply write in a directory --- even root is forbidden to
+do so.
+
+        $ who >.                      Try to overwrite '.'
+        .: cannot create              you can't
+        $ 
+
+Instead there are system calls that create and remove files, and only through
+them is it possible to change the contents of a directory. The permissions idea,

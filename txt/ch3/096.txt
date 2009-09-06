@@ -1,0 +1,41 @@
+
+argument processing in individual commands is not suitable. But don't use it
+when the individual command will already loop over file names:
+
+        # Poor idea:
+        for i in $*
+        do
+                chmod +x $i
+        done
+
+is inferior to
+
+        chmod +x $*
+
+because the for loop executes a separate chmod for each file, which is more
+expensive in computer resources. (Be sure that you understand the difference
+between
+
+        for i in *
+
+which loops over all filenames in the current directory, and
+
+        for i in $*
+
+which loops over all arguments to the shell file.)
+
+The argument list for a for most often comes from pattern matching on filenames,
+but it can come from anything. It could be
+
+        $ for i in `cat ...`
+
+or arguments could just be typed. For example, earlier in this chapter we
+created a group of programs for multi-column printing, called 2, 3, and so
+on. These are just links to a single file that can be made, once the file 2 has
+been written, by
+
+        $ for i in 3 4 5 6; do ln 2 $i; done
+        $
+
+As a somewhat more interesting use of the for, we could use pick to select which
+files to compare with those in the backup directory:

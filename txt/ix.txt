@@ -1,0 +1,58 @@
+
+The command interpreter, or shell, is a fundamental tool, not only for running
+programs, but also for writing them. Chapter 3 describes how to use the shell
+for your own purposes: creating new commands, command arguments, shell
+variables, elementary control flow, and input-output redirection.
+
+Chapter 4 is about filters: programs that perform some single transformation on
+data as it flows through them. The first section deals with the grep
+pattern-searching command and its relatives; the next discusses a few of the
+more common filters such as sort; and rest of the chapter is devoted to two
+general-purpose data transformation programs called sed and awk. sed is a stream
+editor, a program for making editing changes on a stream of data as it flows
+by. awk is a programming language for simple information retrieval and report
+generation tasks. It's often possible to avoid conventional programming entirely
+by using these programs, sometimes in cooperation with the shell.
+
+Chapter 5 discusses how to use the shell for writing programs that will stand up
+to use by other people. Topics include more advanced control flow and variables,
+traps and interrupt handling. The examples in this chapter make considerable use
+of sed and awk as well as the shell.
+
+Eventually one reaches the limits of what can be done with the shell and other
+programs that already exist. Chapter 6 talks about writing new programs using
+the standard I/O library. The programs are written in C, which the reader is
+assumed to know, or at least be learning concurrently. We try to show sensible
+strategies for designing and organizing new programs, how to build them in
+manageable stages, and how to make use of tools that already exist.
+
+Chapter 7 deals with the system calls, the foundation under all the other layers
+of software. The topics include input-output, file creation, error processing,
+directories, inodes, processes, and signals.
+
+Chapter 8 talks about program development tools: yacc, a parser-generator; make,
+which controls the process of compiling a big program; and lex, which generates
+lexical analyzers. The exposition is based on the development of a large
+program, a C-like programmable calculator.
+
+Chapter 9 discusses the document preparation tools, illustrating them with a
+user-level description and manual page for the calculator of Chapter 8. It can
+be read independently of the other chapters.
+
+Appendix 1 summarizes the standard editor ed. Although many readers will prefer
+some other editor for daily use, ed is universally available, efficient and
+effective. Its regular expressions are the heart of other programs like grep and
+sed, and for that reason alone it is worth learning.
+
+Appendix 2 contains the reference manual for the calculator language of Chapter
+8.
+
+Appendix 3 is a listing of the final version of the calculator program,
+presenting the code all in one place for convenient reading.
+
+
+
+
+
+
+

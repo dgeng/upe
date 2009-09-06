@@ -1,0 +1,53 @@
+
+66-lines pages that will be produced by running a set of files through pr. This
+can be wrapped up in a command called prpages:
+
+	$ cat prpages
+	# prpages: compute number of pages that pr will print
+	wc $* |
+	awk '!/total$/ { n += int(($1+55)) / 56) }
+	    END	       { print n }'
+	$
+
+pr puts 56 lines of text on each page (a fact determined empirically). The
+number of pages is rounded up, then truncated to an integer with the built-in
+function int, for each line of wc output that does not match total at the end of
+a line.
+
+	$ wc ch4.*
+	    753     3090   18129 ch4.1
+	    612     2421   13242 ch4.2
+	    637     2462   13455 ch4.3
+	    802     2986   16904 ch4.4
+	    50       213    1117 ch4.9
+	    2854   11172   62847 total
+	$ prpages ch4.*
+	53
+	$
+
+To verify the result, run pr into awk directly:
+
+        $ pr ch4.* | awk 'END { print NR/66 }'
+
+Variables in awk also store strings of characters. Whether a variable is to be
+treated as a number of as a string of characters depends on the context. Roughly
+speaking, in an arithmetic expression like s+=$1, the numeric value is used; in
+a string context like x="abc", the string value is used; and in an ambiguous
+case like x>y, the string value is used unless the operands are clearly
+numeric. (The rules are stated precisely in the awk manual.) String variables
+are initialized to the empty string. Comping sections will put strings to good
+use.
+
+awk itself maintains a number of built-in variables of both types, such as NR
+and FS. Table 4.3 gives the complete list. Table 4.4 lists the operators.
+
+Exercise 4-8. Our test of prpages suggests alternate implementations. Experiment
+to see which is fastest.
+
+
+Control flow
+
+It is remarkably easy (speaking from experience) to create adjacent duplicate
+words, accidentally when editing a big document, and it is obvious that that
+almost never happens intentionally. To prevent such problems, one of the
+

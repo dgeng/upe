@@ -1,0 +1,54 @@
+
+however, still applies: the w fields tell who can use the system routines to
+modify the directory.
+
+Permission to remove a file is independent of the file itself. If you have write
+permission in a directory, you may remove files there, even files that are
+protected against writing. The rm command asks for confirmation before removing
+a protected file, however, to check that you really want to do so --- one of the
+rare occasions that a UNIX program double-checks your intentions. (the -f flag
+to rm forces it to remove files without question.)
+
+The x field in the permissions on a directory does not mean execution; it means
+"search." Execute permission on a directory determines whether the directory may
+be searched for a file. It is therefore possible to create a directory with mode
+--x for other users, implying that users may access any file that they know
+about in that directory, but may not run ls on it or read it to see what files
+are there. Similarly, with directory permissions r--, users can see (ls) but not
+user the contents of a directory. Some installations use this device to turn off
+/usr/games during busy hours.
+
+The chmod (change mode) command changes permissions on files.
+
+        $ chmod permissions filenames ...
+
+The syntax of the permissions is clumsy, however. They can be specified in two
+ways, either as octal numbers or by symbolic description. The octal numbers are
+easier to use, although the symbolic descriptions are sometimes convenient
+because they can specify relative changes in the permissions. It would be nice
+if you could say
+
+        $ chmod rw-rw-rw- junk          Doesn't work this way!
+
+rather than
+
+        $ chmod 666 junk
+
+but you cannot. The octal modes are specified by adding together a 4 for read, 2
+for write and 1 for execute permission. The three digits specify, as in ls,
+permissions for the owner, group and everyone else. The symbolic codes are
+difficult to explain; you must look in chmod(1) for a proper description. For
+our purposes, it is sufficient to note that + turns a permission on and that -
+turns it off. For example
+
+        $ chmod +x command
+
+allows everyone to execute command, and
+
+        $ chmod -w file
+
+turns off write permission for everyone, including the file's owner. Except for
+the usual disclaimer about super-users, only the owner of a file may change the
+permissions on a file, regardless of the permissions themselves. Even if
+somebody else allows you to write a file, the system will not allow you to
+change

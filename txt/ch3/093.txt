@@ -1,0 +1,47 @@
+
+        $ cp junk ch3.1
+        $ time wc ch3.1 >wc.out
+
+        real        2.0
+        user        0.4
+        sys         0.3
+        $ time wc ch3.1 >wc.out 2>time.out
+        $ cat time.out
+
+        real        1.0
+        user        0.4
+        sys         0.3
+        $
+
+The construction 2>filename (no spaces are allowed between the 2 and the >)
+directs the standard error output into the file; it's syntactically graceless
+but it does the job. (The times produced by time are not very accurate for such
+a short test as this one, but for a sequence of longer testes the numbers are
+useful and reasonably trustworthy, and you might well want to save them for
+further analysis; see, for example, Table 8.1)
+
+It is also possible to merge the two output streams:
+
+        $ time wc ch3.1 >wc.out 2>&1
+        $ cat wc.out
+            931   4288   22691 ch3.1
+
+        real        1.0
+        user        0.4
+        sys         0.3
+        $
+
+The notation 2>&1 tells the shell to put the standard error on the same stream
+as the standard output. There is not much mnemonic value to the ampersand; it's
+simply an idiom to be learned. You can also use 1>&2 to add the standard output
+to the standard error:
+
+        echo ... 1>&2
+
+prints on the standard error. In shell files, it prevents the messages from
+vanishing accidentally down a pipe or into a file.
+
+The shell provides a mechanism so you can put the standard input for a command
+along with the command, rather than in a separate file, so the shell file can be
+completely self-contained. Our directory information program 411 could be
+written

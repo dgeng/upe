@@ -1,0 +1,53 @@
+
+some work too. The rest of this section will discuss the session above, plus
+other programs that make it possible to do useful things.
+
+Logging in
+
+You must have a login name and password, which you can get from your system
+administrator. The UNIX system is capable of dealing wit a wide variety of
+terminals, but it is strongly oriented towards devices with lower case; case
+distinctions matter! If your terminal produces only upper case (like some video
+and portable terminals), life will be so difficult that you should look for
+another terminal.
+
+Be sure the switches are set appropriately on your device: upper and lower case,
+full duplex, and any other settings that local experts advise, such as the
+speed, or baud rate. Establish a connection using whatever magic is needed for
+your terminal; this may involve dialing a telephone or merely flipping a
+switch. In either case, the system should type
+
+        login:
+
+If it types garbage, you may be at the wrong speed; check the speed setting and
+other switches. If that fails, press the BREAK or INTERRUPT key a few times,
+slowly. If nothing produces a login message, you will have to get help.
+
+When you get the login: message, type your login name in lower case. Follow it
+by pressing RETURN. If a password is required, you will be asked for it, and
+printing will be turned off while you type it.
+
+The culmination of your login efforts is a prompt, usually a single character,
+indicating that the system is ready to accept commands from you. The prompt is
+mostly likely to be a dollar sign $ or a percent sign %, but you can change it
+to anything you like; we'll show you how a little later. The prompt is actually
+printed by a program called the command interpreter or shell, which is your main
+interface to the system.
+
+There may be a message of the day just before the prompt, or a notification that
+you have mail. You may also be asked what kind of terminal you are using; your
+answer helps the system to use any special properties the terminal might have.
+
+Typing commands
+
+Once you receive the prompt, you can type commands, which are requests that the
+system do something. We will use program as a synonym for command. When you see
+the prompt (let's assume it's $), type date and press RETURN. the system should
+replay with the date and time, then print another prompt, so the whole
+transaction will look like this on your terminal:
+
+	$ date
+	Mon Sep 26 12:20:57 EDT 1983
+	$
+
+Don't forget RETURN, and don't type the $. If you think you're being

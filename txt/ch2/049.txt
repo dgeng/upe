@@ -1,0 +1,40 @@
+
+
+	$ mkdir recipes
+	$ cd recipes
+	$ mkdir pie cookie
+	$ ed pie/apple
+	...
+	$ ed cookie/choc.chip
+	...
+	$
+
+Notice that it is simple to refer to subdirectories. pie/apple has an obvious
+meaning: the apple pie recipe, in directory /usr/you/recipes/pie. You could
+instead have put the recipe in, say, recipes/apple.pie, rather than in a
+subdirectory of recipes, but it seems better organized to put all the pies
+together, too. For example, the crust recipe could be kept in recipes/pie/crust
+rather than duplicating it in each pie recipe.
+
+Although the file system is a powerful organizational tool, you can forget where
+you put a file, or even what files you've got. The obvious solution is a command
+or two to rummage around the directories. The ls command is certainly helpful
+for finding files, but it doesn't look in sub-directories.
+
+	$ cd
+	$ ls
+	junk
+	recipes
+	$ file *
+	junk:   ascii text
+	recipes:        directory
+	$ ls recipes
+	cookie
+	pie
+	$ ls recipes/pie
+	apple
+	crust
+	$ 
+
+This piece of the file system can be shown pictorially as:
+

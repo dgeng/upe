@@ -1,0 +1,69 @@
+\documentclass[12pt]{book}
+
+\usepackage[a4paper,textwidth=16cm,textheight=24.7cm,
+left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+% \usepackage[a4paper]{geometry}
+\usepackage{indentfirst}
+% \usepackage[parfill]{parskip}
+
+\usepackage[pdftex]{graphicx}
+\graphicspath{{fig-pdf/}{fig-eps/}}
+
+\usepackage{pslatex}
+\usepackage[
+bookmarks,
+bookmarksnumbered=true,
+colorlinks=true,
+linkcolor=blue,
+]
+{hyperref}
+
+\usepackage{upquote}
+\usepackage[small,bf,labelsep=period,width=12cm]{caption}
+\usepackage{multirow}
+
+
+\begin{document}
+
+% override figure numbering
+\renewcommand{\thefigure}{\thechapter-\arabic{figure}}
+
+% begin book
+\frontmatter
+\title{
+  \Huge{THE UNIX PROGRAMMING ENVIRONMENT} \\[1ex]
+}
+\author{
+  Brian W. Kernighan \\
+  Rob Pike
+}
+\date{}
+\maketitle
+\tableofcontents
+% \listoffigures
+\include{preface}
+\addcontentsline{toc}{chapter}{PREFACE}
+\include{ata}
+
+\mainmatter
+\include{ch1}
+\include{ch2}
+\include{ch3}
+\include{ch4}
+\include{ch5}
+\include{ch6}
+\include{ch7}
+\include{ch8}
+\include{ch9}
+\include{ch10}
+
+\appendix
+\include{append1}
+\include{append2}
+\include{append3}
+
+\backmatter
+% end book
+
+\end{document}
+

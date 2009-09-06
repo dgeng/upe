@@ -1,0 +1,47 @@
+
+        $ date
+        Thu Jan  1 23:27:19 EST 1970
+        $ date; who
+        Wed Sep 28 09:07:23 EDT 1983
+        you      tty2    Sep 28 07:51
+        jpl      tty4    Sep 28 08:32
+        $ 
+
+Although semicolons can be used to terminate commands, as usual nothing happens
+until you type RETURN. Notice that the shell only prints one prompt after
+multiple commands, but except for the prompt,
+
+        $ date; who
+
+is identical to typing the two commands on different lines. In particular, who
+doesn't run until date has finished.
+
+Try sending the output of "date; who" through a pipe:
+
+        $ date; who | wc
+        Wed Sep 28 09:08:48 EDT 1983
+              2     10     60
+        $ 
+
+This might not be what you expected, because only the output of who goes to
+wc. Connecting who and wc with a pipe forms a single command, called a pipeline,
+that runs after date. The precedence of | is higher than that of ';' as the
+shell parses the command line.
+
+Parentheses can be used to group commands:
+
+        $ (date; who)
+        Wed Sep 28 09:11:09 EDT 1983
+        you      console Jan  1 23:27
+        you      tty2    Sep 28 07:51
+        jpl      tty4    Sep 28 08:32
+        $ (date; who) | wc
+              3     16      89
+        $ 
+
+The output of date and who are concatenated into a single stream that can be
+sent down a pipe.
+
+Data flowing through a pipe can be tapped and placed in a file (but not another
+pipe) with the tee command, which is not part of the shell, but is nonetheless
+handy for manipulating pipes. One use is to save intermediate output int a file:

@@ -1,0 +1,21 @@
+
+History and bibliographic notes
+
+The file system forms one part of the discussion in "UNIX implementation," by
+ken Thompson (BSTJ, July, 1978). A paper by Dennis Ritchie, entitled "The
+evolution of the UNIX time-sharing system" (Symposium on Language Design and
+Programming methodology, Sydney, Australia, Sept. 1979) is an fascinating
+description of how the file system was designed and implemented on the original
+PDP-7 UNIX system, and how it grew into its present form.
+
+The UNIX file system adapts some ideas from the MULTICS file system. The MULTICS
+System: An Examination of its Structure, By E. I. Organick (MIT Press, 1972)
+provides a comprehensive treatment of MULTICS.
+
+"Password security: a case history," By Bob Morris and Ken Thompson, is an
+entertaining comparison of password mechanisms on a variety of systems; it can
+be found in Volume 2B of the UNIX Programmer's Manual.
+
+In the same volume, the paper "On the security of UNIX," by Dennis Ritchie,
+explains how the security of a system depends more on the care taken with its
+administration than with the details of programs like crypt.

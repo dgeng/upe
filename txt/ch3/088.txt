@@ -1,0 +1,52 @@
+
+        $ command `grep -l pattern filenames`
+
+
+3.6 Shell variables
+
+The shell has variables, like those in most programming languages, which in
+shell jargon are sometimes called parameters. String such as $1 are positional
+parameters --- variables that hold the arguments to shell file. The digit
+indicates the position on the command line. We have seen other shell variables:
+PATH is the list of directories to search for commands, HOME is your login
+directory, and so on. Unlike variables in a regular language, the argument
+variables cannot be changed; although PATH is a variable whose value is $PATH,
+there is no variable 1 whose value is $1. $1 is nothing more than a compact
+notation for the first argument.
+
+Leaving positional parameters aside, shell variables can be created, accessed
+and modified. For example,
+
+        $ PATH=:/bin:/usr/bin
+
+is an assignment that changes the search path. There must be no spaces around
+the equals sign, and the assigned value must be a single word, which means it
+must be quoted if it contains shell metacharacters that should not be
+interpreted. The value of a variable is extracted by preceding the name by a
+dollar sign:
+
+        $ PATH=$PATH:/usr/games
+        $ echo $PATH
+        :/usr/you/bin:/bin:/usr/bin:/usr/games
+        $ PATH=:/usr/you/bin:/bin:/usr/bin              Restore it
+        $
+
+Not all variables are special to the shell. You can create new variables by
+assigning them values; traditionally, variables with special meaning are spelled
+in upper case, so ordinarily names are in lower case. One of the common uses of
+variables is to remember long strings such as pathnames:
+
+        $ pwd
+        /usr/you/bin
+        $ dir=`pwd`                             Remember where we are
+        $ cd /usr/mary/bin                      Go somewhere else
+        $ ln $dir/cx .                          Use the variable in a filename
+        $ ...                                   Work for a while
+        $ cd $dir                               Return
+        $ pwd
+        /usr/you/bin
+        $
+
+The shell built-in command set displays the values of all your defined
+variables. To see just one or two variables, echo is more appropriate.
+

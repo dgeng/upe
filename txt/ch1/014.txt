@@ -1,0 +1,51 @@
+
+"total 2" tells now many blocks of disc space the files occupy; a block is
+usually either 512 or 1024 characters. The string -rw-r--r-- tells who has
+permission to read and write the file; in this case, the owner (you) can read
+and write, but other can only read it. The "1" that follows is the number of
+links to the file; ignore it until Chapter 2. "you" is the owner of the file,
+that is, the person who created it. 19 and 21 are the number of characters in
+the corresponding files, which agree with the numbers you got from ed. The date
+and time tell when the file was last changed.
+
+Options can be grouped: ls -lt gives the same data as ls -l, but sorted with
+most recent files first. The -u option gives information on when files were
+uses: ls -lut gives a long (-l) listing in the order of most recent use. The
+option -r reverses the order of the output, so ls -rt lists in order of least
+recent use. You can also name the files you're interested in, ls will list the
+information about them only:
+
+        $ ls -l junk
+        -rw-r--r-- 1 you                19 Sep 26  16:25 junk
+        $
+
+The strings that follow the program name on the command line, such as -l and
+junk in the example above, are called the program's arguments. Arguments are
+usually options or names of files to be used by the command.
+
+Specifying options by a minus sign and a single letter, such as -t or the
+combined -lt, is a common convention. In general, if a command accepts such
+optional arguments, they precede any filename arguments, but may otherwise
+appear in any order. But UNIX programs are capricious in their treatment of
+multiple options. For example, standard 7th Edition ls won't accept
+
+$ ls -l -t                              Doesn't work in 7th Edition
+
+as an synonym for ls -lt, while other programs require multiple options to be
+separated.
+
+As you learn more, you will find that there is little regularity or system to
+optional arguments. Each command has its own idiosyncrasies, and its own choices
+of what letter means what (often different from the same function in other
+commands). This unpredictable behavior is disconcerting and is often cited as a
+major flaw of the system. Although the situation is improving --- new versions
+often have more uniformity --- all we can suggest is that you try to do better
+when you write your own programs, and in the meantime keep a copy the manual
+handy.
+
+
+Printing files --- cat and pr
+
+Now that you have some files, how do you look at their contents? There are many
+programs to do that, probably more than are needed. One possibility is to use
+the editor:

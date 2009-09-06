@@ -1,0 +1,50 @@
+
+        $ cat 411
+        grep "$*" <<End
+        dial-a-joke  212-976-3838
+        dial-a-prayer  212-246-4200
+        dial santa  212-976-3636
+        dow jones report  212-976-4141
+        End
+        $
+
+The shell jargon for this construction is a here document; it means that the
+input is right here instead of in a file somewhere. The << signals the
+construction; the word that follows (End in our example) is used to delimit the
+input, which is taken to be everything up to an occurrence of that word on line
+by itself. The shell substitutes for $, `...`, and \ in a here document, unless
+some part of the word is quoted with quotes or a backslash; in that case, the
+whole document is taken literally.
+
+We'll return to here documents are the end the chapter, with a much more
+interesting example.
+
+Table 3.2 lists the various input-output redirections that the shell
+understands.
+
+Exercise 3-14. Compare the here-document version of 411 with the original. Which
+is easier to maintain? Which is a better basis for a general service?
+
++------------------------------------------------------------------------------+
+|                    Table 3.2: Shell I/O Redirections                         |
+|                                                                              |
+| >file        direct standard output to file                                  |
+| >>file       append standard output to file                                  |
+| <file        take standard input from file                                   |
+| p1|p2        connect standard output of program p1 to input of p2            |
+| ^            obsolete synonym for |                                          |
+| n>file       direct output from file descriptor n to file                    |
+| n>>file      append output from file descriptor n to file                    |
+| n>&m         merge output from file descriptor n with file descriptor m      |
+| n<&m         merge input from file descriptor n with file descriptor m       |
+| <<s          here document: take standard input until next s at              |
+|                beginning of a line; substitute for $, `...`, and \           |
+| <<\s         here document with no substitution                              |
+| <<'s'        here document with no substitution                              |
++------------------------------------------------------------------------------+
+
+3.8 Looping in shell programs
+
+The shell is actually a programming language: it has variables, loops,
+decision-making, and so on. We will discuss basic looping here, and talk more
+about control flow in Chapter 5.

@@ -1,0 +1,52 @@
+
+Looping over a set of filenames is very common, and the shell's for statement is
+the only shell control-flow statement that you might commonly type at the
+terminal rather than putting in a file for later execution. The syntax is:
+
+        for var in list of words
+        do
+                commands
+        done
+
+For example, a for statement to echo filenames one per line is just
+
+        $ for i in *
+        > do
+        >       echo $i
+        > done
+
+The "i" can be any shell variable, although i is traditional. Note that the
+variable's value is accessed by $i, but that the for loop refers to the variable
+as i. We used * to pick up all the files in the current directory, but any other
+list of arguments can be used. Normally you want to do something more
+interesting than merely printing filenames. One thing we do frequently is to
+compare a set of files with previous versions. For example, to compare the old
+version of Chapter 2 (kept in the directory old) with the current one:
+
+        $ ls ch2.* | 5
+        ch2.1        ch2.2        ch2.3        ch2.4        ch2.5
+        ch2.6        ch2.7
+        $ for i in ch2.*
+        > do
+        >       echo $i
+        >       diff -b old/$i $i
+        >       echo                     Add a blank line for readability
+        > done | pr -h "diff `pwd`/old `pwd`" | plr &
+        3712                             Process-id
+        $
+
+We piped the output into pr and lpr just to illustrate that it's possible: the
+standard output of the programs with a for goes to the standard output of the
+for itself. We put a fancy heading on the output with the -h option of pr, using
+two embedded calls of pwd. And we set the whole sequence running asynchronously
+(&) so we wouldn't have to wait for it; the & applies to the entire loop and
+pipeline.
+
+We prefer to format a for statement as shown, but you can compress it
+somewhat. The main limitations are that do and done are only recognized as
+keywords when they appear after a newline or semicolon. Depending on the size of
+the for, it's sometimes better to write it all on one line:
+
+        for i in list; do commands; done
+
+You should use the for loop for multiple commands, or where the built-in

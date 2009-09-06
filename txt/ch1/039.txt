@@ -1,0 +1,45 @@
+
+like FORTRAN 77; calculator programs such as bc(1); cu(1) and uucp(1) for
+inter-machine communication; graphics packages; statistics programs; and
+esoterica such as units(1).
+
+As we've said before, this book does not replace the manual, it supplements
+it. In the chapters that follow we will look at pieces and programs of the UNIX
+system, starting from the information in the manual but following the threads
+that connect the components. Although the program interrelationships are never
+made explicit in the manual, they form the fabric of the UNIX programming
+environment.
+
+
+History and bibliographic notes
+
+The original UNIX papr is by D. M. Ritchie and K. L. Thompson: "The UNIX
+Time-sharing System," Communications of the ACM, July, 1974, and reprinted in
+CACM, January, 1983. (Page 89 of the reprint is in the March 1983 issue.) This
+overview of the system for people interested in operating systems is worth
+reading by anyone who programs.
+
+The Bell System Technical Journal (BSTJ) special issue on the UNIX system (Juli,
+1978) contains many papers describing subsequent developments, and some
+retrospective material, including an update of the original CACM paper by
+Ritchie and Thompson. A second special issue of the BSTJ, containing new UNIX
+papers, is scheduled to be published in 1984.
+
+"The UNIX Programming Environment," by B. W. Kernighan and J. R. Mashey (IEEE
+Computer Magazine, April, 1981), attempts to convey the essentially features of
+the system for programmers.
+
+The UNIX Programmer's Manual, in whatever version is appropriate for your
+system, lists commands, system routines and interfaces, file formats, and
+maintenance procedures. You can't live without this for long, although you will
+probably only need to read parts of Volume 1 until you start programming. Volume
+1 of the 7th Edition is published by Holt, Rinehart and Winston.
+
+Volume 2 of the UNIX Programmer's Manual is called "Documents for Use with the
+UNIX Time-sharing System" and contains tutorials and reference manuals for major
+commands. In particular, it describes document preparation programs and program
+development tools at some length. you will want to read most of this eventually.
+
+A UNIX Primer, by Ann and Nico Lomuto (Prentice-Hall, 1983), is good
+introduction for raw beginners, especially non-programmers.
+

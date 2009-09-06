@@ -1,0 +1,55 @@
+
+        $ pr file | lpr &
+
+arranges to print the file on the line printer without making you wait for
+command to finish. Parenthesizing the pipeline has the same effect, but requires
+more typing:
+
+        $ (pr file | lpr) &                     Same as last example
+
+Most programs accept arguments on the command line, such as file (an argument to
+pr) in the above example. Arguments are words, separated by blanks and tabs,
+that typically name files to be processed by the command, but they are strings
+that may be interpreted any way the programs see fit. For example, pr accepts
+names of the files to print, echo echoes its arguments without interpretation,
+and grep's first argument specifies a test pattern to search for. And, of
+course, most programs also have options, indicated by arguments beginning with
+minus sign.
+
+The various special characters interpreted by the shell, such as <, >, |, ; and
+&, are not arguments to the programs the shell runs. They instead control how
+the shell runs them. For example,
+
+        $ echo Hello >junk
+
+tells the shell to run echo with the single argument Hello, and place the output
+in the file junk. The string >junk is not an argument to echo; it is interpreted
+by the shell and never seen by echo. In fact, it need not be the last string in
+the command:
+
+        $ >junk echo hello
+
+is identical, but less obvious.
+
+
+Exercise 3-1 What are the differences among the following three commands?
+
+    $ cat file | pr
+    $ pr <file
+    $ pr file
+
+(Over the years the redirection operator < has lost some ground to pipes; people
+seem to fine "cat file |" more natural than "<file".)
+
+
+Metacharacters
+
+The shell recognizes a number of other characters as special; the most commonly
+used is the asterisk * which tells the shell to search the directory for
+filenames in which any string of characters occurs in the position of the *. For
+example,
+
+        $ echo *
+
+is a poor facsimile of ls. Something we didn't mention in Chapter 1 is that the
+filename-matching characters do not look at filenames beginning with

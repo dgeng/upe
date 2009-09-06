@@ -1,0 +1,55 @@
+
+        $ ls
+        precious
+        temp
+        $ cat junk
+        cat: can't open junk
+        $
+
+Beware that if you move a file to another one that already exists, the target
+file is replace.
+
+To make a copy of a file (that is, to have two versions of something), use the
+cp command:
+
+        $ cp precious precious.save
+
+makes a duplicate copy of precious in precious.save.
+
+Finally, when you get tired of creating and moving files, the rm command removes
+all the files you name:
+
+        $ rm temp junk
+        rm: junk nonexistent
+        $ 
+
+You will get a warning if one of the files to be removed wasn't there, but
+otherwise rm, like most UNIX commands, does its work silently. There is no
+prompting or chatter, and error messages are curt and sometimes
+unhelpful. Brevity can be disconnecting to newcomers, but experienced users find
+talkative commands annoying.
+
+
+What's in a filename?
+
+So far we have used filenames without ever saying what a legal name is, so it's
+time for a couple of rules. First, filenames are limited to 14
+characters. Second, although you can use almost any character in a filename,
+common sense says you should stick to ones that are visible, and that you should
+avoid characters that might be used with other meanings. We have already seen,
+for example, that in the ls command, ls -t means to list in time order. So if
+you had a file whose name was -t, you would have a tough time listing it by
+name. (How would you do it?) Besides the minus sign as a first character, there
+are other characters with special meaning. To avoid pitfalls, you would do well
+to use only letters, numbers, the period and the underscore until you're
+familiar with the situation. (The period and the underscore are conventionally
+used to divide filenames into chunks, as in precious.save above.) Finally, don't
+forget that case distinctions matter --- junk, Junk, and JUNK are three
+different names.
+
+
+A handful of useful commands
+
+Now that you have the rudiments of creating files, listing their names, and
+printing their contents, we can look at a half-dozen file-processing commands.
+

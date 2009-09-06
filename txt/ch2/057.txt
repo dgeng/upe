@@ -1,0 +1,49 @@
+
+permission bits.
+
+        $ ls -ld /usr/mary
+        drwxrwxr-x 5 mary      704 Sep 25 10:18 /usr/mary
+        $ chmod 444 /usr/mary
+        chmod: can't change /you/mary
+        $
+
+If a directory is writable, however, people can remove files in it regardless of
+the permissions on the files themselves. If you want to make sure that you or
+your friends never delete files from a directory, remove write permission from
+it:
+
+        $ cd
+        $ date >temp
+        $ chmod -w .                    Make directory unwritable
+        $ ls -ld .
+        dr-xr-xr-x 3 you        80 Sep 27 11:48 .
+        $ rm temp
+        rm: temp not removed            Can't remove file
+        $ chmod 755 .                   Restore permission
+        $ ls -ld .
+        drwxr-xr-x 3 you        80 Sep 27 11:48 .
+        $ rm temp
+        $                               now you can
+
+temp is now gone. Notice that changing the permissions on the directory didn't
+change its modification date. The modification date reflects changes to the
+file's contents, not its modes. The permissions and dates are not stored in the
+file itself, but in a system structure called an index node, or i-node, the
+subject of the next section.
+
+Exercise 2-5. Experiment with chmod. Try different simple modes, like 0 and
+1. Be careful not to damage your login directory!
+
+
+2.5 Inodes
+
+A file has several components: a name, contents, and administrative information
+such as permissions and modification times. The administrative information is
+stored in the inode (over the years, the hyphen fell out of "i-node"), along
+with essential system data suck as how long it is, where on the disc the
+contents of the file are stored, and so on.
+
+There are three times in the inode: the time that the contents of the file were
+last modified (written); the time that the file was last used (read or
+executed); and the time that the inode itself was last changed, for example to
+set permissions.

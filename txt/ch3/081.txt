@@ -1,0 +1,56 @@
+
+is named as an argument; you could have written
+
+        $ sh nu
+
+for the same result. But it's a nuisance to have to type "sh" in either case:
+it's longer, and it creates a distinction between program written in, say, C and
+ones written by connecting programs with the shell.+ Therefore, if a file is
+executable and if it contains text, then the shell assumes it to be a file or
+shell commands. Such a file is called a shell file. All you have to do is to
+make nu executable, once:
+
+        $ chmod +x nu
+
+and thereafter you can invoke it with
+
+        $ nu
+
+From now on, users from nu cannot tell, just by running it, that you implemented
+it in this easy way.
+
+The way the shell actually runs nu is to create a new shell process exactly as
+if you had typed
+
+        $ sh nu
+
+This child shell is called a sub-shell --- a shell process invoked by your
+current shell. sh nu is not the same as sh <nu, because its standard input still
+connected to the terminal.
+
+As it stands, nu works only if it's in your current directory (provided, of
+course, that the current directory is in your PATH, which we will assume from
+now on). To make nu part of your repertoire regardless of what directory you're
+in, move it to your private bin directory, and add /usr/you/bin to your search
+path:
+
+        $ pwd
+        /usr/you
+        $ mkdir bin                     Make a bin if you haven't already
+        $ echo $PATH                    Check PATH for sure
+        :/usr/you/bin:/bin:/usr/bin     Should look like this
+        $ mv nu bin                     Install nu
+        $ ls nu
+        nu not found                    It's really gone from current directory
+        $ nu
+              4                         But it's found by the shell
+              
+        $
+
+of course, your PATH should be set properly by your .profile, so you don't have
+to reset it every time you log in.
+
+There are other simple commands that you might create this way to tailor
+
+----------------
++ Nonetheless, it is a distinction made on most other operating systems.

@@ -1,0 +1,40 @@
+
+                               CHAPTER 4: FILTERS
+
+
+There is a large family of UNIX programs that read some input, perform a simple
+transformation on it, and write some output. Examples include grep and tail to
+select part of the input, sort to sort it, wc to count it, and so on. Such
+programs are called filters.
+
+This chapter discusses the most frequently used filters. We begin with grep,
+concentrating on patterns more complicated than those illustrated in Chapter
+1. We will also present two other members of the grep family, egrep and fgrep.
+
+The next section briefly describes a few other useful filters, including tr for
+character transliteration, dd for dealing with data from other systems, and uniq
+for detecting repeated text lines. sort is also presented in more detail than in
+Chapter 1.
+
+The remainder of the chapter is devoted to two general purpose "data
+transformers" or "programmable filters." They are called programmable because
+the particular transformation is expressed as a program in a simple programming
+language. Different programs can produce very different transformations.
+
+The programs are sed, which stands for stream editor, and awk, named after its
+authors. Both are derived from a generalization of grep:
+
+        $ program pattern-action filenames ...
+
+scans the files in sequence, looking for lines that match a pattern; when one is
+found a corresponding action is performed. For grep, the pattern is a regular
+expression as in ed, and the default action is to print each line that matches
+the pattern.
+
+send and awk generalize both the patterns and the actions. sed is a derivative
+of ed that takes a "program" of editor commands and streams data from the files
+past them, doing the commands of the program on every line. awk is not as
+convenient for text substitution as sed is, but it includes arithmetic,
+variables, built-in functions, and a programmable language that looks quite a
+bit like C. This chapter doesn't have the complete story on either program;
+Volume 2B of the UNIX Programmer's Manual has tutorials on both.

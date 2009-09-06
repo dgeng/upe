@@ -1,0 +1,49 @@
+
+There is a problem, of course, when several programs create files in /tmp at
+once: they might interface with each other's files. That is why ed's temporary
+file has peculiar name: it is constructed in such a way as to guarantee that no
+other program will choose the same name for its temporary file. In Chapter 5 and
+6 we will see ways to do this.
+
+/usr is called the "user file system," although it may have little to do with
+the actual users of the system. On our machine, our login directories are
+/usr/bwk and /usr/rob, but on your machine the /usr part might be different, as
+explained in Chapter 1. Whether or not your personal files are in a subdirectory
+of /usr, there are a number of things you are likely to find there (although
+local customs vary in this regard, too). Just as in /, there are directories
+called /usr/bin, /usr/lib and /usr/tmp. These directories have functions similar
+to their namesakes in /, but contain programs less critical to the system.For
+example, nroff is usually in /usr/bin rather than /bin, and the FORTRAN compiler
+libraries live in /usr/lib. Of course, just what is deems "critical" varies from
+system to system. Some systems, such as the distributed 7th edition, have all
+the programs in /bin and do away with /usr/bin altogether; other split /usr/bin
+into two directories according to frequency of use.
+
+Other directories in /usr/ are /usr/adm, containing accounting information and
+/usr/dict, which holds a modest dictionary (see spell(1)). The on-line manual is
+kept in /usr/man --- see /usr/man/man1/spell.1, for example. If your system has
+source code on-line, you will probably find it in /usr/src.
+
+It is worth spending a little time exploring the file system, especially /usr,
+to develop a feeling for how the file system is organized and where you might
+expect to find things.
+
+
+2.7 Devices
+
+We skipped over /dev in our tour, because the files there provide a nice review
+of files in general. As you might guess from the name, /dev contains device
+files.
+
+One of prettiest ideas in the UNIX system is the way it deals with peripherals
+--- discs, tape drives, line printers, terminals, etc. Rather than having
+special system routines to, for example, read magnetic tape, there is a file
+called /dev/mt0 (again, local customs vary). Inside the kernel, references to
+that file are converted into hardware commands to access the tape, so if a
+program reads /dev/mt0, the contents of a tape mounted on the drive are
+returned. For example,
+
+        $ cp /dev/mt0 jnk
+
+copies the contents of the tape to a file called junk. cp has no idea there is
+anything special about /dev/mt0; it is just a file --- a sequence of bytes.

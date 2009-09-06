@@ -1,0 +1,47 @@
++------------------------------------------------------------------------------+
+|                 Table 1.1. Common File System Commands                       |
+|                                                                              |
+| ls                     list names of all files in current directory          |
+| ls filenames           list only the named files                             |
+| ls -t                  list in time order, most recent first                 |
+| ls -l                  list long: more information; also ls -lt              |
+| ls -u                  list by time last used; also ls -lu, ls -lut          |
+| ls -r                  list in reverse order; also ls -rt, -rlt, etc.        |
+|                                                                              |
+| ed filename            edit named file                                       |
+| cp file1 file2         copy file1 to file2, overwrite old file2 if it exists |
+| mv file1 file2         move file1 to file2, overwrite old file2 if it exists |
+| rm filenames           remove named files, irrevocably                       |
+|                                                                              |
+| cat filenames          print contents of named files                         |
+| pr filenames           print contents with header, 66 lines per page         |
+| pr -n filenames        print in n columns                                    |
+| pr -m filenames        print named files side by side (multiple columns)     |
+|                                                                              |
+| wc filenames           count lines, words and characters for each file       |
+| wc -l filenames        count lines for each file                             |
+| grep pattern filenames print lines matching pattern                          |
+| grep -v pattern files  print lines not matching pattern                      |
+|                                                                              |
+| sort filenames         sort file alphabetically by line                      |
+| tail filename          print last 10 lines of file                           |
+| tail -n filename       print last n lines of file                            |
+| tail +n filename       start printing file at line n                         |
+|                                                                              |
+| cmp file1 file2        print location of first difference                    |
+| diff file1 file2       print all differences between files                   |
++------------------------------------------------------------------------------+
+
+	$ pwd
+	/usr/you
+	$
+
+This says that you are currently in the directory you, in the directory user,
+which in turn is in the root directory, which is conventionally called just '/'.
+The / characters separate the components of such a name; the limit of 14
+characters mentioned above applies to each component of such a name. On many
+systems, /usr is a directory that contains the directories of all the normal
+users of the system. (Even if your home directory is not /usr/you, pwd will
+print something analogous, so you should be able to follow what happens below.)
+
+If you now type

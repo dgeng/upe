@@ -1,0 +1,48 @@
+
+
+        $ set
+        HOME=/usr/you
+        IFS=
+
+        PATH=:/usr/you/bin:/bin/:/usr/bin
+        PS1=$
+        PS2=>
+        dir=/usr/you/bin
+        $ echo $dir
+        /usr/you/bin
+        $
+
+The value of a variable is associated with the shell that creates it, and is not
+automatically passed to the shell's children.
+
+        $ x=Hello                   Create x
+        $ sh                        New shell
+        $ echo $x                   Newline only: x undefined in the sub-shell
+        $ ctl-d                     Leave this shell
+        $                           Back in original shell
+        $ echo $x
+        Hello                       x still defined
+        $
+
+This means that a shell file cannot change the value of a variable, because the
+shell file is run by a sub-shell:
+
+        $ echo 'x="Good bye"    Make a two-line shell file ...
+        > echo $x' >setx        ... to set and print x
+        $ cat setx
+        x="Good Bye"
+        echo $x
+        $ echo $x
+        Hello                   x is Hello in original shell
+        $ sh setx
+        Good Bye                x is Good Bye in sub-shell...
+        $ echo $x
+        Hello                   ...but still Hello in this shell
+        $
+
+There are times when using a shell file to change shell variables would be
+useful, however. An obvious example is a file to add a new directory to your
+PATH. The shell therefore provides a command '.' (dot) that executes the
+commands in a file in the current shell, rather than in a sub-shell. This was
+originally invented so people could conveniently re-execute their .profile files
+without having to log in again, but it has other uses.

@@ -1,0 +1,54 @@
+
+4.1 The grep family
+
+We mentioned grep briefly in Chapter 1, and have used it in examples since then.
+
+        $ grep pattern filenames...
+
+searches the named files or the standard input and prints each line that
+contains an instance of the pattern. grep is invaluable for finding occurrences
+of variables in programs or words in documents, or for selecting parts of the
+output of a program:
+
+        $ grep -n variable *.[ch]             Locate variable in C source
+        $ grep From $MAIL                     Print message headers in mailbox
+        $ grep From $MAIL | grep -v mary      Headers that didn't come from mary
+        $ grep -y mary $HOME/lib/phone-book   Find mary's phone number
+        $ who | grep mary                     See if mary is logged in
+        $ ls | grep -v temp                   Filenames that don't contain temp
+
+The option -n prints line numbers, -v inverts the sense of the test, and -y
+makes lower case letters in the pattern match letters of either case in the
+file. (upper case still matches only upper case.)
+
+In all the examples we've seen so far, grep has looked for ordinary strings of
+letters and numbers. But grep can actually search for much more complicated
+patterns: grep interprets expressions in a simple language for describing
+strings.
+
+Technically, the patterns are a slightly restricted form of the string specified
+called regular expressions. grep interprets the same regular expressions as ed;
+in fact, grep was originally created (in an evening) by straightforward surgery
+on ed.
+
+Regular expressions are specified by giving special meaning to certain
+characters, just like *, etc., used by the shell. There are a few more
+metacharacters, and, regrettably, differences in meanings. Table 4.1 shows all
+the regular expression metacharacters, but we will review them briefly here.
+
+The metacharacters ^ and $ "anchor" the pattern to the beginning (^) or end ($)
+of the line. For example,
+
+        $ grep From $MAIL
+
+locates lines containing From in your mailbox, but
+
+        $ grep '^From' $MAIL
+
+prints lines that begin with From, which are more likely to be message header
+lines. Regular expressions matacharacters overlap with shell metacharacters, so
+it's always a good idea to enclose grep patterns in single quotes.
+
+grep supports character classes much like those in the shell, so [a-z] matches
+any lower case letter. But there are differences; if a grep character class
+begins with a circumflex ^, the pattern matches any character except

@@ -1,0 +1,292 @@
+\chapter{Using the Shell}
+
+	The shell --- the program that interprets your requests to run programs --- is
+the most important program for most UNIX users; with the possible exception of
+your favorite text editor, you will spend more time working with the shell than
+any other program. In this chapter and in Chapter 5, we will spend a fair
+amount of time on the shell's capabilities. The main point we want to make is
+that you can accomplish a lot without much hard work, and certainly without
+resorting to programming in a conventional language like C, if you know how
+to use the shell.
+
+	We have divided our coverage of the shell into two chapters. This chapter
+goes one step beyond the necessities covered in Chapter 1 to some fancier but
+commonly used shell features, such as metacharacters, quoting, creating new
+commands, passing arguments to them, the use of shell variables, and some
+elementary control flow. These are topics you should know for your own use
+of the shell. The material in Chapter 5 is heavier going --- it is intended for
+writing serious shell programs, ones that are bullet-proofed for use by others.
+The division between the two chapters is somewhat arbitrary, of course, so
+both should be read eventually.
+
+\section{Command line structure}
+
+	To proceed, we need a slightly better understanding of just what a command
+is, and how it is interpreted by the shell. This section is more formal
+coverage, with new information, of the shell basics introduced in the first
+chapter.
+
+	The simplest command is a single \textit{work}, usually naming a file for execution
+(later we will see some other types of commands):
+\begin{verbatim}
+    $ who                              Execute the file /bin/who
+    you      tty2    Sep 28 07:51
+    jpl      tty4    Sep 28 08:32
+    $
+\end{verbatim}
+A command usually ends with a new line, but semicolon ; is also a \textit{command terminator}:
+\begin{verbatim}
+    $ date;
+    Wed Sep 28 09:07:15 EDT 1983
+    $ date; who
+    Wed Sep 28 09:07:23 EDT 1983
+    you      tty2    Sep 28 07:51
+    jpl      tty4    Sep 28 08:32
+    $	
+\end{verbatim}
+	Although semicolons can be used to terminate commands; as usual nothing
+happens until you type RETURN. Notice that the shell only prints one prompt
+after multiple commands, but except for the prompt,
+\begin{verbatim}
+    $ date; who
+\end{verbatim}
+is identical to typing the two commands on different lines. In particular, \verb=who=
+doesn't run until \verb=date= has finished.
+
+	Try sending the output of ``date; who'' through a pipe:
+\begin{verbatim}
+    $ date; who | wc
+    Wed Sep 28 09: 08:48 EDT 1983
+          2     10      60
+    $
+\end{verbatim}
+This might not be what expected, because only the output of \verb=who= goes to
+\verb=wc=. Connecting \verb=who= and \verb=wc= with a pipe forms a single command, called a
+\textit{pipleline}, that runs after \verb=date=. The precedence of \verb=|= is higher than that of `\verb=:='
+as the shell parses your command line.
+
+	Parentheses can be used to group commands:
+\begin{verbatim}
+    $ (date; who) | tee save | wc
+          3     16     89                       output from wc
+    $ cat save
+    Wed Sep 28 09:13:22 EDT 1983
+    you      tty2    Sep 28 07:51
+    jpl      tty4    Sep 28 08:32
+    $ wc <save
+    3 16 48
+    $	
+\end{verbatim}
+\verb=tee= copies its input to the named file or files, as well as to its output, so \verb=wc=
+receives the same data as if \verb=tee= weren't in the pipeline.
+
+    Another command terminator is the ampersand \verb=&=. It's exactly like the
+semicolon or newline, except that it tells the shell not to wait for the command
+to complete. Typically, \verb=&= is used to run a long-running command ``in the
+background'' while you continue to type interactive commands:
+\begin{verbatim}
+    $ long-running-command &
+    5273                            Process-id of long-running-command
+    $                               Prompt appears immediately    
+\end{verbatim}
+Given the ability to group commands, there are some more interesting uses of
+background process. The command \verb=sleep= waits the specified number of
+seconds before exiting:
+\begin{verbatim}
+    $ sleep 5
+    $                               Five seconds pass before prompt
+    $ (sleep 5; date) & date
+    5278
+    Wed Sep 28 09:18:20 EDT 1983    Ouput from second date
+    $ Wed Sep 28 09:18:25 EDT 1983  Prompt appears, then date 5 etc. later
+\end{verbatim}
+The background process starts but immediately sleeps; meanwhile, the second
+\verb=date= command prints the current time and shell prompts for new command.
+Five seconds later, the \verb=sleep= exits and the first \verb=date= prints the new
+time. It's hard to represent the passage of time on paper, so you should
+try this example. (Depending on how busy your machine is and other such details,
+the difference between the two times might not be exactly five seconds.) This
+is an easy way to run a command in the future; consider
+\begin{verbatim}
+    $ (sleep 300; echo Tea is ready) &     Tea will be ready in 5 minutes
+    5291
+    $
+\end{verbatim}
+as a handy reminder mechanism. (A \textit{ctl}-g in the string to be \verb=echo=ed will ring
+the terminal's bell when it's printed.) The parenthese are needed in these
+examples, since the precedence of \verb=&= is higher than that of `\verb=;='.
+
+    The \verb=&= terminator applies to the commands, and since pipelines are commands
+you don't need parentheses to run pipelines in the background:
+\begin{verbatim}
+    $ pr file | lpr &
+\end{verbatim}
+arranges to print the file on the line printer without making you wait for
+command to finish. Parenthesizing the pipeline has the same effect, but
+requires more typing:
+\begin{verbatim}
+    $ (pr file | lpr) &                     Same as last example
+\end{verbatim}
+
+    Most programs accept \textit{arguments} on the command line, such as \verb=file= (an
+argument to \verb=pr=) in the above example. Arguments are words, separated by
+blanks and tabs, that typically name files to be processed by the command, but
+they are strings that may be interpreted any way the programs see fit. For
+example, \texttt{pr} accepts names of the files to print, \verb=echo= echoes its arguments without
+interpretation, and \verb=grep='s first argument specifies a test pattern to search for.
+And, of course, most programs also have options, indicated by arguments
+beginning with minus sign.
+
+    The various special characters interpreted by the shell, such as \verb=<=, \verb=>=, \verb=|=, \verb=;=
+and \verb=&=, are \textit{not} arguments to the programs the shell runs. They instead control
+how the shell runs them. For example,
+\begin{verbatim}
+    $ echo Hello >junk
+\end{verbatim}
+tells the shell to run \verb=echo= with the single argument \verb=Hello=, and place the output
+in the file \verb=junk=. The string \verb=>junk= is not an argument to \verb=echo=; it is
+interpreted by the shell and never seen by \verb=echo=. In fact, it need not be the
+last string in the command:
+\begin{verbatim}
+    $ >junk echo hello
+\end{verbatim}
+is identical, but less obvious.
+
+
+\textbf{Exercise 3-1} What are the differences among the following three commands?
+\begin{verbatim}
+    $ cat file | pr
+    $ pr <file
+    $ pr file
+\end{verbatim}
+(Over the years the redirection operator \verb=<= has lost some ground to pipes; people seem to
+fine ``\verb=cat file|='' more natural than ``\verb=<file=''.)
+
+
+\section{Metacharacters}
+    The shell recognizes a number of other characters as special; the most commonly
+used is the asterisk \texttt{*} which tells the shell to search the directory for
+filenames in which any string of characters occurs in the position of the \texttt{*}. For
+example, 
+\begin{verbatim}
+    $ echo *
+\end{verbatim}
+is a poor facsimile of \texttt{ls}. Something we didn't mention in Chapter 1 is that
+the filename-matching characters do not look at filenames beginning with
+dot, to avoid problems with the names `.' and ``..'' that are in every directory.
+The rule is: the filename-matching characters only match filenames beginning
+with a period if the period is explicitly supplied in the pattern. As usual, a
+judicious \texttt{echo} or two will clarify what happens:
+\begin{verbatim}
+    $ ls
+    .profile
+    junk
+    temp
+    $ echo *
+    junk temp
+    $ echo .*
+    . .. .profile
+    $
+\end{verbatim}
+
+    Characters like * that have special properties are known as \emph{metacharacters}.
+There are a lot of them: Table 3.1 is the complete list, although a few of them
+won't be discussed untile Chapter 5.
+
+    Given the number of shell metacharacters, there has to e some way to say
+to the shell, ``leave it alone.'' The easiest and best way to protect special
+characters from being interpreted is to enclose them in single quote charaters:
+\begin{verbatim}
+    $ echo '* * *'
+    * * *
+    $
+\end{verbatim}
+It's also possible to use the double quotes \verb="..."=, but the shell actually peeks
+inside these quotes to look for \verb=$=, \verb=`...`= and \verb=\=, so don't use \verb="..."= unless you
+intend some processing of the quoted string.
+
+    A third possibility is to put a backslash \verb=\= in front of \emph{each} character that you
+want to protect from the shell, as in
+\begin{verbatim}
+    $ echo \*\*\*
+\end{verbatim}
+Although \verb=\*\*\*= isn't much like English, the shell terminology for it is still a
+\emph{word}, which is any single string the shell accepts as a unit, including blanks if
+they are quoted.
+
+    Quotes of one kind protect quotes of the other kind:
+\begin{verbatim}
+    $ echo "don't do that!"
+    Don't do that
+    $
+\end{verbatim}
+and they don't have to surround the whole argument:
+\begin{verbatim}
+    $ echo x'*'y
+    x*y
+    $ echo '*'A'?'
+    *A?
+    $
+\end{verbatim}
+
+\begin{verbatim}
+----------------------------------------------------------------------------
+                      Table 3.1: Shell Metacharacters                        
+                                                                             
+>               prog >file direct standard output to file                    
+>>              prog >>file append standard output to file                   
+<               prog <file take standard input from file                     
+|               p1|p2 connect standard output p1 to standard input p2        
+<<str           here document: standard input follows, up to next str        
+                  on a line by itself                                        
+*               match any string of zero of more characters in filenames     
+?               match any single character in filenames                      
+[ccc]           match any single character from ccc in filenames;            
+                  ranges like 0-9 or a-z are legal                           
+;               command terminator: p1;p2 does p1, then p2                   
+&               like ; but doesn't wait for p1 to finish                     
+`...`           run command(s) in ...; output replaces `...`                 
+(...)           run command(s) in ... in sub-shell                           
+{...}           run command(s) in ... in current shell (rarely used)         
+$1, $2 etc.     $0...$9 replaced by arguments to shell file                  
+$var            value of shell variable var                                  
+${var}          value of var; avoids confusion when concatenated with text;  
+                  see also Table 5.3                                         
+\               \c take character c literally, \newline discarded            
+'...'           take ... literally                                           
+"..."           take ... literally after $, `...`, and \ interpreted         
+#               if # starts word, rest of line is a comment (not in 7th Ed.) 
+var=value       assign to variable var                                       
+p1 && p2        run p1; if successful, run p2                                
+p1 || p2        run p1; if unsuccessful, run p2                              
+----------------------------------------------------------------------------
+\end{verbatim}
+
+In this example, because the quotes are discarded after they've done their
+job, \texttt{echo} sees a single argument containing no quotes.
+
+    Quoted strings can contain new lines:
+\begin{verbatim}
+    $ echo 'hello
+    > world'
+    hello
+    world
+    $
+\end{verbatim}
+The string `\verb=> =' is \emph{secondary prompt} printed by the shell when it expects you 
+to type more input to complete a command. In this example the quote on the
+first line has to be balanced with another. The secondary prompt string is stored in the shell variable \texttt{PS2}, and can be modified to taste.
+
+    In all of these examples, the quoting of a metacharacter prevents the shell
+from trying to interpret it. The command
+
+
+\section{Creating new commands}
+\section{Command arguments and arameters}
+\section{Program output as arguments}
+\section{Shell variables}
+\section{More on I/O redirection}
+\section{Looping in shell program}
+\section{bundle: putting it all together}
+\section{Why a programmable shell}
+

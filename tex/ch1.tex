@@ -1,0 +1,268 @@
+\chapter{UNIX for Beginners}
+
+
+What is ``UNIX''? In the narrowest sense, it is a time-sharing operating system
+kernel: a program that controls the resources of a computer and allocates them
+among its users. It lets users run their programs; it controls the peripheral
+devices (discs, terminals, printers, and the like) connected to the machine; and
+it provides a file system that manages the long-term storage of information such
+as programs, data, and documents.
+
+In a broader sense, ``UNIX'' is often taken to include not only the kernel, but
+also essential programs like compilers, editors, command languages, programs for
+copying and printing files, and so on.
+
+Still more broadly, ``UNIX'' may even include programs developed by you or other
+users to be run on your system, such as tools for document preparation, routines
+for statistical analysis, and graphics packages.
+
+Which of these uses of the name ``UNIX'' is correct depends on which level of
+the system you are considering. When we use ``UNIX'' in the rest of this book,
+context should indicate which meaning is implied.
+
+The UNIX system sometimes looks more difficult than it is --- it's hard for a
+newcomer to know how to make the best use of the facilities available. But
+fortunately it's not hard to get started --- knowledge of only a few programs
+should get you off the ground. This chapter is meant to help you to start using
+the system as quickly as possible. It's an overview, not a manual; we'll cover
+most of the material again in more detail in later chapters. We'll talk about
+these major areas:
+
+\begin{itemize}
+\item basics --- logging in and out, simple commands, correcting typing
+  mistakes, mail, inter-terminal communication.
+\item day-to-day use --- files and file system, printing files, directories,
+  commonly-used commands.
+\item the command interpreter or shell --- filename shorthands, redirecting
+  intput and output, pipes, setting erase and kill characters, and defining your
+  own search path for commands.
+\end{itemize}
+  
+If you've used a UNIX system before, most of this chapter should be familiar;
+you might want to skip straight to Chapter 2.
+
+You will need a copy of the \textit{UNIX Programmer's Manual}, even as you read
+this chapter; it's often easier for us to tell you to read about something in
+the manual than to repeat its contents here. This book is not supposed to
+replace it, but to show you how to make best use of the commands described in
+it. Furthermore, there may be differences between what we say here and what is
+true on your system. The manual has a permuted index at the beginning that's
+indispensable for finding the right programs to apply to a problem; learn to use
+it.
+
+Finally, a word of advice: don't be afraid to experiment. If you are a beginner,
+there are very few accidental things you can do to hurt yourself or other
+users. So learn how things work by trying them. This is a long chapter, and the
+best way to read it is a few pages at a time, trying things out as you go.
+
+
+\section{Getting Started}
+\subsection{Some prerequisites about terminals and typing}
+
+To avoid explaining everything about using computers, we must assume you have
+some familiarity with computer terminals and how to use them. If any of the
+following statements are mystifying, you should ask a local expert for help.
+
+The UNIX system is \textit{full duplex}: the characters you type on the keyboard
+are sent to the system, which sends them back to the terminal to be printed on
+the screen. Normally, this \textit{echo} process copies the characters directly
+to the screen, so you can see what you are typing, but sometimes, such as when
+you are typing a secret password, the echo is turned off so the characters do
+not appear on the screen.
+
+Most of the keyboard characters are ordinary printing characters with no special
+significance, but a few tell the computer how to interpret your typing. By far
+the most important of these is the RETURN key. The RETURN key signifies the end
+of a line of input; the system echoes it by moving the terminal's cursor to the
+beginning of the next line on the screen. RETURN must be pressed before the
+system will interpret the characters you have types.
+
+RETURN is an example of a \textit{control character} --- an invisible character
+that controls some aspect of input and output on the terminal. On any reasonable
+terminal, RETURN has a key of its own, but most control characters do
+not. Instead, they must be typed by holding down the CONTROL key, sometimes
+called CTL or CNTL or CTRL, then pressing another key, usually a letter. For
+example, RETURN may be typed by pressing the RETURN key or, equivalently,
+holding down the CONTROL key and typing an `m'. RETURN might therefore be called
+a control-m, which we will write as \textit{ctl}-m. Other control characters
+include \textit{ctl}-d, which tells a program that there is no more input;
+\textit{ctl}-g, which rings the bell on the terminal; \textit{ctl}-h, often
+called backspace, which can be used to correct typing mistakes; and
+\textit{ctl}-i, often called tab, which advances the cursor to the next tab
+stop, much as on a regular typewriter. Tab stops on UNIX systems are eight
+spaces apart. Both the backspaces and tab characters have their keys on the
+terminals.
+
+Two other keys have special meaning: DELETE, sometimes called RUBOUT or some
+abbreviation, and BREAK, sometimes called INTERRUPT. On most UNIX systems, the
+DELETE key stops a program immediately, without waiting for it to finish. On
+some systems, \textit{ctl}-c provides this device. And on some systems,
+depending on how the terminals are connected, BREAK is synonym for DELETE or
+\textit{ctl}-c.
+
+
+\subsection{A Session with UNIX}
+
+Let's begin with an annotated dialog between you and your UNIX system.
+Throughout the examples in this book, what you type is printed in slanted
+letters, computer responses are in typewriter-style characters, and explanations
+are in \textit{italics}.
+
+\begin{verbatim}
+        Establish a connection: dial a phone or turn on a switch as necessary.
+        Your system should say
+        login: you                 Type your name, then press RETURN
+        Password:                  Your password won't be echoed as you type it
+        You have mail.             There's mail to be read after you log in
+        $                          The system is now ready for your commands
+        $                          Press RETURN a couple of times
+        $ date                     What is the date and time?
+        Sun Sep 25 23:02:57 EDT 1983
+        $ who                      Who's using the computer?
+        jlb      ttyO    Sep 25 13:59
+        you      tty2    Sep 25 23:01
+        mary     tty4    Sep 25 19:03
+        doug     tty5    Sep 25 19:22
+        egb      tty7    Sep 25 17:17
+        bob      tty8    Sep 25 20:48
+        $ mail                     Read your mail
+        From doug Sun Sep 25 20:53 EDT 1983
+        give me a call sometime monday
+
+        ?                          RETURN moves on to the next message
+        From mary Sun Sep 25 19:07 EDT 1983     Next message
+
+        ? d                        Delete this message
+        $                          No more mail
+        $ mail mary                Send mail to mary
+        lunch at 12 is fine
+        ctl-d                      End of mail
+        $                          Hang up phone or turn off terminal
+                                   and that's the end
+\end{verbatim}
+Sometimes that's all there is to a session, though occasionally people do some
+work too. The rest of this section will discuss the session above, plus other
+programs that make it possible to do useful things.
+
+
+\subsection{Logging in}
+
+You must have a login name and password, which you can get from your system
+administrator. The UNIX system is capable of dealing wit a wide variety of
+terminals, but it is strongly oriented towards devices with lower case; case
+distinctions matter! If your terminal produces only upper case (like some video
+and portable terminals), life will be so difficult that you should look for
+another terminal.
+
+Be sure the switches are set appropriately on your device: upper and lower case,
+full duplex, and any other settings that local experts advise, such as the
+speed, or \textit{baud rate}. Establish a connection using whatever magic is
+needed for your terminal; this may involve dialing a telephone or merely
+flipping a switch. In either case, the system should type
+\begin{verbatim}
+        login:
+\end{verbatim}
+If it types garbage, you may be at the wrong speed; check the speed setting and
+other switches. If that fails, press the BREAK or INTERRUPT key a few times,
+slowly. If nothing produces a login message, you will have to get help.
+
+When you get the \verb=login:= message, type your login name \textit{in lower
+  case}. Follow it by pressing RETURN. If a password is required, you will be
+asked for it, and printing will be turned off while you type it.
+
+The culmination of your login efforts is a \textit{prompt}, usually a single
+character, indicating that the system is ready to accept commands from you. The
+prompt is mostly likely to be a dollar sign \verb=$= or a percent sign \verb=%=,
+but you can change it to anything you like; we'll show you how a little
+later. The prompt is actually printed by a program called the \textit{command
+  interpreter} or \textit{shell}, which is your main interface to the system.
+
+There may be a message of the day just before the prompt, or a notification that
+you have mail. You may also be asked what kind of terminal you are using; your
+answer helps the system to use any special properties the terminal might have.
+
+
+\subsection{Typing commands}
+
+Once you receive the prompt, you can type commands, which are requests that the
+system do something. We will use \textit{program} as a synonym for
+\textit{command}. When you see the prompt (let's assume it's \verb=$=), type
+date and press RETURN. the system should replay with the date and time, then
+print another prompt, so the whole transaction will look like this on your
+terminal:
+\begin{verbatim}
+        $ date
+        Mon Sep 26 12:20:57 EDT 1983
+        $
+\end{verbatim}
+Don't forget RETURN, and don't type the \verb=$=. If you think you're being
+ignored, press RETURN; something should happen. RETURN won't be mentioned again,
+but you need it at the end of every line.
+
+The next command to try is who, which tells you everyone who is currently logged
+in:
+\begin{verbatim}
+        $ who
+        rim     tty0     Sep 26 11:37
+        pjw     tty4     Sep 26 11:30
+        gerard  tty7     Sep 26 10:27
+        mark    tty9     Sep 26 07:59
+        you     ttya     Sep 26 12:20
+        $
+\end{verbatim}
+The first column is the user name. The second is the system's name for the
+connection being used (``tty'' stands for ``teletype,'' an archaic synonym for
+``terminal''). The rest tells when the user logged on. You might also try
+\begin{verbatim}
+        $ who am i
+        you     ttya     Sep 26 12:20
+        $
+\end{verbatim}
+
+If you make a mistake typing the name of a command, and refer to a non-existent
+command, you will be told that no command of that name can be found:
+\begin{verbatim}
+        $ whom                     Misspelled command name ...    
+        whom: not found            ... so system didn't know how to run it
+        $
+\end{verbatim}
+Of course, if you inadvertently type the name of an actual command, it will run,
+perhaps with mysterious results.
+
+
+\subsection{Strange terminal behavior}
+
+Sometimes your terminal will act strangely, for example, each letter may be
+typed twice, or RETURN may not put the cursor at the first column of the next
+line. You can usually fix this by turning the terminal off and on, or by logging
+out and logging back in. Or you can read the description of the command
+\texttt{stty} (``set terminal options'') in Section 1 of the manual. To get
+intelligent treatment of tab characters if your terminal doesn't have tabs, type
+the command
+\begin{verbatim}
+        $ stty -tabs
+\end{verbatim}
+and the system will convert tabs into the right number of spaces. If your
+terminal does have computer-settable tab stops, the command tabs will set them
+correctly for you. (You may actually have to say
+\begin{verbatim}
+        $ tabs terminal-type
+\end{verbatim}
+to make it work --- see the \texttt{tabs} command description in the manual.)
+
+
+\subsection{Mistakes in typing}
+\subsection{Type-ahead}
+\subsection{Stopping a program}
+\subsection{Logging out}
+\subsection{Mail}
+\subsection{Writing to other users}
+\subsection{News}
+\subsection{The manual}
+\subsection{Computer-aided instruction}
+\subsection{Games}
+
+\section{Day-to-day use: files and common commands}
+\section{More about files: directories}
+\section{The shell}
+\section{The rest of the UNIX system}

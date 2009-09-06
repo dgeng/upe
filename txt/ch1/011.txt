@@ -1,0 +1,56 @@
+
+Thus to read about the who command, type
+
+        $ man who
+
+and, of course
+
+        $ man man
+
+tells about the man command.
+
+Computer-aided instruction
+
+Your system may have a command called learn, which provides computer-aided
+instruction on the file system and basic commands, the editor, document
+preparation, and even C programming. Try
+
+        $ learn
+
+If learn exists on your system, it will tell you what to do from there. If that
+fails, you might also try teach.
+
+Games
+
+It's not always admitted officially, but one of the best ways to get comfortable
+with a computer and a terminal is to play games. The UNIX system comes with a
+modest supply of games, often supplemented locally. Ask around, or see Section 6
+of the manual.
+
+
+1.2 Day-to-day use: files and common commands
+
+Information in a UNIX system is stored in files, which are much like ordinary
+office files. Each file has a name, contents, a place to keep it, and some
+administrative information such as who owns it and how big it is. A file might
+contain a letter, or a list of names and addresses, or the source statements of
+a program, or date to be used by a program, or even programs in their executable
+form and other non-textual material.
+
+The UNIX file system is organized so that you can maintain your own personal
+files without interfering with files belonging to other people, and keep people
+from interfering with you too. There are myriad programs that manipulate files,
+but for now, we will look at only the more frequently used ones. Chapter 2
+contains a systematic discussion of the file system, and introduces many of the
+other file-related commands.
+
+
+Creating files --- the editor
+
+If you want to type a paper or a letter or a program, how do you get the
+information stored in the machine? Most of these tasks are done with a text
+editor, which is a program for storing and manipulating information in the
+computer. Almost every UNIX system has a screen editor, an editor that takes
+advantage of the modern terminals to display the effects of your editing changes
+in the context as you make them. Two of the most popular are vi and emacs. We
+

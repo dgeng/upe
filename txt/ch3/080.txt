@@ -1,0 +1,59 @@
+
+
+        $ cat x y >y
+
+and with
+
+        $ cat x >>x
+
+Think before rushing off to try them.
+
+Exercise 3-8. If you type
+
+        $ rm *
+
+why can't rm warn you that you're about to delete all your files?
+
+
+3.3 Creating new commands
+
+It's now time to move on to something that we promised in Chapter 1 --- how to
+create new commands out of old ones.
+
+Given a sequence of commands that is to be repeated more than a few times, it
+would be convenient to make it into a "new" command with its own name, so you
+can use it like a regular command. To be specific, suppose you intend to count
+users frequently with the pipeline
+
+        $ who | wc -l
+
+that was mentioned in Chapter 1, and you want to make a few program nu to do
+that
+
+The first step is to create an ordinary file that contains 'who | wc -l'. You
+can use a favorite editor, of you can get creative:
+
+        $ echo 'who | wc -l' >nu
+
+(Without the quotes, what would appear in nu?)
+
+As we said in Chapter 1, the shell is a program just like an editor or who or
+wc; its name is sh. And since it's a program, you can run it and redirect its
+input. So run the shell with its input coming from the file nu instead of the
+terminal:
+
+        $ who
+        you      tty2    Sep 28 07:51
+        rhh      tty4    Sep 28 10:02
+        moh      tty5    Sep 28 09:38
+        ava      tty6    Sep 28 10:17
+        $ cat nu
+        who | wc -l
+        $ sh <nu
+              4
+        $
+
+The output is the same as it would have been if you had typed who | wc -l at the
+terminal.
+
+Again like most other programs, the shell takes its input from a file if one

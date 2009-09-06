@@ -1,0 +1,53 @@
+
+        $ cat cx
+        chmod +x $*
+        $ cat lc
+        # lc: count number of lines in files
+        wc -l $*                                Looks good
+        $ cd ..
+        $ rm junk test/*; rmdir test            Clean up
+        $ pwd
+        /usr/you/bin
+        $ bundle `pick *` | mail somewhere!bob     Send the files
+
+There's a problem if one of the files you're sending happens to contain a line
+of the form
+
+        End of filename
+
+but it's a low-probability event. To make bundle utterly safe, we need a thing
+or two from later chapters, but it's eminently usable and convenient as it
+stands.
+
+bundle illustrates much of the flexibility of the UNIX environment: it uses
+shell loops, I/O redirection, here document and shell files, it interfaces
+directly to mail, and, perhaps most interesting, it is a program that creates a
+program. It's one of the prettiest shell programs we know --- a few lines of
+code that do something simply, useful and elegant.
+
+Exercise 3-17. How would you use bundle to send all the files in a directory and
+its subdirectories? Hint: shell files can be recursive.
+
+Exercise 3-18. Modify bundle so it includes with each file the information
+garnered from ls -l, particularly permissions and date of last change. Contrast
+the facilities of bundle with the archive program ar(1).
+
+
+3-10 Why a programmable shell?
+
+The UNIX shell isn't typical of command interpreters: although it lets you run
+commands in the usual way, because it is a programming language it can
+accomplish much more. It's worth a brief look at what we've seen, in part
+because there's a lot of material in this chapter but more because we promised
+to talk about "commonly used features" and then wrote about 30 pages of shell
+programming examples. But when using the shell you write little one-line
+programs all the time: a pipeline is a program, as is our"Tea is ready"
+example. The shell works like that: you program it constantly, but it's so easy
+and natural (once you're familiar with it) that you don't think of it as
+programming.
+
+The shell does some things, like looping, I/O redirection with < and >, and
+filename expansion with *, so that no program need worry about them, and more
+importantly, so that the application of these facilities is uniform across all
+programs. Other features, such as shell files and pipes, are really provided by
+the kernel, but the shell gives a natural syntax for creating them. They go

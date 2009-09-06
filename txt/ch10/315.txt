@@ -1,0 +1,39 @@
+
+                CHAPTER 10: EPILOG
+
+The UNIX operating system is well over ten years old, but the number of
+computers running it is growing faster than ever. For a system designed with no
+marketing goals or even intentions, it has been singularly successful.
+
+The main reason for its commercial success is probably its portability --- the
+feature that everything but small parts of the compilers and kernel runs
+unchanged on any computer. Manufacturers that run UNIX software on their
+machines therefore have comparatively little work to do to get the system
+running on new hardware, and can benefit from the expanding commercial market
+for UNIX programs.
+
+But the UNIX system was popular long before it was of commercial significance,
+and even before it ran on anything but the PDP-11. The 1974 CACM paper by
+Ritchie and Thompson generated interest in the academic community, and by 1975,
+6th Edition systems were becoming common in universities. Through the mid-1970's
+UNIX knowledge spread by word of mouth: although the system came unsupported and
+without guarantee, the people who used it were enthusiastic enough to convince
+others to try it too. Once people tried it, they tended to stick with it;
+another reason for its current success is that the generation of programmers who
+used academic UNIX systems now expect to find the UNIX environment where they
+work.
+
+Why did it become popular in the first place? The central factor is that it was
+designed and built by a small number (two) of exceptionally talented people,
+whose sole purpose was to create an environment that would be convenient for
+program development, and who had the freedom to pursue that ideal. Free of
+market pressure, the early systems were small enough to be understood by a
+single person. John Lions taught the 6th Edition kernel in an undergraduate
+operating system course at the University of New South Wales in Australia. In
+notes prepared for the class, he wrote, "... the whole documentation is not
+unreasonably transportable in a student's briefcase." (This has been fixed in
+recent versions.)
+
+In that early system were packed a number of inventive applications of computer
+science, including stream processing (pipes), regular expressions, language
+theory (yacc, lex, etc.) and more specific instances like the

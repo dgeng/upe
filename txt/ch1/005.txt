@@ -1,0 +1,52 @@
+
+ignored, press RETURN; something should happen. RETURN won't be mentioned again,
+but you need it at the end of every line.
+
+The next command to try is who, which tells you everyone who is currently logged
+in:
+
+        $ who
+        rim     tty0     Sep 26 11:37
+        pjw     tty4     Sep 26 11:30
+        gerard  tty7     Sep 26 10:27
+        mark    tty9     Sep 26 07:59
+        you     ttya     Sep 26 12:20
+        $
+
+The first column is the user name. The second is the system's name for the
+connection being used ("tty" stands for "teletype," an archaic synonym for
+"terminal"). The rest tells when the user logged on. You might also try
+
+        $ who am i
+        you     ttya     Sep 26 12:20
+        $
+
+If you make a mistake typing the name of a command, and refer to a non-existent
+command, you will be told that no command of that name can be found:
+
+        $ whom                     Misspelled command name ...    
+        whom: not found            ... so system didn't know how to run it
+        $
+
+Of course, if you inadvertently type the name of an actual command, it will run,
+perhaps with mysterious results.
+
+
+Strange terminal behavior
+
+Sometimes your terminal will act strangely, for example, each letter may be
+typed twice, or RETURN may not put the cursor at the first column of the next
+line. You can usually fix this by turning the terminal off and on, or by logging
+out and logging back in. Or you can read the description of the command stty
+("set terminal options") in Section 1 of the manual. To get intelligent
+treatment of tab characters if your terminal doesn't have tabs, type the command
+
+        $ stty -tabs
+
+and the system will convert tabs into the right number of spaces. If your
+terminal does have computer-settable tab stops, the command tabs will set them
+correctly for you. (You may actually have to say
+
+        $ tabs terminal-type
+
+to make it work --- see the tabs command description in the manual.)

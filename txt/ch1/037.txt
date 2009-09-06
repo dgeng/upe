@@ -1,0 +1,55 @@
+
+        MAIL=/usr/spool/mail/you
+
+(The mail file may be different on your system; /usr/mail/you is also common.)
+
+Probably the most useful shell variable is the one that controls where the shell
+looks for commands. Recall that when you type the name of a command, the shell
+normally looks for it first in the current directory, then in /bin, and then in
+/usr/bin. This sequence of directories is called the search path, and is stored
+in a shell variable called PATH. If the default search path isn't what you want,
+you can change it, again usually in your .profile. For example, this line sets
+the path to the standard one plus /usr/games.
+
+        PATH=.:/bin:/usr/bin:/usr/games		One way ...
+
+The syntax is a bit strange: a sequence of directory names separated by
+colons. Remember that '.' is the current directory. You can omit the '.'; a null
+component in PATH means the current directory.
+
+An alternative way to set PATH in this specific case is simply to augment the
+previous value:
+
+        PATH=$PATH:/usr/games			... Another way
+
+You can obtain the value of any shell variable by prefixing its name with a
+$. In the example above, the expression $PATH retrieves the current value, to
+which the new part is added, and the result is assigned back to PATH. You can
+verify this with echo:
+
+	$ echo PATH is $PATH
+	PATH is :/bin:/usr/bin:/usr/games
+	$ echo $HOME		your login directory
+	/usr/you
+	$
+
+If you have some of your own commands, you might want to collect them in a
+directory of your own and add that to your search path as well. In that case,
+you PATH might look like this:
+
+        PATH=:$HOME/bin:/bin:/usr/bin:/usr/games
+
+We'll talk about writing your own commands in Chapter 3.
+
+Another variable, often used by text editors fancier than ed, is TERM, which
+names the kind of terminal you are using. That information may make it possible
+for programs to manage your screen more effectively. Thus you might add
+something like
+
+
+----------------
+new mail because you aren't running new commands with your login shell. A better
+design is to look every few minutes, instead of after every command. Chapters 5
+and 7 show how to implement this kind of mail checker. A third possibility, not
+available to everyone, is to have the mail program notify you itself: it
+certainly knows when mail comes for you.

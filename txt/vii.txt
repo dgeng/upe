@@ -1,0 +1,33 @@
+
+"The number of UNIX installations has grown to 10, with more expected."
+      (The UNIX Programmer's Manual, 2nd Edition, June, 1972)
+
+The UNIX+ operating system started on a cast-off DEC PDP-7 at Bell Laboratories
+in 1969. Ken Thompson, with ideas and support from Rudd Canaday, Doug McIlroy,
+Joe Ossanna, and Dennis Ritchie, wrote a small general-purpose time-sharing
+system comfortable enough to attract enthusiastic users and eventually enough
+credibility for the purchase of a larger machine --- a PDP-11/20. One of early
+users was Ritchie, who helped move the system to the PDP-11 in 1970. Ritchie
+also designed and wrote a compiler for the C programming language. In 1973,
+Ritchie and Thompson rewrote the UNIX kernel in C, breaking from the tradition
+that system is written in assembly language. With that rewrite, the system
+became essentially what it is today.
+
+Around 1974 it was licensed to universities "for educational purposes" and a few
+years later became available for commercial use. During this time, UNIX systems
+prospered at Bell Labs, finding their way into laboratories, software
+development projects, word processing centers, and operations support systems in
+telephone companies. Since then, it has spread world-wide, with tens of
+thousands of systems installed, from microcomputers to the largest mainframes.
+
+What makes the UNIX system so successful? We can discern several reasons. First
+because it is written in C, it is portable --- UNIX systems run on a range of
+computers from microprocessors to the largest mainframes; this is a strong
+commercial advantage. Second, the source code is available and written in a
+high-level language, which makes the system easy to adapt to particular
+requirements. Finally, and most important, it is a good operating system,
+
+----------------
++UNIX is a trademark of Bell Laboratories. "UNIX" is not an acronym, but a weak
+pun on MULTICS, the operating system that Thompson and Ritchie worked on before
+UNIX.

@@ -1,0 +1,45 @@
+
+        4.3	The stream editor sed                                    108
+        4.4	The awk pattern scanning and processing language         114
+        4.5	Good files and good filters                              130
+
+5.	Shell Programming                                                133
+        5.1	Customizing the cal command                              133
+        5.2	Which command is which?                                  138
+        5.3	While and until loops: watching for things               144
+        5.4	Traps: catching interrupts                               150
+        5.5	Replacing a file: overwrite                              152
+        5.6	Zap: killing proceses by name                            156
+        5.7	The pick command: blanks vs. arguments                   159
+        5.8	The news command: community service messages             162
+        5.9	Get and put: tracking file changes                       165
+        5.10	A look back                                              169
+
+6.	Programming with Standard I/O                                    171
+        6.1	Standard input and output: vis                           172
+        6.2	Program arguments: vis version 2                         174
+        6.3	File access: vis version 3                               176
+        6.4	A screen-at-a-time printer: p                            180
+        6.5	An example: pick                                         186
+        6.6	On bugs and debugging                                    187
+        6.7	An example: zap                                          190
+        6.8	An interactive file comparison program: idiff            192
+        6.9	Accessing the environment                                199
+
+7.	UNIX System Calls                                                201
+        7.1	Low-level I/O                                            201
+        7.2	File system: directories                                 208
+        7.3	File system: inodes                                      214
+        7.4	Processes                                                220
+        7.5	Signals and interrupts                                   225
+
+8.	Program Development                                              233
+        8.1	Stage 1: A four-function calculator                      234
+        8.2	Stage 2: Variables and error recovery                    242
+        8.3	Stage 3: Arbitrary variable names; built-in functions    245
+        8.4	Stage 4: Compilation into a machine                      258
+        8.5	Stage 5: Control flow and relational operators           266
+        8.6	Stage 6: Functions and procedures; input/output          273
+        8.7	Performance evaluation                                   284
+        8.8	A look back                                              286
+

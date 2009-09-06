@@ -1,0 +1,52 @@
+
+value pairs like those above, whether or not they are sorted. Each name ($1) is
+used as a sbuscript in sum; at the end, a special form of the for statement is
+used to cycle through all the elements of sum, printing them out. Syntactically,
+this variant of the for statement is
+
+        for (var in array)
+                statement
+
+Although it might look superficially like the for loop in the shell, it's
+unrelated. It loops over the subscripts of array, not the elements, setting var
+to each subscript in turn. The subscripts are produced in an unpredictable
+order, however, so it may be necessary to sort them. In the example above, the
+output can be piped into sort to list the people with the largest values at the
+top.
+
+        $ awk '...' | sort +1nr
+
+The implementation of associative memory uses a hashing scheme to ensure that
+access to any element takes about the same time as to any other, and that (at
+least for moderate array sizes) the time doesn't depend on how many elements are
+in the array.
+
+The associative memory is effective for tasks like counting all the words in the
+input:
+
+        $ cat wordfreq
+        awk '   { for (i = 1; i <= NF; i++) num[$i]++ }
+        END     { for (word in num) print word, num[word] }
+        ' $*
+        $ wordfreq ch4.* | sort +1 -nr | sed 20q | 4
+        the 372          .CW 345          of 220           is 185
+        to 175           a 167            in 109           and 100
+        .PI 94           .P2 94           .PP 90           $ 87
+        awk 87           sed 83           that 76          for 75
+        The 63           are 61           line 55          print 52
+        $
+
+The first for loop looks at each word in the input line, incrementing the
+element of array num subscripted by the word. (Don't confuse awk's $i, the i'th
+field of the input line, with any shell variable.) After the file has been read,
+the second for loop prints, in arbitrary order, the words and their counts.
+
+Exercise 4-9. The output from wordfreq includes text formatting commands like
+.CW, which is used to print words in this font. How would you get rid of such
+non-words? how would you use tr to make wordfreq work properly regardless of the
+case of its input? Compare the implementation and performance of wordfreq to the
+pipeline from Section 4.2 and to this one:
+
+        sed 's/[ ->][ ->]*/\
+        /g' $* | sort | uniq -c | sort -nr
+

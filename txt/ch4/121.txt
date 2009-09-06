@@ -1,0 +1,58 @@
+
+
+        $ cat double
+        awk '
+        FILENAME != prevfile {   # new file
+            NR = 1               # reset line number
+            prevfile = FILENAME
+        }
+        NF > 0 {
+            if ($1 == lastword)
+                printf "double %s, file %s, line %d\n",$1,FILENAME,NR
+            for (i = 2; i <= NF; i++)
+                if ($i == $(i-1))
+                    printf "double %s, file %s, line %d\n",$i,FILENAME,NR
+            if (NF > 0)
+                lastword = $NF
+        }' $*
+        $
+
+The operator ++ increments its operand, and the operator -- decrements.
+
+The built-in variable FILENAME contains the name of the current input
+file. Since NR counts lines from the beginning of the input, we reset it every
+time the filename changes so an offending line is properly identified.
+
+The if statement is just like that in C:
+
+        if (condition)
+                statement1
+        else
+                statement2
+
+if condition is true, then statement1 is executed; if it is false, and if there
+is an else part, then statement2 is executed. The else part is optional.
+
+The for statement is a loop like the one in C, but different from the shell's:
+
+        for (expression1; condition; expression2)
+                statement
+
+The for is identical to the following while statement, which is also valid in
+awk:
+
+        expression1
+        while (condition) {
+                statement
+                expression2
+        }
+
+For example,
+
+        for (i = 2; i <= NF; i++)
+
+runs the loop with i set in turn to 2, 3, ..., up to the number of fields, NF.
+
+The break statement causes an immediate exit from the enclosing while
+
+

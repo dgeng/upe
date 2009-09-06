@@ -1,0 +1,52 @@
+
+
+                            /usr/you
+                              /   \
+                            /       \
+                          junk    recipes
+                                   /   \
+                                 /       \
+                               pie      cookie
+                              /  \          \
+                            /      \          \
+                         apple    crust    choc.chip
+
+
+The command du (disc usage) was written to tell how much disc space is consumed
+by the files in a directory, including all its subdirectories.
+
+$ du
+6       ./recipes/pie
+4       ./recipes/cookie
+11      ./recipes
+13      .
+$ 
+
+The filenames are obvious; the numbers are the number of disc blocks ---
+typically 512 or 1024 bytes each --- of storage for each file. The value for a
+directory indicates how many blocks are consumed by all the files in that
+directory and its subdirectories, including the directory itself.
+
+du has an option -a, for "all," that causes it to print out all the files in a
+directory. If one of those is a directory, du processes that as well:
+
+        $ du -a
+        2       ./recipes/pie/apple
+        3       ./recipes/pie/crust
+        6       ./recipes/pie
+        3       ./recipes/cookie/choc.chip
+        4       ./recipes/cookie
+        11       ./recipes
+        1       ./junk
+        13       .
+        $ 
+
+The output of du -a can be piped through grep to look for specific files:
+
+        $ du -a | grep choc
+        3       ./recipes/cookie/choc.chip
+        $ 
+
+Recall from Chapter 1 that the name '.' is a directory entry that refers to the
+directory itself; it permits access to a directory without having to know the
+full

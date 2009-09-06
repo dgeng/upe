@@ -1,0 +1,52 @@
+
+
+Strings
+
+Although both sed and awk are used for tiny jobs like selecting a single field,
+only awk is used to any extent for tasks that really require programming. One
+example is a program that folds long lines to 80 columns. Any line that exceeds
+80 characters is broken after the 80th; a \ is appended as a warning, and
+residue is processed. The final section of a folded line is right-justified, not
+left-justified, since this produces more convenient output for program listings,
+which is what we most often use fold for. As an example, using 20-character
+lines instead of 80,
+
+        $ cat test
+        A short line.
+        A somewhat longer line.
+        This line is quite a bit longer than the last one.
+        $ fold test
+        A short line.
+        A somewhat longer li\
+                         ne.
+        This line is quite a\
+         bit longer than the\
+                   last one.
+        $
+                   
+Strangely enough, the 7th Edition provides no program for adding or removing
+tabs, although pr in System V will do both. Our implementation of fold uses sed
+to convert tabs into spaces so that awk's character count is right. This works
+properly for leading tabs (again typical of program source) but does not
+preserve columns for tabs in the middle of a line.
+
+        # fold:  fold long lines
+        sed 's/->/        /g' $* |    # convert tabs to spaces
+        awk '
+        BEGIN {
+            N = 80      # folds at column 80
+            for (i = 1; i <= N; i++)    # make a string of blanks
+                blanks = blanks " "
+        }
+        {   if ((n = length($0)) <= N)
+                print
+            else {
+                for (i = 1; n > N; n -= N) {
+                    printf "%s\\\n", substr($0,i,N)
+                    i += N;
+                }
+                printf "%s%s\n", substr(blanks,1,N-n), substr($0,i)
+            }
+        }
+
+In awk there is no explicit string concatenation operator; strings are

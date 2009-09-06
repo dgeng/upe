@@ -1,0 +1,57 @@
+
+        $ rm *
+
+removes all files in your current directory. (You had better be very sure that's
+what you want to say!)
+
+The * is not limited to the last position in a filename --- *'s can be anywhere
+and can occur several times. Thus
+
+        $ rm *.save
+
+removes all files that end with .save.
+
+Notice that the filenames are sorted alphabetically, which is not the same as
+numerically. If your book has ten chapters, the order might not be what you
+intended, since ch10 comes before ch2:
+
+	$ echo *
+	ch1.1 ch1.2 ... ch10.1 ch10.2 ... ch2.1 ch2.2 ...
+	$
+
+The * is not the only pattern-matching feature provided by the shell, although
+it's by far the most frequently used. The pattern [...] matches any of the
+characters inside the brackets. A range of consecutive letters or digits can be
+abbreviated:
+
+	$ pr ch[12346789]*  Print chapters 1,2,3,4,6,7,8,9 but not 5
+	$ pr ch[1-46-9]*    Same thing
+	$ rm temp[a-z]	    Remove any of tempa, ... tempz that exists
+
+The ? pattern matches any single character:
+
+	$ ls ?	      	    List files with single-character names
+	$ ls -l ch?.1	    List ch1.1 ch2.1 ch3.1, etc. but not ch10.1
+	$ rm temp?	    Remove files temp1, ..., tempa, etc.
+
+Note that the patterns match only existing filenames. In particular, you cannot
+make up new filenames by using patterns. For example, if you want to expand ch
+to chapter in each filename, you cannot do it this way:
+
+        $ mv ch.* chapter.*     Doesn't work!
+
+because chapter.* matches no existing filenames.
+
+Pattern characters like * can be used in pathnames as well as simple filenames;
+the match is done for each component of the path that contains a special
+character. Thus /user/mary/* performs the match in /usr/mary, and
+/usr/*/calendar generates a list of pathnames of all user calendar files.
+
+If you should ever have to turn off the special meaning of *, ?, etc., enclose
+the entire argument in single quotes, as in
+
+        $ ls '?'
+
+You can also precede a special character with a backslash:
+
+

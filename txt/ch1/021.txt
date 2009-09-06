@@ -1,0 +1,52 @@
+
+        $ diff poem new_poem
+        2c2
+        <   upon their backs to bite 'em,
+        ---
+        >   upon their backs to bite them,
+        4c4
+        <   and so ad infinitum.
+        ---
+        >   and so so ad infinitum.
+        $ 
+
+This says that line 2 in the first file (poem) has to be changed into line 2 of
+the second file (new_poem), and similarly for line 4.
+
+Generally speaking, cmp is used when you want to be sure that two files really
+have the same contents. It's fast and it works on any kind of file, not just
+text. diff is used when the files are expected to be somewhat different, and you
+want to know exactly which lines differ. diff works only on files of text.
+
+
+A summary of file system commands
+
+Table 1.1 is a brief summary of the commands we've seen so far that deal with
+files.
+
+
+1.3 More about files: directories
+
+The system distinguishes your file called junk from anyone else's of the same
+name. The distinction is made by grouping files into directories, rather in the
+way that books are placed on shelves in a library, so files in different
+directories can have the same name without any conflict.
+
+Generally each user has a personal or home directory, sometimes called login
+directory, that contains only the files that belong to him or her. When you log
+in, you are "in" your home directory. You may change the directory you are
+working in --- often called your working or current directory --- but your home
+directory is always the same. Unless you take special action, when you create a
+new file it is made in your current directory. Since this is initially your home
+directory, the file is unrelated to a file of the same name that might exist in
+someone else's directory.
+
+A directory can contain other directories as well as ordinary files ("Great
+directories have lesser directories ..."). The natural way to picture this
+organization is as a tree of directories and files. It is possible to move
+around within this tree, and to find any file in the system by starting at the
+root of the tree and moving along the proper branches. Conversely, you can start
+where you are and move toward the root.
+
+Let's try the latter first. Our basic tool is the command pwd ("print working
+directory"), which prints the name the directory you are currently in.

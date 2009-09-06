@@ -1,0 +1,52 @@
+
+        sed '/./s/^/->/' $*             Version 2 of ind
+
+The pattern /./ matches any line that has at least one character on it other
+than a newline; the s command is done for those lines but not for empty
+lines. Remember that sed outputs all lines regardless of whether they were
+changed, so empty lines are still produced as they should be.
+
+There's yet another way that ind could be written. It is possible to do the
+commands only on lines that don't match the selection pattern, by preceding the
+command with an exclamation mark '!'. In
+
+        sed '/^$/!s/^/->/'            Version 3 of ind
+
+the pattern /^$/ matches empty lines (the end of the line immediately follows
+the beginning), so /^$/! says, "don't do the command on empty lines."
+
+As we said above, sed prints each line automatically, regardless of what was
+done to it (unless it was deleted). Furthermore, most ed commands can be
+used. So it's easy to write a sed program that will print the first three (say)
+lines of input, then quit:
+
+        sed 3q
+
+Although 3q is not a legal ed command, it makes sense in sed: copy lines, then
+quit after the third one.
+
+You might want to do other processing to the data, such as indent it. One way it
+to run the output from sed through ind, but since sed accepts multiple commands,
+it can be done with a single (somewhat unlikely) invocation of sed:
+
+        sed 's/^/->
+             3q'
+
+Notice where the quotes and the newline are: the commands have to be on separate
+lines, but sed ignores leading blanks and tabs.
+
+With these ideas, it might seem sensible to write a program, called head, to
+print the first few lines of each filename argument. But sed 3q (or 10q) is so
+easy to type that we've never felt the need. We do, however, have an ind, since
+its equivalent sed command is harder to type. (In the process of writing this
+book we replaced the existing 30-line C program by version 2 of the one-line
+implementation shown above). There is no clear criterion for when it's worth
+making a separate command from a complicated command line; the best rule we've
+found is to put it in your bin and see if you actually use it.
+
+It's also possible to put sed commands in a file and execute them from there,
+with
+
+        $ sed -f filename ...
+
+You can use line selectors other than numbers line 3:

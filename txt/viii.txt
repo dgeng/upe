@@ -1,0 +1,52 @@
+
+especially for programmers. The UNIX programming environment is unusually rich
+and productive.
+
+Even though the UNIX system introduces a number of innovative programs and
+techniques, no single program or idea makes it work well. Instead, what makes it
+effective is an approach to programming, a philosophy of using the
+computer. Although that philosophy can't be written down in a single sentence,
+at its heart is the idea that the power of a system comes more from the
+relationships among programs than from the programs themselves. Many UNIX
+programs do quite trivial tasks in isolation, but, combined with other programs,
+become general and useful tools.
+
+Our goal in this book is to communicate the UNIX programming philosophy. Because
+the philosophy is based on the relationships between programs, we must devote
+most of the space to discussions about the individual tools, but throughout run
+the themes of combining programs and of using programs to build programs. To use
+the UNIX system and its components well, you must understand not only how to use
+the programs, but also how they fit into the environment.
+
+As the UNIX system has spread, the fraction of its users who are skilled in its
+application has decreased. Time and again, we have seen experienced users,
+ourselves included, find only clumsy solutions to a problem, or write programs
+to do jobs that existing tools handle easily. Of course, the elegant solutions
+are not easy to see without some experience and understanding. We hope that by
+reading this book you will develop the understanding to make your use of the
+system --- whether you are a new or seasoned user --- effective and
+enjoyable. We want you to use the UNIX system well.
+
+We are aiming at individual programmers, in the hope that, by making their work
+more productive, we can in turn make the work of groups more
+productive. Although our main target is programmers, the first four or five
+chapters do not require programming experience to be understood, so they should
+be helpful to other users as well.
+
+Wherever possible we have tried to make our points with real examples rather
+than artificial ones. Although some programs began as examples for the book, the
+have since become part of our own set or everyday programs. All examples have
+been tested directly from the text, which is in a machine-readable form.
+
+The book is organized as follows. Chapter 1 is an introduction to the most basic
+use of the system. It covers logging in, mail, the file system, commonly-used
+commands, and the rudiments of the command interpreter. Experienced users can
+skip this chapter.
+
+Chapter 2 is a discussion of the UNIX file system. The file system is central to
+the operation and use of the system, so you must understand it to use the system
+well. This chapter describes files and directories, permissions and file modes,
+and inodes. It concludes with a tour of the file system hierarchy and an
+explanation of device files.
+
+

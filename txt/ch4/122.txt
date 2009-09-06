@@ -1,0 +1,49 @@
+
+or for; the continue statement causes the next iteration to being (at condition
+in the while and expression2 in the for). The next statement causes the next
+input line to be read and pattern matching to resume at the beginning of the awk
+program. The exit statement causes an immediate transfer to the END pattern.
+
+
+Arrays
+
+awk provides arrays, as do most programming languages. As a trivial example,
+this awk program collects each line of input in a separate array element,
+indexed by line number, then prints them out in reverse order:
+
+        $ cat bakcwards
+	# backwards:  print input in backward line order
+        awk '   { line[NR] = $0 }
+        END { for (i = NR; i > 0; i--) print line[i] } ' $*
+	$
+
+Notice that, like variables, arrays don't have to be declared; the size of an
+array is limited only by the memory available on your machine. Of course if a
+very large file is being read into an array, it may eventually run out of
+memory. To print the end of a large file in reverse order requires cooperation
+with tail:
+
+	$ tail -5 /usr/dict/web2 | backwards
+	zymurgy
+	zymotically
+	zymotic
+	zymosthenic
+	zymosis
+	$
+
+tails takes advantage of a file system operation called seeking, to advance to
+the end of a file without reading the intervening data. Look at the dicussion of
+lseek in Chapter 7. (Our local version of tail has an option -r that prints the
+lines in reverse order, which supersedes backwards.)
+
+Normal input processing splits each input line into fields. It is possible to
+perform the same field-splitting operation on any string with the built-in
+function split:
+
+        n = split(s, arr, sep)
+
+splits the string s into fields that are stored in elements 1 through n of the
+array arr. If a separator character sep is provided, it is used; otherwise the
+current value is FS is used. For example, split($0,a,":") splits the input line
+on colons, which is suitable for processing /etc/passwd, and
+split("9/29/83",date,"/") splits a date on slashes.

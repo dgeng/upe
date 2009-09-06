@@ -1,0 +1,52 @@
+
+so that, for example, sort is never given /bin/ed as input. One reason is to
+avoid foreclosing some useful computation. Although
+
+        $ sort /bin/ed
+
+doesn't make much sense, there are many commands that can operate on any file at
+all, and there's no reason to restrict their capabilities. od, wc, cp, cmp, file
+and many others process files regardless of their contents. But the formatless
+idea goes deeper than that. If, say, nroff input were distinguished from C
+source, the editor would be forced to make the distinction when it created a
+file, and probably when it read in a file for editing again. And it would
+certainly make it harder for us to typeset the C programs in Chapter 6 through
+8!
+
+Instead of creating distinctions, the UNIX system tries to efface them. All text
+consists of lines terminated by newline characters, and most programs understand
+this simple format. Many times while writing this book, we ran commands to
+create text files, processed them with commands like those listed above, and
+used an editor to merge them into the troff input for the book. The transcripts
+you see on almost every page are made by commands like
+
+        $ od -c junk >temp
+        $ ed ch2.1
+        1534
+        r temp
+        168
+        ...
+
+od produces text on its standard output, which can then be used anywhere text
+can be used. This uniformity is unusual; most systems have several file formats,
+even for text, and require negotiation by a program or a user to create a file
+of a particular type. In UNIX systems there is just one kind of file, and all
+that is required to access a file is its name.+
+
+The lack of file formats is an advantage overall --- programmers needn't worry
+about file types, and all the standard programs will work on any file --- but
+there are a handful of drawbacks. Programs that sort and search and edit really
+expect text as input: grep can't examine binary files correctly, nor can sort
+sort them, nor can any standard editor manipulate them.
+
+There are implementation limitations with most programs that expect text as
+input. We tested a number of programs on a 30,000 byte text file containing no
+newlines, and surprisingly few behaved properly, because most programs make
+unadvertised assumptions about the maximum length of a line of text (for an
+exception, see the BUGS section of sort(1)).
+
+----------------
++ There's a good test of file system uniformity, due originally to Doug McIlroy,
+that UNIX system passes handily. Can the output of a FORTRAN program be used as
+input to the FORTRAN compiler? A remarkable number of systems have trouble with
+this test.

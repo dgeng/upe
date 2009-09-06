@@ -1,0 +1,52 @@
+
+4.2 Other filters
+
+The purpose of this section is to alert you to the existence and possibilities
+of the rich set of small filters provided by the system, and to give a few
+examples of their use. The list is by no means all-inclusive --- there are many
+more that were part of the 7th Edition, and each installation creates some of
+its own. All of the standard ones are described in Section 1 of the manual.
+
+We begin with sort, which is probably the most useful of all. The basics of sort
+were covered in Chapter 1: it sorts its input by line in ASCII order. Although
+this is the obvious thing to do by default, there are lots of other ways that
+might want data sorted, and sort tries to cater to them by providing lots of
+different options. For example, the -f option causes upper and lower case to be
+"folded", so case distinctions are eliminated. The -d option (dictionary order)
+ignores all characters except letters, digits and blanks in comparisons.
+
+Although alphabetic comparisons are most common, sometimes a numeric comparison
+is needed. The -n option sorts by numeric value, and the -r option reverses the
+sense of any comparison. So,
+
+        $ ls | sort -f                  Sort filenames in alphabetic order
+        $ ls -s | sort -n               Sort with smallest files first
+        $ ls -s | sort -nr              Sort with largest files first
+
+sort normally sorts on the entire line, but it can be told to direct its
+attention only to specific fields. The notation +m means that the comparison
+skips the first m fields; +0 is the beginning of the line. So, for example,
+
+        $ ls -l | sort +3nr             Sort by byte count, largest first
+        $ who | sort +4n                Sort by time of login, oldest first
+
+Other useful sort options include -o, which specifies a filename for the output
+(it can be one of the input files), and -u, which suppresses all but one of each
+group of lines that are identical in the sort fields.
+
+Multiple sort keys can be used, as illustrated by this cryptic example from the
+manual page sort(1):
+
+        $ sort +0f +0 -u filenames
+
++0f sorts the line, folding upper and lower case together, but lines that are
+identical may not be adjacent. So +0 is a secondary key that sorts the equal
+lines from the first sort into normal ASCII order. Finally, -u discards any
+adjacent duplicates. Therefore, given a list of words, one per line, the command
+prints the unique words. The index of this book was prepared with a similar sort
+command, using even more of sort's capabilities. See sort(1).
+
+The command uniq is the inspiration for the -u flag of sort: it discards all but
+one of each group of adjacent duplicate lines. Having a separate program for
+this function allows it to do tasks unrelated to sorting. For example, uniq will
+remove multiple blank lines whether its input is sorted or not.

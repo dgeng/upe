@@ -1,0 +1,49 @@
+
+        $ sed '/pattern/q'
+
+prints its input up to and including the first line matching pattern, and
+
+        $ sed '/pattern/d'
+
+deletes every line that contains pattern; the deletion happens before the line
+is automatically printed, so deleted lines are discarded.
+
+Although automatic printing is usually convenient, sometimes it gets in the
+way. It can be turned off by the -n option; in that case, only lines explicitly
+printed with a p command appear in the output. For example,
+
+        $ sed -n '/pattern/p'
+
+does what grep does. Since the matching condition can be inverted by following
+it with !,
+
+        $ sed -n '/pattern/!p'
+
+is grep -v. (So is sed '/pattern/d'.)
+
+Why do we have both sed and grep? After all, grep is just a simple special case
+of sed. Part of the reason is history --- grep came well before sed. But grep
+survives, and indeed thrives, because for the particular job that they both do,
+it is significantly easier to use than sed is: it does the common case about as
+succinctly as possible. (It also does a few things that sed won't; look at the
+-b option, for instance.) Programs do die, however. There was once a program
+called gres that did simple substitution, but it expired almost immediately when
+sed was born.
+
+Newlines can be inserted with sed, using the same syntax as in ed:
+
+        $ sed 's/$/\
+        > /'
+
+adds a newline to the end of each line, thus double-spacing its input, and
+
+        $ sed 's/[ ->][ ->]/\
+        > /g'
+ 
+replaced each string of blanks or tabs with a newline and thus slits its input
+into one word per line. (The regular expression '[ ->]' matches a blank or tab;
+'[ ->]*' matches zero or more of these, so the whole pattern matches one or more
+blanks and/or tabs.)
+
+You can also use pairs of regular expressions or line numbers to select a range
+of lines over which any one of the commands will operate.

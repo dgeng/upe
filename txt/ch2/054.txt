@@ -1,0 +1,52 @@
+
+in the next section). Some versions of ls give both owner and group in one
+invocation.
+
+The string -rw-r--r-- is how ls represents the permissions on the file. The
+first - indicates that it is an ordinary file. If it were a directory, there
+would be a d there. The next three characters encode the file owner's (based on
+uid) read, write and execute permissions. rw- means that root (the owner) may
+read or write, but not execute the file. An executable file would have an X
+instead of a dash.
+
+The next three characters (r--) encode group permissions, in this case that
+people in group adm, presumably the system administrators, can read the file but
+not write or execute it. The next three (also r--) define the permissions for
+everyone else --- the rest of the users on the system. On this machine, then,
+only root can change the login information for a user, but anybody may read the
+file to discover the information. A plausible alternative would be for group adm
+to also have write permission on /etc/passwd.
+
+The file /etc/group encodes group names and group-id's, and defines which users
+are in which groups. /etc/passswd identifies only your login group; the newgrp
+command changes your group permissions to another gropu.
+
+Anybody can say
+
+        $ ed /etc/passwd
+
+and edit the password file, but only root can write back the changes. You might
+therefore wonder how you can change your password, since that involves editing
+the password file. The program to change passwords is called passwd; you will
+probably find it in /bin:
+
+	$ ls -l /bin/passwd
+	-rwsr-xr-x 1 root     8454 Jan  4  1983 /bin/passwd
+	$ 
+
+(Note that /etc/passwd is the text file containing the login information, while
+/bin/passwd, in a different directory, is a file containing an executable
+program that lets you change the password information.) The permissions here
+state that anyone may execute the command, but only root can change the passwd
+command. But the s instead of an x in the execute field for the file owner
+states that, when the command is run, it is to be given the permissions
+corresponding to the file owner, in this case root. Because /bin/passwd is
+"set-uid" to root, any user can run the passwd command to edit the password
+file.
+
+The set-uid bit is a simple but elegant idea+ that solves a number of security
+problems. For example, the author of a game program can make the program set-uid
+to the owner, so that it can update a score file that is otherwise
+
+----------------
++ the set-uid bit is patented by Dennis Ritchie

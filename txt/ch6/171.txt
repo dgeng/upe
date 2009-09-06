@@ -1,0 +1,39 @@
+
+		    CHAPTER 2: PROGRAMMING WITH STANDARD I/O
+
+So far we have used existing tools to build new ones, but we are at the limit of
+what can be reasonably done with the shell, sed and awk. In this chapter we are
+going to write some simple programs in the C programming language. The basic
+philosophy of making things that work together will continue to dominate the
+discussion and the design of the programs --- we want to create tools that
+others can use and build on. In each case, we will also try to show a sensible
+implementation strategy: start with the bare minimum that does something useful,
+then add features and options (only) if the need arises.
+
+There are good reasons for writing new programs from scratch. It may be that the
+problem at hand just can't be solved with existing programs. This is often true
+when the program must deal with non-text files, for example --- the majority of
+the programs we have shown so far really work well only on textual
+information. Or it may be too difficult to achieve adequate robustness or
+efficiency with just the shell and other general-purpose tool. In such cases, a
+shell version may be good for honing the definition and user interface of a
+program. (And if it works well enough, there's no point re-doing it.) The zap
+program from the last chapter is a good example: it took only a few minutes to
+write the first version in the shell, and the final version has an adequate user
+interface, but it's too slow.
+
+We will be writing in C because it is the standard language of UNIX systems ---
+the kernel and all user programs are written in C --- and, realistically, no
+other language is nearly as well supported. We will assume that you know C, at
+least well enough to read along. If not, read The C Programming Language, by
+B. W. Kernighan and D. M. Ritchie (Prentice-Hall, 1978).
+
+We will also be using the "standard I/O library," a collection of routines that
+provide efficient and portable I/O and system services for C programs. The
+standard I/O library is available on many non-UNIX systems that support C, so
+programs that confine their system interactions to its facilities can easily be
+transported.
+
+The examples we have chosen for this chapter have a common property: they are
+small tools that we use regularly, but that were not part of the 7th Edition. If
+your system has similar programs, you may find it enlightening to

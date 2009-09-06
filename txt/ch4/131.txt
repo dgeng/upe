@@ -1,0 +1,49 @@
+
+Filters share a common design. Each writes on its standard output the result of
+processing the argument files, or the standard input if no arguments are
+given. The arguments specify input, never output,+ so the output of a command
+can always be fed to a pipeline. Optional arguments (or non-filename arguments
+such as the grep pattern) precede any filenames. Finally, error messages are
+written on the standard error, so they will not vanish down a pipe.
+
+These conventions have little effect on the individual commands, but when
+uniformly applied to all programs result in a simplicity of interconnection,
+illustrated by many examples throughout this book, but perhaps most
+spectacularly by the word-counting examples at the end of Section 4.2. If any of
+the programs demanded a named input or output file, required interaction to
+specify parameters, or generated headers and trailers, the pipeline wouldn't
+work. And of course, if the UNIX system didn't provide pipes, someone would have
+to write a conventional program to do the job. But there are pipes, and the
+pipeline works, and is even easy to write if you are familiar with the tools.
+
+Exercise 4-15. ps prints an explanatory header, and ls -l announces the total
+number of blocks in the files. Comment.
+
+
+History and bibliographic notes
+
+A good review of pattern matching algorithms can be found in the paper "Pattern
+matching in strings" (Proceedings of the Symposium on Formal Language Theory,
+Santa Barbara, 1979) By Al Aho, author of egrep.
+
+sed was designed and implemented by Lee McMahon, using ed as a base.
+
+awk was designed and implemented by Al Aho, Peter Weinberger and Brian
+Kernighan, by a much less elegant process. Naming a language after its authors
+also shows a certain poverty of imagination. A paper by the implementors, "AWK
+--- a pattern scanning and processing language," Software---Practice and
+Experience, July 1978, discusses the design. awk has its origins in several
+areas, but has certainly stolen good ideas from SNOBOL4, from sed, from a
+validation language designed by Marc Rochkind, from the language tools yacc and
+lex, and of course from C. Indeed, the similarity between awk and C is a source
+of problems --- the language looks like C but it's not. Some constructions are
+missing; others differ in subtle ways.
+
+An article by Doug Comer entitled "The flat file system FFG: a database system
+consisting of primitives" (Software---Practice and Experience, November, 1982)
+discusses the use of the shell and awk to create a database system.
+
+
+---------------
++ An early UNIX file system was destroyed by a maintenance program that violated
+this rule, because a harmless looking command scribbled all over the disc.

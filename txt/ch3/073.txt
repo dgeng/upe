@@ -1,0 +1,52 @@
+
+        $ (date; who) | tee save | wc
+              3     16     89                       output from wc
+        $ cat save
+        Wed Sep 28 09:13:22 EDT 1983
+        you      tty2    Sep 28 07:51
+        jpl      tty4    Sep 28 08:32
+        $ wc <save
+              3     16     89
+        $   
+
+tee copies its input to the named file or files, as well as to its output, so wc
+receives the same date as if tee weren't in the pipeline.
+
+Another command terminator is the ampersand &. It's exactly like the semicolon
+or newline, except that it tells the shell not to wait for the command to
+complete. Typically, & is used to run a long-running command "in the background"
+while you continue to type interactive commands:
+
+        $ long-running-command &
+        5273                            Process-id of long-running-command
+        $                               Prompt appears immediately
+
+Given the ability to group commands, there are some more interesting uses of
+background processes. The command sleep waits the specified number of seconds
+before exiting.
+
+        $ sleep 5
+        $                               Five seconds pass before prompt
+        $ (sleep 5; date) & date
+        5278
+        Wed Sep 28 09:18:20 EDT 1983    Ouput from second date
+        $ Wed Sep 28 09:18:25 EDT 1983  Prompt appears, then date 5 etc. later
+
+The background process starts but immediately sleeps; meanwhile, the second date
+command prints the current time and the shell prompts for a new command. Five
+seconds later, the sleep exits and the first date prints the new time. It's hard
+to represent the passage of time on paper, so you should try this
+example. (Depending on how busy your machine is and other such details, the
+difference between the two times might not be exactly five seconds.) This is any
+easy way to run a command in the future; consider
+
+        $ (sleep 300; echo Tea is ready) &     Tea will be ready in 5 minutes
+        5291
+        $
+
+as a handy reminder mechanism. (A ctl-g in the string to be echoed will ring the
+terminal's bell when it's printed.) The parentheses are needed in these
+examples, since the precedence of & is higher than that of ';'.
+
+The & terminator applies to the commands, and since pipelines are commands you
+don't need parentheses to run pipelines in the background:

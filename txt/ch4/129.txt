@@ -1,0 +1,54 @@
+
+        $ cat calendar
+        # calendar:  version 3 -- today and tomorrow
+        awk <$HOME/calendar '
+        BEGIN {
+            x = "Jan 31 Feb 28 Mar 31 Apr 30 May 31 Jun 30 " \
+                "Jul 31 Aug 31 Sep 30 Oct 31 Nov 30 Dec 31 Jan 31"
+            split(x, data)
+            for (i = 1; i < 24; i += 2) {
+                days[data[i]] = data[i+1]
+                nextmon[data[i]] = data[i+2]
+            }
+            split("'"`date`"'", date)
+            mon1 = date[2]; day1 = date[3]
+            mon2 = mon1; day2 = day1 + 1
+            if (day1 >= days[mon1]) {
+                day2 = 1
+                mon2 = nextmon[mon1]
+            }
+        }
+        $1 == mon1 && $2 == day1 || $1 == mon2 && $2 == day2
+        ' | mail $NAME
+        $
+
+Notice that Jan appears twice in the data; a "sentinel" data value like this
+simplifies processing for December.
+
+The final stage is to arrange for the calendar program to be run every day. What
+you want is for someone to wake up every morning at around 5 AM and run
+calendar. You can do this yourself by remembering to say (every day!)
+
+        $ at 5am
+        calendar
+        ctl-d
+        $
+
+but that's not exactly automatic or reliable. The trick is to tell at not only
+to run the calendar, but also to schedule the next run as well.
+
+        $ cat early.morning
+        calendar
+        echo early.morning | at 5am
+        $
+
+The second line schedules another at command for the next day, so once started,
+this sequence is self-perpetuating. The at command sets your PATH, current
+directory and other parameters for the commands it processes, so you needn't do
+anything special.
+
+
+Exercise 4-11. Modify calendar so it knows about weekends: on Friday, "tomorrow"
+includes Saturday, Sunday and Monday. Modify calendar to handle leap
+years. Should calendar know about holidays? How would you arrange it?
+

@@ -1,0 +1,54 @@
+
+your environment to your own taste. Some that we have found convenient include
+
+* cs, which echoes the proper sequence of mysterious characters to clear the
+  screen on your terminal (24 newlines is a fairly general implementation);
+
+* what, which runs who and ps -a to tell who's logged on and what they are
+  doing;
+
+* where, which prints the identifying name of the UNIX system you're using ---
+  it's handy if you use several regularly. (Setting PS1 serves a similar
+  purpose.)
+
+Exercise 3-9. Look in /bin and /usr/bin to see how many commands are actually
+shell files. Can you do it with one command? Hint: file(1). How accurate are
+guesses based on file length?
+
+
+3.4 Command arguments and parameters
+
+Although nu is adequate as it stands, most shell programs interpret arguments,
+so that, for example, filenames ad options can be specified when the program is
+run.
+
+Suppose we want to make a program called cx to change the mode of a file to
+executable, so
+
+        $ cx nu
+
+is a shorthand for
+
+        $ chmod +x nu
+
+We already know almost enough to do this. We need a file called cx whose
+contents are
+
+        chmod +x filename
+
+The only new thing we need to know is how to tell cx what the name of the file
+is, since it will be different each time cx is run.
+
+When the shell executes a file of commands, each occurrence of $1 is replaced by
+the first argument, each $2 is replaced by the second argument, and so on
+through $9. So if the file cx contains
+
+        chmod +x $1
+
+when the command
+
+        $ cx nu
+
+is run, the sub-shell replaces "$1" by its first argument, "nu."
+
+Let's look at the whole sequence of operations:

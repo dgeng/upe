@@ -1,0 +1,51 @@
+
+you type and receive are sent. The tty command tells you which terminal you are
+using:
+
+        $ who am i
+        you      tty0    Sep 28 01:02
+        $ tty
+        /dev/tty0
+        $ ls -l /dev/tty0
+        crw--w--w- 1 you     1, 12 Sep 28 02:40 /dev/tty0
+        $ date >/dev/tty0
+        Wed Sep 28 02:40:51 EDT 1983
+        $
+
+Notice that you own the device, and that only you are permitted to read it. in
+other words, no one else can directly read the characters you are typing. Anyone
+may write on your terminal, however. To prevent this, you could chmod the
+device, thereby preventing people from using write to contact you, or you could
+just use mesg.
+
+        $ mesg n                 Turn off messages
+        $ ls -l /dev/tty0
+        crw------- 1 you     1, 12 Sep 28 02:41 /dev/tty0       
+        $ mesg y                 Restore
+
+It is often useful to be able to refer by name to the terminal you are using,
+but it's inconvenient to determine which one it is. The device /dev/tty is a
+synonym for your login terminal, whatever terminal you are actually using.
+
+        $ date >/dev/tty
+        Wed Sep 28 02:42:23 EDT 1983
+
+/dev/tty is particularly useful when a program needs to interact with a user
+even though its standard input and output are connected to files rather than the
+terminal. crypt is one program that uses /dev/tty. The "clear text" comes from
+the standard input, and the encrypted data goes to the standard output, so crypt
+reads the encryption key from /dev/tty:
+
+        $ crypt <cleartext >cryptedtext
+        Enter key:                      Type encryption key
+        $
+
+The use of /dev/tty isn't explicit in this example, but it is there. If crypt
+read the key from the standard input, it would read the first line of the clear
+text. So instead crypt opens /dev/tty, turns off automatic character echoing so
+your encryption key doesn't appear on the screen, and reads the key. In Chapter
+5 and 6 we will come across several other uses of /dev/tty.
+
+Occasionally you want to run a program but don't care what output is
+produced. For example, you may have already seen today's news, and don't want
+

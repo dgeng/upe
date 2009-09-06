@@ -1,0 +1,55 @@
+
+
+        awk '
+        BEGIN { n = '$1' }
+        {       for (i = 1; i <= n; i++)
+                        sum[i] += $1
+        }
+        END {   for (i = 1; i <= n; i++) {
+                        printf "%6g ", sum[i]
+                        total += sum[i]
+                }
+                printf "; total = %6g ", total
+        } '
+
+
+We use a BEGIN to insert the value of n into a variable, rather than cluttering
+up the rest of the program with quotes.
+
+The main problem with all these examples is not keeping track of whether one is
+inside or outside of the quotes (though that is a bother), but that as currently
+written, such programs can read only their standard input; there is no way to
+pass them both the parameter n and an arbitrarily long list of filenames. This
+requires some shell programming that we'll address in the next chapter.
+
+
+A calendar service based on awk
+
+One final example uses associative arrays; it is also an illustration of how to
+interact with the shell, and demonstrates a bit about program evolution.
+
+The task is to have the system send you mail every morning that contains a
+reminder of upcoming events. (There may already be such as calendar service; see
+calendar(1). This section shows an alternate approach.) The basic service should
+tell you of events happening today; the second step is to give a day of warning
+--- events of tomorrow as well as today. The proper handling of weekends and
+holidays is left as an exercise.
+
+The first requirement is a place to keep the calendar. For that, a file called
+calendar in /usr/you seems easiest.
+
+        $ cat calendar
+        Sep 30  mother's birthday
+        Oct  1  lunch with joe, noon
+        Oct  1  meeting 4pm
+
+Second, you need a way to scan the calendar for a date. There are many choices
+here; we will use awk because it is best at doing the arithmetic necessary to
+get from "today" to "tomorrow," but other programs like sed or egrep can also
+service. The lines selected from the calendar are shipped off by mail, of
+course.
+
+Third, you need a way to have calendar scanned reliably and automatically every
+day, probably early in the morning. This can be done with at, which we mentioned
+briefly in Chapter 1.
+

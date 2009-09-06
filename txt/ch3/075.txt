@@ -1,0 +1,54 @@
+
+dot, to avoid problems with the names '.' and '..' that are in every
+directory. The rule is: the filename-matching characters only match filenames
+beginning with a period if the period is explicitly supplied in the pattern. As
+usual, a judicious echo or two will clarify what happens:
+
+	$ ls
+	.profile
+	junk
+	temp
+	$ echo *
+	junk temp
+	$ echo .*
+	. .. .profile
+	$
+
+Characters like * that have special properties are known as
+metacharacters. There are a lot of them: Table 3.1 in the complete list,
+although a few of them won't be discussed until Chapter 5.
+
+Given the number of shell metacharacters, there has to be some way to say to the
+shell, "Leave it along." The easiest and best way to protect special characters
+from being interpreted is to enclose them in single quote characters:
+
+        $ echo '***'
+	***
+        $
+
+It's also possible to use the double quotes "...", but the shell actually peeks
+inside these quotes to look for $, `...`, and \, so don't use "..." unless you
+intend some processing of the quoted string.
+
+A third possibility is to put a backslash \ in front of each character that you
+want to protect from the shell, as in
+
+        $ echo \*\*\*
+
+Although \*\*\* isn't much like English, the shell terminology for it is still a
+word, which is any single string the shell accepts as a unit, including blanks
+if they are quoted.
+
+Quotes of one kind protect quotes of the other kind:
+
+        $ echo "Don't do that!"
+	Don't do that!
+        $
+
+and they don't have to surround the whole argument:
+
+        $ echo x'*'y
+	x*y
+	$ echo '*'A'?'
+	*A?
+	$

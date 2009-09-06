@@ -1,0 +1,53 @@
+
+operator). You can write this pattern in a variety of ways:
+
+        $2 == ""                        2nd field is empty
+        $2 ~ /^$/                       2nd field matches empty string
+        $2 !~ /./                       2nd field doesn't match any character
+        length($2) == 0                 Length of 2nd field is zero
+
+The symbol ~ indicates a regular expression match, and !~ means "does not
+match." The regular expression itself is enclosed in slashes.
+
+length is an awk built-in function that produces the length of a string of
+characters. A pattern can be preceded by ! to negate it, as in
+
+        !($2 == "")
+
+The '!' operator is like that in C, but opposite to sed, where the ! follows the
+pattern.
+
+One common use of patterns in awk is for simple data validation tasks. Many of
+these amount to little more than looking for lines that fail to meet some
+criterion; if there is no output, the data is acceptable ("no news is good
+news"). For example, the following pattern makes sure that every input record
+has an even number of fields, using the operator % to compute the remainder:
+
+        NF % 2 != 0           # print if odd number of fields
+
+Another prints excessively long lines, using the built-in function length:
+
+        length($0) > 72       # print if too long
+
+awk uses the same comment convention as the shell does: a # marks the beginning
+of a comment.
+
+You can make the output somewhat more informative by printing a warning and part
+of the too-long line, using another built-in function, substr:
+
+        length($0) > 72 { print "Line", NR, "too long:", substr($0, 1, 60) }
+
+substr(s, m, n) produces the substring of s that begins at position m and is n
+characters long. (The string begins at position 1.) If n is omitted, the
+substring from m to the end is used. substr can also be used for extracting
+fixed-position fields, for instance, selecting the hour and minute from the
+output of date:
+
+        $ date
+        Thu sep 29 12:17:01 EDT 1983
+        $ date | awk '{ print substr($4, 1, 5) }'
+        12:17
+        $
+
+Exercise 4-7. How many awk programs can you write that copy input to output as
+cat does? Which is the shortest?

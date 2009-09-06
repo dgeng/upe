@@ -1,0 +1,50 @@
+
+won't describe any specific screen editor, however, partly because of
+typographic limitations, and partly because there is no standard one.
+
+There is, however, an older editor called ed that is certain to be available on
+your system. It takes no advantage of special terminal features, so it will work
+on any terminal. It also forms the basis of other essential programs (including
+some screen editors), so it's worth learning eventually. Appendix 1 contains a
+concise description.
+
+No matter what editor you prefer, you'll have to learn it well enough to be able
+to create files. We'll use ed here to make the discussion concrete, and to
+ensure that you can make our examples run on your system, but by all means use
+whatever editor you like best.
+
+To use ed to create a file called junk with some text in it, do the following:
+
+        $ ed                            Invokes the text editor
+        a                               ed command to add text
+        now type in
+        whatever text you want ...
+        .                               Type a '.' by itself to stop adding text
+        w junk                          Write your text into a file called junk
+        39                              ed prints number of characters written
+        q                               Quit ed
+        $
+
+The command a ("append") tells ed to start collecting text. The "." that signals
+the end of the text must be typed at the beginning of a line by itself. Don't
+forget it, for until it is typed, no other ed commands will be recognized ---
+Everything you type will be treated as text to be added.
+
+The editor command w ("write") stores the information that you typed; "w junk"
+stores it in a file called junk. The filename can be any word you like; we
+picked junk to suggest that this file isn't very important.
+
+ed responds with the number of characters it put in the file. Until the w
+command, nothing is stored permanently, so if you hang up and go home the
+information is not stored in the file. (If you hang up while editing, the data
+you were working on is saved in a file called ed.hup, which you can continue
+with at your next session.) If the system crashes (i.e., stops unexpectedly
+because of software of hardware failure) while you are editing, your file will
+contain only what the last write command placed there. But after w the
+information is recorded permanently; you can access it again later by typing
+
+        $ ed junk
+
+Of course, you can edit the text you typed in, to correct spelling mistakes,
+change wording, rearrange paragraphs and the like. When you're done, the q
+command ("quit") leaves the editor.

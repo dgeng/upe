@@ -1,0 +1,40 @@
+
+For practice, send mail to yourself, then type mail to read it. (This isn't as
+aberrant as it might sound --- it's a handy reminder mechanism.)
+
+There are other ways to send mail --- you can send a previously prepared letter,
+you can mail to a number of people all at once, and you may be able to send mail
+to people on other machines. For more details see the description of the mail
+command in Section 1 of the UNIX Programmer's Manual. Henceforth we'll use the
+notation mail(1) to mean the page describing mail in Section 1 of the
+manual. All of the commands discussed in this chapter are found in Section 1.
+
+There may also be a calendar service (see calendar(1)); we'll show you in
+Chapter 4 how to set one up if it hasn't been done already.
+
+
+Writing to other users.
+
+If you UNIX system has multiple users, someday, out of the blue, your terminal
+will print something like
+
+        Message from mary tty7...
+
+accompanied by a startling beep. Mary wants to write to you, but unless you take
+explicit action you won't be able to write back. To respond, type
+
+        $ write mary
+
+This establishes a two-way communication path. Now the lines that Mary tyeps on
+her terminal will appear on yours and vice versa, although the path is slow,
+rather like talking to the moon.
+
+If you are in the middle of something, you have to get to a state where you can
+type a command. Normally, whatever program you are running has to stop or be
+stopped, but some programs, such as the editor and write itself, have a '!'
+command to escape temporarily to the shell --- see Table 2 in Appendix 1.
+
+The write command imposes no rules, so a protocol is needed to keep what you
+type from getting garbled up with what Mary types. One convention is to take
+turns, ending each turn with (o), which stands for "over," and to signal your
+intent to quit with (oo), for "over and out."

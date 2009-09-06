@@ -1,0 +1,40 @@
+
+Every file has a set of permissions associated with it, which determine who can
+do what with the file. If you're so organized that you keep your love letters on
+the system, perhaps hierarchically arranged in a directory, you probably don't
+want other people to be able to read them. You could therefore change the
+permissions on each letter to frustrate gossip (or only on some of the letters,
+to encourage it), or you might just change the permissions on the directory
+containing the letters, and thwart snoopers that way.
+
+But we must warn you: There is a special user on every UNIX system, called the
+super-user, who can read or modify any file on the system. The special login
+name root carries super-user privileges; it is used by system administrators
+when they do system maintenance. There is also a command called su that grants
+super-user status if you know the root password. Thus anyone who knows the
+super-user password can read your love letters, so don't sensitive material in
+the file system.
+
+If you need more privacy, you can change the data in a file so that even the
+super-user cannot read (or at least understand) it, using the cript command
+(cript(1)). Of course, even cript isn't perfectly secure. A super-user can
+change the cript command itself, and there are cryptographic attacks on the
+cript algorithm. The former requires malfeasance and the latter takes hard work,
+however, so cript is in practice fairly secure.
+
+If real life, most security breaches are due to passwords that are given away or
+easily guessed. Occasionally, system administrative lapses makes it possible to
+for a malicious user to gain super-user permission. Security issues are
+discussed further in some of the papers cited in the bibliography at the end of
+this chapter.
+
+When you log in, you type a name and then verify that you are that person by
+typing a password. The name is your login identification, or login-id. But the
+system actually recognizes you by a number, called your user-id, uid. In fact
+different login-id's may have the same uid, making them indistinguishable to the
+system, although that is relatively rare and perhaps undesirable for security
+reasons. Besides a uid, you are assigned a group identification, or group-id,
+which places you in a class of users. On many systems, all ordinary users (as
+opposed to those with login-id's like root) are placed in a single group called
+other, but your system may be different. The file system, and therefore the UNIX
+system in general, determines what you can do by the

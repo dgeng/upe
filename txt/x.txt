@@ -1,0 +1,46 @@
+
+Some practical matters. First, the UNIX system has become very popular, and
+there are a number of versions in wide use. For example, the 7th Edition comes
+from the original source of the UNIX system, the Computing Science Research
+Center at Bell Labs. System III and System V are the official Bell
+Labs-supported versions. The University of California at Berkeley distributes
+systems derived from the 7th Edition, usually known as UCB 4.xBSD. In addition,
+there are numerous variants, particularly on small computers, that are derived
+from the 7th Edition.
+
+We have tried to cope with this diversity by sticking closely to those aspects
+that likely to be the same everywhere. Although the lessons that we want to
+teach are independent of any particular version, for specific details we have
+chosen to present things as they were in the 7th Edition, since it forms the
+basis of most of the UNIX systems in widespread use. We have also run the
+examples on Bell Labs' System V and on Berkeley 4.1BSD; only trivial changes
+were required, and only in a few examples. Regardless of the version your
+machine runes, the differences you find should be minor.
+
+Second, although there is a lot of material in this book, it is not a reference
+manual. We feel it is more important to teach an approach and a style of use
+than just details. The UNIX Programmer's Manual is the standard source of
+information. You will need it to resolve points that we did not cover, or to
+determine how your system differs from ours.
+
+Third, we believe that the best way to learn something is by doing it. This book
+should be read at terminal, so that you can experiment, verify or contradict
+what we say, explore the limits and the variants. Read a bit, try it out, then
+come back and read some more.
+
+We believe that the UNIX system, although certainly not perfect, is a marvelous
+computing environment. We hope that reading this book will help you to reach
+that conclusion too.
+
+We are grateful to many people for constructive comments and criticisms, and for
+their help in improving our code. In particular, Jon Bentley, John Linderman,
+Doug McIlroy, and Peter Weinberger read multiple drafts with great care. We are
+indebted to Al Aho, Ed Bradford, Bob Flandrena, Dave Hanson, Ron Hardin, Marion
+Harris, Gerard Holzmann, Steve Johnson, Nico Lomuto, Bob Martin,Larry Rosler,
+Chris Van Wyk, and Jim Weythman for their comments on the first draft. We also
+thank Mike Bianchi, Elizabeth Bimmler, Joe Carfagno, Don Carter, Tom De Marco,
+Tom Duff, David Gay, Steve Mahaney, Ron Pinter, Dennis Ritchie, Ed Sitar, Ken
+Thompson, Mike Tilson, Paul Tukey, and Larry Wehr for valuable suggestions.
+
+	       	       	    	       	     	      	       Brian Kernighan
+							       Rob Pike

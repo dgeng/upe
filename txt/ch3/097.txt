@@ -1,0 +1,53 @@
+
+        $ for i in `pick ch2.*`
+        > do
+        >        echo $i
+        >        diff old/$i $i
+        > done | pr | lpr
+        ch2.1? y
+        ch2.2?
+        ch2.3?
+        ch2.4? y
+        ch2.5? y
+        ch2.6?
+        ch2.7?
+        $
+
+It's obvious that this loop should be placed in a shell file to save typing next
+time: if you've done something twice, you're likely to do it again.
+
+Exercise 3-15. If the diff loop were placed in a shell file, would you put the
+pick in the shell file? Why or why not?
+
+Exercise 3-16. What happens if the last line of the loop above is
+
+        > done | pr | lpr &
+
+that is, ends with an ampersand? See if you can figure it out, then try it.
+
+
+3.9 bundle: putting it all together
+
+To give something of the flavor of how shell files develop, let's work through a
+larger example. Pretend you have received mail from a friend on another machine,
+say somewhere!bob+, who would like copies of the shell files in your bin. The
+simplest way to send them is by return mail, so you might start by typing
+
+        $ cd /usr/you/bin
+        $ for i in `pick *`
+        > do
+        >       echo ============ This is file $i ============
+        >       cat $i
+        > done | mail somewhere!bob
+        $
+
+But look at it from somewhere!bob's viewpoint: he's going to get a mail message
+with all the files clearly demarcated, but he'll need to use an editor to break
+them into their component files. The flash of insight is that a properly
+constructed mail message could automatically unpack itself so the recipient
+needn't do any work. That implies it should be a shell file containing both the
+
+
+----------------
++ There are several notations for remote machine addresses. The form machine!bob
+is most common. See mail(1)

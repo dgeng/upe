@@ -1,0 +1,53 @@
+
+those in the class. Therefore, [^0-9] matches any non-digit. Also, in the shell
+a backslash protects ] and - in a character class, but grep and ed require that
+these characters appear where their meaning is unambiguous. For example, [][-]
+(sic) matches either an opening or closing square bracket or a minus sign.
+
+A period '.' is equivalent to the shell's ?: it matches any character. (The
+period is probably the character with the most different meanings to different
+UNIX programs.) Here are a couple of examples:
+
+        $ ls -l | grep '^d'             List subdirectory names
+        $ ls -l | grep '^.......rw'     List files other can read and write
+
+The '^' and seven periods match any seven characters at the beginning of the
+line, which when applied the output of ls -l means any permission string.
+
+The closure operator * applies to the previous character or metacharacter
+(including a character class) in the expression, and collectively they match any
+number of successive matches of the character or metacharacter. For example, x*,
+matches a sequence of x's as long as possible, [a-zA-Z]* matches an alphabetic
+string, .* matches anything up to a newline, and .*x matches anything up to and
+including the last x on the line.
+
+There are a couple of important things to note about closures. First, closure
+applies to only one character, so xy* matches an x followed by y's, not a
+sequence like xyxyxy. Second, "any number" including zero, so if you want at
+least one character to be matched, you must duplicate it. For example, to match
+a string of letters the correct expression is [a-zA-Z][a-zA-Z]* (a letter
+followed by zero or more letters). The shell's * file-name matching character is
+similar to the regular expression .*.
+
+No grep regular expression matches a newline; the expressions are applied to
+each line individually.
+
+With regular expression, grep is a simple programming language. For example,
+recall that the second field of the password file is the encrypted
+password. This command searches for users without passwords:
+
+        $ grep '^[^:]*::' /etc/passwd
+
+The pattern is: beginning of line, any number of non-colons, double colon.
+
+grep is actually the oldest of a family of programs, the other members of which
+are called fgrep and egrep. Their basic behavior is the same, but fgrep searches
+for many literal strings simultaneously, while egrep interprets true regular
+expressions --- the same as grep, but with an "or" operator and parentheses to
+group expressions, explained below.
+
+Both fgrep and egrep accept a -f option to specify a file from which to read the
+pattern. In the file, newlines separate patterns to be searched for in
+parallel. If there are words you habitually misspell, for example, you could
+check your documents for their occurrence by keeping them in a file, one per
+line, and using fgrep:

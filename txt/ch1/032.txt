@@ -1,0 +1,46 @@
+
+        $ ls | pr -3 | lpr
+
+creates a 3-column list of filenames on the line printer, and
+
+        $ who | grep mary | wc -l
+
+counts how many times Mary is logged in.
+
+The programs in a pipeline actually run at the same time, not one after
+another. This means that the programs in a pipeline can interactive; the kernel
+looks after whatever scheduling and synchronization is needed to make it all
+work.
+
+As you probably suspect by now, the shell arranges things when you ask for a
+pipe; the individual programs are oblivious to the redirection. Of course,
+programs have to operate sensibly if you are to be combined this way. most
+commands follow a common design, so they will fit properly into pipelines at any
+position. normally a command invocation looks like
+
+          command optional-arguments optional-filenames
+
+If no filenames are given, the command reads its standard input, which is by
+default the terminal (handy for experimenting) but which can be redirected to
+come from a file or a pipe. At the same time, on the output side, most commands
+write their output on the standard output, which is by default sent to the
+terminal. But it too can be redirected to a file or a pipe.
+
+Error messages from commands have to be handled differently, however, or they
+might disappear into a file or down a pipe. So each command has a standard error
+output as well, which is normally directed to your terminal. Or, as a picture:
+
+
+Almost all the commands we have talked about so far fit this model; the only
+exceptions are commands like date and who that read no input, and a few like cmp
+and diff that have a fixed number of file inputs. (But look at the '-' option on
+these.)
+
+Exercise 1-7. Explain the difference between
+
+         $ who | sort
+
+and
+
+
+

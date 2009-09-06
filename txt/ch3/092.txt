@@ -1,0 +1,51 @@
+
+        $ x='Good Bye'                    Change its value
+        $ echo $x
+        Good Bye
+        $ ctl-d                           Leave this shell
+        $                                 Back in original shell
+        $ echo $x
+        Hello                             x still Hello
+        $
+
+export has subtle semantics, but for day-to-day purposes as least, a rule of
+thumb suffices: don't export temporary variables set for short-term convenient,
+but always export variables you want set in all your shells and sub-shells
+(including, for example, shells started with the ed's ! command). Therefore,
+variables special to the shell, such as PATH and HOME, should be exported.
+
+Exercise 3-13. Why do we always include the current directory in PATH? Where
+should it be placed?
+
+
+3.7 More on I/O redirection
+
+The standard error was invented so that error messages would always appear on
+the terminal:
+
+        $ diff file1 fiel2 >diff.out
+	diff: fiel2: No such file or directory
+	$
+
+It's certainly desirable that error messages work this way --- it would be most
+unfortunate if they disappeared into diff.out, leaving you with the impression
+that the erroneous diff command had worked properly.
+
+Every program has three default files established when it starts, numbered by
+small integers called file descriptors (which we will return to in Chapter
+7). The standard input, 0, and the standard output, 1, which we are already
+familiar with, are often redirected from and into files and pipes. The last,
+numbered 2, is the standard error output, and normally finds its way to your
+terminal.
+
+Sometimes programs produce output on the standard error even when they work
+properly. One common example is the program time, which runs a command and then
+reports on the standard error how much time it took.
+
+	$ time wc ch3.1
+	    931   4288   22691 junk
+
+	real        1.0
+	user        0.4
+	sys         0.4
+	$

@@ -1,0 +1,56 @@
+
+$ ls \?
+
+(Remember that because ? is not the erase or like kill character, this backslash
+is interpreted by the shell, not by the kernel.) Quoting is treated at length in
+Chapter 3.
+
+Exercise 1-4 What are the differences among these commands?
+
+        $ ls junk                  $ echo junk
+        $ ls /                     $ echo /
+        $ ls                       $ echo
+        $ ls *                     $ echo *
+        $ ls '*'                   $ echo '*'
+
+
+
+Input-output redirection
+
+Most of the commands we have seen so far produce output on the terminal; some,
+like the editor, also take their input from the terminal. It is nearly universal
+that terminal can be replaced by a file for either or both of input and
+output. As one example,
+
+        $ ls
+
+makes a list of filenames on your terminal. But if you say
+
+        $ ls >filelist
+
+that same list of filenames will be placed in the file filelist instead. The
+symbol > means "put the output in the following file, rather than on the
+terminal." The file will be created if it doesn't already exist, or the previous
+contents overwritten if it does. Nothing is produced on your terminal. As
+another example, you can combine several files into one by capturing the output
+of cat in a file:
+
+        $ cat f1 f2 f3 >temp
+
+The symbol >> operates much as > does, except that it means "add to the end of."
+That is,
+
+        $ cat f1 f2 f3 >>temp
+
+copies the contents of f1 f2 and f3 onto the end of whatever is already in temp,
+instead of overwriting the existing contents. As with >, if temp doesn't exist,
+it will be created initially empty for you.
+
+In a similar way, the symbol < means to take the input for a program from the
+following file, instead of from the terminal. Thus, you can prepare a letter in
+file let, then send it to several people with
+
+        $ mail mary joe tom bob <let
+
+In all of these examples, blanks are optional on either side of > or <, but our
+formatting is traditional.

@@ -1,0 +1,46 @@
+
+beyond convenience, to actually increasing the capabilities of the system.
+
+Much of the power and convenience of the shell derives from the UNIX kernel
+underneath it; for example, although the shell sets up pipes, the kernel
+actually moves the data through them. The way the system treats executable files
+makes it possible to write shell files so that they are run exactly like
+compiled programs. The user needn't be aware that they are command files ---
+they aren't invoked with a special command like RUN. Also, the shell is a
+program itself, not part of the kernel, so it can be tuned, extended and used
+like any other program. This idea is not unique to the UNIX system, but it has
+been exploited better there than anywhere else.
+
+In Chapter 5, we'll return to the subject of shell programming, but you should
+keep in mind that whatever you're doing with the shell, you're programming it
+--- that's largely why it works so well.
+
+
+History and bibliographic notes
+
+The shell has been programmable from earliest times. Originally there were
+separate commands for if, goto, and labels, and the goto command operated by
+scanning the input file from the beginning looking for the right label. (Because
+it is not possible to re-read a pipe, it was not possible to pipe into a shell
+file that had any control flow.)
+
+The 7th Edition shell was written originally by Steve Bourne with some help and
+ideas from John Mashey. It contains everything needed for programming, as we
+shell see in Chapter 5. In addition, input and output are rationalized: it is
+possible to redirect I/O into and out of shell programs without limit. The
+parsing of filename metacharacters is also internal to this shell; it had been a
+separate program in earlier versions, which had to live on very small machines.
+
+One other major shell that you may run into (you may already be using it by
+preference) is csh, the so-called "C shell" developed at Berkeley by Bill Joy by
+building on the 6th Edition shell. The C shell has gone further than the Bourne
+shell in the direction of helping interaction --- most notably, it provides a
+history mechanism that permits shorthand repetition (perhaps with slight
+editing) of previously issued commands. The syntax is also somewhat
+different. But because it is based on an earlier shell, it has less of the
+programming convenience; it is more an interactive interpreter than a
+programming language. In particular, it is not possible to pipe into or out of
+control flow constructs.
+
+pick was invented by Tom Duff, and bundle was invented independently by Alan
+Hewett and James Gosling.

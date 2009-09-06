@@ -1,0 +1,53 @@
+
+name. du looks in a directory for files; if you don't tell it which directory,
+it assumes '.', the directory you are in now. Therefore, junk and ./junk are
+names for the same file.
+
+Despite their fundamental properties inside the kernel, directories sit in the
+file system as ordinary files. They can be read as ordinary files. But they
+can't be created or written as ordinary files --- to preserve its sanity and the
+users' files, the kernel reserves to itself all control over the contents of
+directories.
+
+The time has come to look at the bytes in a directory:
+
+	$ od -cb .
+	0000000  4   ;    .  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0
+		064 073 056 000 000 000 000 000 000 000 000 000 000 000 000 000
+	0000020 273  (    .   .  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0
+		273 050 056 056 000 000 000 000 000 000 000 000 000 000 000 000
+	0000040 252  ;    r   e   c   i   p   e   s  \0  \0  \0  \0  \0  \0  \0
+		252 073 162 145 143 151 160 145 163 000 000 000 000 000 000 000
+	0000060 230  =    j   u   n   k  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0
+		230 075 152 165 156 153 000 000 000 000 000 000 000 000 000 000
+	0000100
+	$
+
+See the filenames buried in there? The directory format is a combination of
+binary and textual data. A directory consists of 16-byte chunks, the last 14
+byte of which hold the filename, padded with ASCII NUL's (which have value 0)
+and the first two of which tell the system where the administrative information
+for the file resides --- we'll come back to that. Every directory begins with
+the two entries '.' ("dot") and '..' ("dot-dot").
+
+	$ cd                           Home
+	$ cd recipes
+	$ pwd
+	/usr/you/recipes
+	$ cd ..; pwd		       Up one level
+	/usr/you
+	$ cd ..; pwd		       Up another level
+	/usr
+	$ cd ..; pwd		       Up another level
+	/
+	$ cd ..; pwd		       Up another level
+	/			       Can't go any higher
+	$
+
+The directory / is called the root of the file system. Every file in the system
+is in the root directory or one of its subdirectories, and the root is its own
+parent directory.
+
+
+Exercise 2-2. Given the information in this section, you should be able to
+understand roughly how the ls command operates. Hint: cat . >foo; ls -f foo.

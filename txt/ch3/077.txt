@@ -1,0 +1,56 @@
+
+
+$ echo x*y
+
+echoes all the filenames beginning x and ending with y. As always, echo knows
+nothing about files or shell metacharacters; the interpretation of *, if any, is
+supplied by the shell.
+
+What happens if no files match the pattern? The shell, rather than complaining
+(as it did in early versions), passes the string on as though it had been
+quoted. It's usually a bad idea to depend on this behavior, but it can be
+exploited to learn of the existence of files matching a pattern:
+
+        $ ls x*y                        Message from ls: no such files exist
+        x*y not found                   Create xyzzy
+        $ >xyzzy
+        $ ls x*y                        File xyzzy matches x*y
+        xyzzy
+        $ ls 'x*y'
+        x*y not found                   ls doesn't interpret the *
+        $
+
+A backslash at the end of a line causes the line to be continued; this is the
+way to present a very long line to the shell.
+
+        $ echo abc\
+        > def\
+        > ghi
+        abcdefghi
+        $
+
+Notice that the newline is discarded when preceded b backslash, but is retained
+when it appears in quotes.
+
+The metacharacter # is almost universally used for shell commands; if a shell
+word begins with #, the rest of the lines is ignored:
+
+        $ echo hello # there
+        hello
+        $ echo hello#there
+        hello#there
+        $
+
+The # was not part of the original 7th Edition, but it has been adopted very
+widely, and we will use it in the rest of the book.
+
+
+Exercise 3-2. Explain the output produced by
+
+        $ ls .*
+
+
+A digression on echo
+
+Even though it isn't explicitly asked for, a final newline is provided by
+echo. A sensible and perhaps cleaner design for echo would be to print only

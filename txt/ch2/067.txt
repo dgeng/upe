@@ -1,0 +1,49 @@
+
+        $ /etc/mount
+        rp01 on /usr
+        $
+
+In our case, the root system occupies /dev/rp00 (although this isn't reported by
+/etc/mount) while the user file system --- the files in /usr and its
+subdirectories --- reside on /dev/rp01
+
+the root file system has to be present for the system to execute. /bin, /dev and
+/etc are always kept on the root system, because when the system starts only
+file in the root system are accessible, and some files such as /bin/sh are
+needed to run at all. During the bootstrap operation, all the file systems are
+checked for self-consistency (see icheck(8) or fsck(8)), and attached to the
+root system. This attachment operation is called mounting, the software
+equivalent of mounting a new disc pack in a drive; it can normally be done only
+by the super-user. After /dev/rp01 has been mounted as /usr, the files in the
+user file system are accessible exactly as if they were part of the root system.
+
+For the average user, the details of which file subsystem is mounted where are
+of little interest, but there are a couple of relevant points. First, because
+the subsystems may be mounted and dismounted, it is illegal to make a link to a
+file in another subsystem. For example, it is impossible to link programs in
+/bin to convenient names in private bin directories, because /usr is in a
+different file subsystem from /bin:
+
+        $ ln /bin/mail /usr/you/bin/m
+        ln: Cross-device link
+        $
+
+There would also be a problem because inode numbers are not unique in different
+file systems.
+
+Second, each subsystem has fixed upper limits on size (number of blocks
+available for files) and inodes. If a subsystem fills up, it will be impossible
+to enlarge files in that subsystem until some space is reclaimed. The df (disc
+free space) command reports the available space on the mounted file subsystems:
+
+        $ df
+        /dev/rp00 1989
+        /dev/rp01 21257
+
+/usr has 21257 free blocks. Whether this is ample space or a crisis depends on
+how the system is used; some installations need more file space headroom than
+others. By the way, of all the commands, df probably has the widest variation in
+output format. Your df output may look quite different.
+
+Let's turn how to some more generally useful things. When you log in, you get a
+terminal line and therefore a file in /dev through which the characters

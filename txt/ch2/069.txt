@@ -1,0 +1,57 @@
+
+to read it again. Redirecting news to the file /dev/null causes its output to
+thrown away:
+
+        $ news > /dev/null
+        $
+
+Data written to /dev/null is discarded without comment, while programs that read
+from /dev/null get end-of-file immediately, because reads from /dev/null always
+return zero bytes.
+
+One common use of /dev/null is to throw away regular output so that diagnostic
+messages are visible. For example, the time command (time(1)) reports the CPU
+usage of a program. The information is printed on the standard error, so you can
+time commands that generate copious output by sending the standard output to
+/dev/null:
+
+        $ ls -l /usr/dict/words
+        -r--r--r-- 1 bin    196513 Jan 20  1979 /usr/dict/words
+        $ time grep e /usr/dict/words >/dev/null
+
+        real       13.0
+        user        9.0
+        sys         2.7
+        $
+        $ time egrep e /usr/dict/words >/dev/null
+
+        real        8.0
+        user        3.9
+        sys         2.8
+        $
+
+The numbers in the output of time are elapsed clock time, CPU time spent in the
+program and CPU time spent in the kernel while the program was running. egrep is
+a high-powered variant of grep that we will discuss in Chapter 4; it's about
+twice as fast as grep when searching through large files. If output from grep
+and egrep had not been sent to /dev/null or a real file, we would have had to
+wait for hundreds of thousands of characters to appear on the terminal before
+finding out the timing information we were after.
+
+
+Exercise 2-9. Find out about the other files in /dev by reading Section 4 of the
+manual. What is the difference between /dev/mt0 and /dev/rmt0? Comment on the
+potential advantages of having subdirectories in /dev for discs, tapes, etc.
+
+Exercise 2-10. tapes written on non-UNIX systems often have different block
+sizes, such as 800 bytes --- ten 80-character card images --- but the tape
+device /dev/mt0 expects 512-byte blocks. Look up the dd command (dd(1)) to see
+how to read such a tape.
+
+Exercise 2-11. Why isn't /dev/tty just a link to your login terminal? What would
+happen if it were mode rw-w--w-- like your login terminal?
+
+Exercise 2-12. how does write(1) work? Hint: see utmp(5).
+
+Exercise 2-13. how can you tell if a user has been active at the terminal
+recently?

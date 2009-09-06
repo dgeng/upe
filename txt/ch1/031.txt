@@ -1,0 +1,63 @@
+
+work. For example,
+
+        $ sort
+        ghi
+        abc
+        def
+        ctl-d
+        abc
+        def
+        ghi
+        $
+
+In the next section, we will see how this principle is exploited.
+
+Exercise 1-5. Explain why
+
+         $ ls >ls.out
+
+causes ls.out to be included in the list of names.
+
+Exercise 1-6. Explain the output from
+
+        $ wc temp >temp
+
+If you misspell a command name, as in
+
+        $ woh >temp
+
+what happens?
+
+
+Pipes
+
+All of the examples at the end of the previous section rely on the same trick:
+putting the output of one program into the input of another via a temporary
+file. But the temporary file has no other purpose; indeed, it's clumsy to have
+to use such a file. This observation leads to one of the fundamental
+contribution of the UNIX system, the idea of a pipe. A pipe is a way to connect
+the output of one program to the input of another program without any temporary
+file; a pipeline is a connection of two or more programs through pipes.
+
+Let us revise some the earlier examples to use pipes instead of temporaries. The
+vertical bar character | tells the shell to set up a pipeline:
+
+        $ who | sort               Print sorted list of users
+        $ who | wc -l              Count users
+        $ ls | wc -l               Count files
+        $ ls | pr -3               3-column list of filenames
+        $ who | grep mary          Look for particular user
+
+Any program that read from the terminal can read from a pipe instead; any
+program that writes on the terminal can write to a pipe. This is where the
+convention of reading the standard input when no files are named pays off: any
+program that adheres to the convention can be used in pipelines: grep, pr, sort
+and wc are all used that way in the pipelines above.
+
+You can have as many programs in a pipeline as you wish:
+
+
+
+
+

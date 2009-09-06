@@ -1,0 +1,56 @@
+
+        $ mv junk sameoldjunk
+        $ ls -li
+        total 2
+        15274 drwxrwxrwx 4 you        64 Sep 27 19:34 recipes
+        15768 -rw-rw-rw- 1 you        29 Sep 27 13:16 sameoldjunk
+        $
+
+sameoldjunk is the same file as our old junk, right down to the i-number; only
+its name --- the directory entry associated with inode 15768 --- has been
+changed.
+
+We have been doing all this file shuffling in one directory, but it also works
+across directories. ln is often used to put links with the same name in several
+directories, suck as when several people are working on program or document. mv
+can move a file or directory from one directory to another. In fact, these are
+common enough idioms that mv and cp have special syntax for them:
+
+        $ mv (or cp) file1 file2 ... directory
+
+moves (or copies) one or more files to the directory which is the last
+argument. The links or copies are made with the same filenames. For example, if
+you wanted to try your hand at beefing up the editor, you might begin by saying
+
+        $ cp /usr/src/comd/ed.c .
+
+to get your own copy of the source to play with. If you were going to work on
+the shell, which is in a number of different source files, you would say
+
+        $ mkdir sh
+        $ cp /usr/src/cmd/sh/* sh
+
+and cp would duplicate all of the shell's source files in your subdirectory sh
+(assuming no subdirectory structure in /usr/src/cmd/sh --- cp is not every
+clever). On some systems, ln also accepts multiple file arguments, again with a
+directory as the last argument. And on some systems, mv, cp and ln are
+themselves links to a single file that examines its name to see what service to
+perform.
+
+
+Exercise 2-6. Why does ls -l report 4 links to recipes? Hint: try
+
+        $ ls -ld /usr/you
+
+Why is this useful informatin?
+
+Exercise 2-7. What is the difference between
+
+        $ mv junk junk1
+
+and
+
+        $ cp junk junk1
+        $ rm junk
+
+Hint: make a link to junk, then try it.

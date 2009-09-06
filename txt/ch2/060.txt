@@ -1,0 +1,51 @@
+
+file point to the same inode, and hence have the same i-number:
+
+        $ ls -li
+        total 3
+        15768 -rw-rw-rw- 2 you        29 Sep 27 12:07 junk
+        15768 -rw-rw-rw- 2 you        29 Sep 27 12:07 linktojunk
+        15274 drwxrwxrwx 4 you        64 Sep 27 09:34 recipes
+        $
+
+The integer printed between the permissions and the owner is the number of links
+to the file. Because each link just points to the inode, each link is equally
+important --- there is no difference between the first link and subsequent ones.
+(Notice that the total disc space computed by ls is wrong because of double
+counting.)
+
+When you change a file, access to the file by any of its names will reveal the
+changes, since all the links point to the same file.
+
+        $ echo x >junk
+        $ ls -l
+        total 3
+        -rw-rw-rw- 2 you         2 Sep 27 12:37 junk
+        -rw-rw-rw- 2 you         2 Sep 27 12:37 linktojunk
+        drwxrwxrwx 4 you        64 Sep 27 09:34 recipes
+        $ rm linktojunk
+        $ ls -l
+        total 3
+        -rw-rw-rw- 2 you         2 Sep 27 12:37 junk
+        drwxrwxrwx 4 you        64 Sep 27 09:34 recipes
+        $
+
+After linktojunk is removed the link count goes back to one. As we said
+before. rm'ing a file just breaks a link; the file remains until the last link
+is removed. In practice, of course, most files only have one link, but again we
+see a simple idea providing great flexibility.
+
+A word to the hasty: once the last link to a file is gone, the data is
+irretrievable. Deleted files go into the incinerator, rather than the waste
+basket, and there is no way to call them back from the ashes. (There is a faint
+hope of resurrection. Most large UNIX systems have a formal backup procedure
+that periodically copies changed files to some safe place like magnetic tape,
+from which they can be retrieved. For your own protection and peace of mind, you
+should know just how much backup is provided on your system. If there is none,
+watch out --- some mishap to the discs could be a catastrophe.)
+
+Links to files are handy when two people wish to share a file, but sometimes you
+really want a separate copy --- a different file with the same information. You
+might copy a document before making extensive changes to it, for example, so you
+can restore the original if you decide you don't like the changes. Make a link
+wouldn't help, because when the data changed, both

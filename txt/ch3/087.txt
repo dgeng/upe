@@ -1,0 +1,59 @@
+
+
+        $ cat mailinglist               New version
+        echo don whr ejs mb
+        $ cx mailinglist
+        $ mailinglist
+        don whr ejs mb
+        $
+
+Now mailing the letter to the people on the list becomes
+
+        $ mail `mailinglist` <letter
+
+With the addition of one more program, it's even possible to modify the user
+list interactively. The program is called pick:
+
+        $ pick arguments ...
+
+presents the arguments one at a time and waits after each for a response. The
+output of pick is those arguments selected by y (for "yes") responses; any other
+response causes the argument to be discarded. For example,
+
+        $ pr `pick *.c` | lpr
+
+presents each filename that ends in .c; those selected are printed with pr and
+lpr. (pick is not part of the 7th Edition, but it's so easy and useful that
+we've included versions of it in Chapter 5 and 6.)
+
+Suppose you have the second version of mailinglist. Then
+
+        $ mail `pick \`mailinglist\`` <letter
+        don? y
+        whr?
+        ejs?
+        mb? y
+        $
+
+sends the letter to don and mb. Notice that there are nested backquotes; the
+backquotes prevent the interpretation of the inner `...` during the parsing of
+the outer one.
+
+Exercise 3-10. If the backquotes are omitted in
+
+        $ echo `echo \`date\``
+
+what happens?
+
+Exercise 3-11. Try
+
+        $ `date`
+
+and explain the result.
+
+Exercise 3-12.
+
+        $ grep -l pattern filenames
+
+lists the filenames in which there was a match of pattern, but produces no other
+output. Try some variations on

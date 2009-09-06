@@ -1,0 +1,35 @@
+
+CONTENTS
+
+Preface	                                                                 vii
+1.	UNIX for Beginners                                                 1
+        1.1	Getting started                                            2
+        1.2	Day-to-day use: files and common commands                 11
+        1.3	More about files: directories                             21
+        1.4	The shell                                                 26
+        1.5	The rest of the UNIX system                               38
+
+2.	The File System                                                   41
+        2.1	The basics of files                                       41
+        2.2	What's in a file?                                         46
+        2.3	Directories and filenames                                 48
+        2.4	Permissions                                               52
+        2.5	Inodes                                                    57
+        2.6	The directory hierarchy                                   63
+        2.7	Devices	                                                  65
+
+3.	Using the Shell	                                                  71
+        3.1	Command line structure                                    71
+        3.2	Metacharacters                                            74
+        3.3	Creating new commands                                     80
+        3.4	Command arguments and parameters                          82
+        3.5	Program output as arguments                               86
+        3.6	Shell variables                                           88
+        3.7	More on I/O redirection                                   92
+        3.8	Looping in shell programs                                 94
+        3.9	bundle: putting it all together                           97
+        3.10	Why a programmable shell?                                 99
+
+4.	Filters                                                          101
+        4.1	The grep family                                          102
+        4.2	Other filters                                            106

@@ -1,0 +1,52 @@
+
+name. od -d will dump the data in decimal by byte pairs rather than octal by
+bytes and thus make the i-number visible.
+
+        $ od -c .
+        0000000   4   ;   .  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0
+        0000020 273   (   .   .  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0
+        0000040 252   ;   r   e   c   i   p   e   s  \0  \0  \0  \0  \0  \0  \0
+        0000060 230   =   j   u   n   k  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0
+        0000100 354   =   x  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0
+        0000120
+        $ od -d .
+        0000000 15156 00046 00000 00000 00000 00000 00000 00000
+        0000020 10427 11822 00000 00000 00000 00000 00000 00000
+        0000040 15274 25970 26979 25968 00115 00000 00000 00000
+        0000060 15768 30058 27502 00000 00000 00000 00000 00000
+        0000100 15852 00120 00000 00000 00000 00000 00000 00000
+        0000120
+        $
+
+The first two bytes in each directory entry are the only connection between the
+name of a file and its contents. A filename in a directory is therefore called a
+link, because it links a name in the directory hierarchy to the inode, and hence
+to the data. The same i-number can appear in more than one directory. The rm
+command does not actually remove inodes; it removes directory entries or
+links. Only when the last link to a file disappears does the system remove the
+inode, and hence the file itself.
+
+If the i-number in a directory entry is zero, it means that the link has been
+removed, but not necessarily the contents of the file --- there may still be a
+link somewhere else. you can verify that the i-number goes to zero by removing
+the file:
+
+        $ rm x
+        $ od -d .
+        0000000 15156 00046 00000 00000 00000 00000 00000 00000
+        0000020 10427 11822 00000 00000 00000 00000 00000 00000
+        0000040 15274 25970 26979 25968 00115 00000 00000 00000
+        0000060 15768 30058 27502 00000 00000 00000 00000 00000
+        0000100 00000 00120 00000 00000 00000 00000 00000 00000
+        0000120
+
+The next file created in this directory will go into the unused slot, although
+it will probably have a different i-number.
+
+The ln command makes a link to an existing file, with the syntax
+
+        $ ln old-file new-file
+
+The purpose of a link is to give two names to the same file, often so it can
+appear in two different directories. On many systems there is a link to /bin/ed
+called /bin/e, so that people can call the editor e. Two links to a

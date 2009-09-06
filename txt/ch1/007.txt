@@ -1,0 +1,53 @@
+
+depends not only on where they end up but how got there.
+
+Every character you type is immediately echoed to the terminal, unless echoing
+is turned off, which is rare. Until you press RETURN, the characters are held
+temporarily by the kernel, so typing mistakes can be corrected with the erase
+and line kill characters. When an erase or line kill character is preceded by a
+backslash, the kernel discards the backslash and holds the following character
+without interpretation.
+
+When you press RETURN, the characters being held are sent to the program that is
+reading from the terminal. That program may in turn interpret the characters is
+special ways; for example, the shell turns off any special interpretation of a
+character is it is preceded by a backslash. We'll come back to this in Chapter
+3. For now, you should remember that the kernel processes erase and line kill,
+and backslash only if it precedes erase or line kill; whatever characters are
+left after that may be interpreted by other programs as well.
+
+Exercise 1-1. Explain what happens with
+
+        $ date\@
+
+Exercise 1-2. Most shells (although not the 7th Edition shell) interpret # as
+introducing a comment, and ignore all text from the # to the end of the
+line. Given this, explain the following transcript, assuming your erase
+character is also #
+
+        $ date
+        Mon Sep 26 12:39:56 EDT 1983
+        $ #date
+        Mon Sep 26 12:40:21 EDT 1983
+        $ \#date
+        $ \\#date
+        #date : not found
+        $
+
+
+Type-ahead
+
+The kernel reads what you type as you type it, even if it's busy with something
+else, so you can type as fast as you want, whenever you want, even when some
+command is printing at you. If you type while the system is printing, your input
+characters will appear intermixed with the output characters, but they will be
+stored away and interpreted in the correct order. You can type commands one
+after another without waiting for them to finish or even to begin.
+
+
+Stopping a program
+
+You can stop most commands by typing the character DELETE. The BREAK key found
+on most terminals may also work, although this is system dependent. In a few
+programs, like text editors, DELETE stops whatever the program is doing but
+leaves you in that program. Turning off the terminal or

@@ -1,0 +1,50 @@
+
+        $ tail -1 poem
+          and greater still, and so on.
+        $ 
+
+tail can also be used to print a file starting at a specified line:
+
+        $ tail +3 filename
+
+starts printing with the 3rd line. (Notice the natural inversion of the minus
+sign convention for arguments.)
+
+The final pair of commands is for comparing files. Suppose that we have a
+variant of poem in the file new_poem:
+
+        $ cat poem
+        Great fleas have little fleas
+          upon their backs to bite 'em,
+        And little fleas have lesser fleas,
+          and so ad infinitum.
+        And the great fleas themselves, in turn,
+          have greater fleas to go on;
+        While these again have greater still,
+          and greater still, and so on.
+        $ cat new_poem
+        Great fleas have little fleas
+          upon their backs to bite them,
+        And little fleas have lesser fleas,
+          and so so ad infinitum.
+        And the great fleas themselves, in turn,
+          have greater fleas to go on;
+        While these again have greater still,
+          and greater still, and so on.
+        $ 
+
+There's not much difference between the two files; in fact you'll have to look
+hard to find it. This is where file comparison commands come in handy. cmp finds
+the first place where two files differ:
+
+        $ cmp poem new_poem
+        poem new_poem differ: char 58, line 2
+        $ 
+
+This says that the files are different in the second line, which is true enough,
+but it doesn't say what the difference is, nor does it identify any difference
+beyond the first.
+
+The other file comparison command is diff, which reports on all lines that are
+changed, added or deleted:
+

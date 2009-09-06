@@ -1,0 +1,53 @@
+
+
+        $ sed 1q /etc/password | awk '{ split($0,a,":"); print a[1] }'
+        root
+        $ echo 9/29/83 | awk '{ split($0,date,"/"); print date[3] }'
+        83
+        $
+
+Table 4.5 lists the awk built-in functions.
+
++------------------------------------------------------------------------------+
+|                       Table 4.5 awk Built-in Functions                       |
+|                                                                              |
+| cos(expr)           consine of expr                                          |
+| exp(expr)           exponential of expr: e^expr                              |
+| getline()           reads next input line; return 0 if end of file, 1 if not |
+| index(s1,s2)        position of string s2 in s1; return 0 if not present     |
+| int(expr)           integer part of expr; truncates toward  0                |
+| length(s)           length of string s                                       |
+| log(expr)           natural logarithm of expr                                |
+| sin(expr)           sine of expr                                             |
+| split(s,a,c)        split s into a[1]...a[n] on character c; return n        |
+| sprintf(fmt, ...)   format ... according to the specification fmt            |
+| substr(s,m,n)       n-character substring of s beginning at position m       |
++------------------------------------------------------------------------------+
+
+Associative arrays
+
+A standard problem in data processing is to accumulate values for a set of
+name-value pairs. That is, from input like
+
+        Susie 400
+        John  100
+        Mary  200
+        Mary  300
+        John  100
+        Susie 100
+        Mary  100
+
+we want to compute the total for each name:
+
+        John 200
+        Mary 600
+        Susie 500
+
+awk provides a neat way to do this, the associative array. Although one normally
+thinks of array subscripts as integers, in awk any value can be used as a
+subscript. So
+
+                { sum[$1] += $2 }
+        END     { for (name in sum) print name, sum [name] }
+
+is the complete program for adding up and printing the sums for the name-

@@ -1,0 +1,52 @@
+
+        $ grep -v fleas poem
+          upon their backs to bite 'em,
+          and so ad infinitum.
+        While these again have greater still,
+          and greater still, and so on.
+        $ 
+
+grep can be used to search several files; in that case it will prefix the
+filename to each line that matches, so you can tell where the match took
+place. There are also options for counting, numbering, and so on. grep will also
+handle much more complicated patterns than just words like "fleas," but we will
+defer consideration of that until Chapter 4.
+
+The third command is sort, which sorts its input into alphabetical order line by
+line. This isn't very interesting for the poem, but let's do it anyway, just to
+see what it looks like:
+
+        $ sort poem
+          and greater still, and so on.
+          and so ad infinitum.
+          have greater fleas to go on;
+          upon their backs to bite 'em,
+        And little fleas have lesser fleas,
+        And the great fleas themselves, in turn,
+        Great fleas have little fleas
+        While these again have greater still,
+        $ 
+
+The sorting is line by line, but the default sorting order puts blanks first,
+then upper case letters, then lower case, so it's not strictly alphabetical.
+
+sort has zillions of options to control the order of sorting --- reverse order,
+numerical order, dictionary order, ignoring leading blanks, sorting on fields
+with the line, etc. --- but usually one has to look up those options to sure of
+them. Here are a handful of the most common:
+
+        sort -r            Reverse normal order
+        sort -n            Sort in numerical order
+        sort -nr           Sort in reverse numerical order
+        sort -f            Fold upper and lower case together
+        sort +n            Sort starting at n+1-st fields
+
+Chapter 4 has more information about sort.
+
+Another file-examining command is tail, which prints the last 10 lines of a
+file. That's overkill for our eight-line poem, but it's good for larger files.
+Furthermore, tail has an option to specify the number of lines, so to print the
+last line of poem.
+
+
+

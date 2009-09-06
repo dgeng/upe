@@ -1,0 +1,53 @@
+
+
+        $ cal
+        usage: cal [month] year                 Good so far
+        $ cal october 1983
+        Bad argument                            Not so good
+        $ cal 10 1983
+           October 1983
+         S  M Tu  W Th  F  S
+                           1
+         2  3  4  5  6  7  8
+         9 10 11 12 13 14 15
+        16 17 18 19 20 21 22
+        23 24 25 26 27 28 29
+        30 31
+        $
+
+It's a nuisance that the month has to be provided numerically. And as it turns
+out, cal 10 prints out the calendar for the entire year 10, rather than for the
+current October, so you must always specify the year to get a calendar for a
+single month.
+
+The important point here is that no matter what interface the cal command
+provides, you can change it without changing cal itself. You can place a command
+in your private bin directory that converts a more convenient argument syntax
+into whatever the real cal requires. You can even call your version cal, which
+means one less thing for you to remember.
+
+The first issue is design: what should cal do? Basically, we want cal to be
+reasonable. It should recognize a month by name. With two arguments, it should
+behave just as the old cal does, except for converting month names into
+numbers. Given one argument, it should print the month or year's calendar as
+appropriate, and given zero arguments, it should print the current month's
+calendar, since that is certainly the most common use of a cal command. So the
+problem is to decide how many arguments there are, then map them to what the
+standard cal wants.
+
+The shell provides a case statement that well suited for making such decisions:
+
+        case word in
+        pattern)  commands ;; 
+        pattern)  commands ;; 
+        ...
+        esac
+
+The case statement compares word to the patterns from top to bottom, and
+performs the commands associated with the first, and only the first, pattern
+that matches. The patterns are written using the shell's pattern matching rules,
+slightly generalized from what is available for filename matching. Each action
+is terminated by the double semicolon ;;. (The ;; may be left off the last case
+but we often leave it in for easy editing.)
+
+

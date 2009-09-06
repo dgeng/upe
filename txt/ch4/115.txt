@@ -1,0 +1,52 @@
+
+Fields
+
+awk splits each input line automatically into fields, that is, strings of
+non-blank characters separated by blanks or tabs. By this definition, the output
+of who has five fields:
+
+        $ who
+        you      tty2     Sep 29 11:53
+        jim      tty4     sep 29 11:27
+        $
+
+awk calls the fields $1, $2, ..., $NF, where NF is a variable whose value is set
+to the number of fields. In this case, NF is 5 for both lines. (Note the
+difference between NF, the number of fields, and $NF, the last field on the
+line. In awk, unlike the shell, only fields begin with a $; variables are
+unadorned.) For example, to discard the file sizes produced by du -a.
+
+        $ du -a | awk '{ print $2 }'
+
+and to print the names of the people logged in and the time of login, one per
+line:
+
+        $ who | awk '{ print $1, $5 }'
+        you 11:53
+        jim 11:27
+        $
+
+To print the name and time of login sorted by time:
+
+        $ who | awk '{ print $5, $1 }' | sort
+        11:27 jim
+        11:53 you
+        $
+
+These are alternatives to the sed versions shown earlier in this
+chapter. Although awk is easier to use than sed for operations like these, it is
+usually slower, both getting started and in execution when there's a lot of
+input.
+
+awk normally assumes that white space (any number of blanks and tabs) separate
+fields, but the separator can be changed to any single character. One why is
+with the -F (upper case) command-line option. For example, the fields in the
+password file /etc/password are separated by colons:
+
+        $ sed 3q /etc/passwd
+        root:3D.fHR5KoB.3s:0:1:S.User:/:
+        ken:y.68wd1.ijayz:6:1:K.Thompson:/usr/ken:
+        dmr:z4u3dJWbg7wCk:7:1:D.M.Ritchie:/usr/dmr:
+        $
+
+To print the user names, which come from the first field,

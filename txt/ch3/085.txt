@@ -1,0 +1,53 @@
+
+longer in quotes, so the sub-shell interpreting the 411 command converts it into
+two arguments to grep: it's as if you had typed
+
+        $ grep dow jones /usr/you/lib/phone-book
+
+and that's obviously wrong.
+
+One remedy relies on the way the shell treats double quotes. Although anything
+quoted with '...' is inviolate, the shell looks inside "..." for $'s, \'s, and
+`...`'s. So if you revise 411 to look like
+
+        grep "$*" /usr/you/lib/phone-book
+
+the $* will be replaced by the arguments, but it will be passed to grep as a
+single argument even if it contains spaces.
+
+        $ 411 dow jones
+        dow jones report  212-976-4141
+        $
+
+By the way, you can make grep (and thus 411) case-independent with the -y
+option:
+
+        $ grep -y pattern ...
+
+with -y, lower case letters in pattern will also match upper case letters in the
+input. (This option is in 7th Edition grep, but is absent from some other
+systems.)
+
+There are fine points about command arguments that we are skipping over until
+Chapter 5, but one is worth noting here. The argument $0 is the name of the
+program being executed --- in cx, $0 is "cx." A novel use of $0 is in the
+implementation of the programs 2, 3, 4, ..., which print their output in that
+many columns:
+
+        $ who | 2
+        drh      tty0    Sep 28 21:23        cvw     tty5    Sep 28 21:09
+        dmr      tty6    Sep 28 21:10        scj     tty7    Sep 28 22:11
+        you      tty9    Sep 28 23:00        jlb     ttyb    Sep 28 19:58
+        $
+
+The implementations of 2, 3, ... are identical; in fact they are links to the
+same file:
+
+        $ ln 2 3; ln 2 4; ln 2 5; ln 2 6
+        $ ls -li [1-9]
+        167222 -rwxrwxrwx 5 you         51 Sep 28 23:21 2
+        167222 -rwxrwxrwx 5 you         51 Sep 28 23:21 3
+        167222 -rwxrwxrwx 5 you         51 Sep 28 23:21 4
+        167222 -rwxrwxrwx 5 you         51 Sep 28 23:21 5
+        167222 -rwxrwxrwx 5 you         51 Sep 28 23:21 6
+

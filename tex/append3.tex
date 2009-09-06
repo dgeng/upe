@@ -1,0 +1,938 @@
+\chapter{\texttt{hoc} Listing}
+
+\begin{verbatim}
+
+***** hoc.y ****************************************************************
+
+%{
+#include "hoc.h"
+#define code2(c1,c2)    code(c1); code(c2)
+#define code3(c1,c2,c3) code(c1); code(c2); code(c3)
+%}
+%union {
+        Symbol  *sym;   /* symbol table pointer */
+        Inst    *inst;  /* machine instruction */
+        int     narg;   /* number of arguments */
+}
+%token  <sym>   NUMBER STRING PRINT VAR BLTIN UNDEF WHILE IF ELSE
+%token  <sym>   FUNCTION PROCEDURE RETURN FUNC PROC READ
+%token  <narg>  ARG
+%type   <inst>  expr stmt asgn prlist stmtlist
+%type   <inst>  cond while if begin end 
+%type   <sym>   procname
+%type   <narg>  arglist
+%right  '='
+%left   OR
+%left   AND
+%left   GT GE LT LE EQ NE
+%left   '+' '-'
+%left   '*' '/'
+%left   UNARYMINUS NOT 
+%right  '^'
+%%
+list:     /* nothing */
+        | list '\n'
+        | list defn '\n'
+        | list asgn '\n'  { code2(pop, STOP); return 1; }
+        | list stmt '\n'  { code(STOP); return 1; } 
+        | list expr '\n'  { code2(print, STOP); return 1; }
+        | list error '\n' { yyerrok; }
+        ;
+asgn:     VAR '=' expr { code3(varpush,(Inst)$1,assign); $$=$3; }
+        | ARG '=' expr
+            { defnonly("$"); code2(argassign,(Inst)$1); $$=$3;}
+        ;
+stmt:     expr  { code(pop); }
+        | RETURN { defnonly("return"); code(procret); }
+        | RETURN expr
+                { defnonly("return"); $$=$2; code(funcret); }
+        | PROCEDURE begin '(' arglist ')'
+                { $$ = $2; code3(call, (Inst)$1, (Inst)$4); }
+        | PRINT prlist  { $$ = $2; }
+        | while cond stmt end {
+                ($1)[1] = (Inst)$3;     /* body of loop */
+                ($1)[2] = (Inst)$4; }   /* end, if cond fails */
+        | if cond stmt end {    /* else-less if */
+                ($1)[1] = (Inst)$3;     /* thenpart */
+                ($1)[3] = (Inst)$4; }   /* end, if cond fails */
+        | if cond stmt end ELSE stmt end {      /* if with else */
+                ($1)[1] = (Inst)$3;     /* thenpart */
+                ($1)[2] = (Inst)$6;     /* elsepart */
+                ($1)[3] = (Inst)$7; }   /* end, if cond fails */
+        | '{' stmtlist '}'      { $$ = $2; }
+        ;
+cond:     '(' expr ')'  { code(STOP); $$ = $2; }
+        ;
+while:    WHILE { $$ = code3(whilecode,STOP,STOP); }
+        ;
+if:       IF    { $$ = code(ifcode); code3(STOP,STOP,STOP); }
+        ;
+begin:    /* nothing */         { $$ = progp; }
+        ;
+end:      /* nothing */         { code(STOP); $$ = progp; }
+        ;
+stmtlist: /* nothing */         { $$ = progp; }
+        | stmtlist '\n'
+        | stmtlist stmt
+        ;
+expr:     NUMBER { $$ = code2(constpush, (Inst)$1); }
+        | VAR    { $$ = code3(varpush, (Inst)$1, eval); }
+        | ARG    { defnonly("$"); $$ = code2(arg, (Inst)$1); }
+        | asgn
+        | FUNCTION begin '(' arglist ')'
+                { $$ = $2; code3(call,(Inst)$1,(Inst)$4); }
+        | READ '(' VAR ')' { $$ = code2(varread, (Inst)$3); }
+        | BLTIN '(' expr ')' { $$=$3; code2(bltin, (Inst)$1->u.ptr); }
+        | '(' expr ')'  { $$ = $2; }
+        | expr '+' expr { code(add); }
+        | expr '-' expr { code(sub); }
+        | expr '*' expr { code(mul); }
+        | expr '/' expr { code(div); }
+        | expr '^' expr { code (power); }
+        | '-' expr   %prec UNARYMINUS   { $$=$2; code(negate); }
+        | expr GT expr  { code(gt); }
+        | expr GE expr  { code(ge); }
+        | expr LT expr  { code(lt); }
+        | expr LE expr  { code(le); }
+        | expr EQ expr  { code(eq); }
+        | expr NE expr  { code(ne); }
+        | expr AND expr { code(and); }
+        | expr OR expr  { code(or); }
+        | NOT expr      { $$ = $2; code(not); }
+        ;
+prlist:   expr                  { code(prexpr); }
+        | STRING                { $$ = code2(prstr, (Inst)$1); }
+        | prlist ',' expr       { code(prexpr); }
+        | prlist ',' STRING     { code2(prstr, (Inst)$3); }
+        ;
+defn:     FUNC procname { $2->type=FUNCTION; indef=1; }
+            '(' ')' stmt { code(procret); define($2); indef=0; }
+        | PROC procname { $2->type=PROCEDURE; indef=1; }
+            '(' ')' stmt { code(procret); define($2); indef=0; }
+        ;
+procname: VAR
+        | FUNCTION
+        | PROCEDURE
+        ;
+arglist:  /* nothing */         { $$ = 0; }
+        | expr                  { $$ = 1; }
+        | arglist ',' expr      { $$ = $1 + 1; }
+        ;
+%%
+        /* end of grammar */
+#include <stdio.h>
+#include <ctype.h>
+char    *progname;
+int     lineno = 1;
+#include <signal.h>
+#include <setjmp.h>
+jmp_buf begin;
+int     indef;
+char    *infile;        /* input file name */
+FILE    *fin;           /* input file pointer */
+char    **gargv;        /* global argument list */
+int     gargc;
+
+int c;  /* global for use by warning() */
+yylex()         /* hoc6 */
+{
+        while ((c=getc(fin)) == ' ' || c == '\t')
+                ;
+        if (c == EOF)
+                return 0;
+        if (c == '.' || isdigit(c)) {   /* number */
+                double d;
+                ungetc(c, fin);
+                fscanf(fin, "%lf", &d);
+                yylval.sym = install("", NUMBER, d);
+                return NUMBER;
+        }
+        if (isalpha(c)) {
+                Symbol *s;
+                char sbuf[100], *p = sbuf;
+                do {
+                        if (p >= sbuf + sizeof(sbuf) - 1) {
+                                *p = '\0';
+                                execerror("name too long", sbuf);
+                        }
+                        *p++ = c;
+                } while ((c=getc(fin)) != EOF && isalnum(c));
+                ungetc(c, fin);
+                *p = '\0';
+                if ((s=lookup(sbuf)) == 0)
+                        s = install(sbuf, UNDEF, 0.0);
+                yylval.sym = s;
+                return s->type == UNDEF ? VAR : s->type;
+        }
+        if (c == '$') { /* argument? */
+                int n = 0;
+                while (isdigit(c=getc(fin)))
+                        n = 10 * n + c - '0';
+                ungetc(c, fin);
+                if (n == 0)
+                        execerror("strange $...", (char *)0);
+                yylval.narg = n;
+                return ARG;
+        }
+        if (c == '"') { /* quoted string */
+                char sbuf[100], *p, *emalloc();
+                for (p = sbuf; (c=getc(fin)) != '"'; p++) {
+                        if (c == '\n' || c == EOF)
+                                execerror("missing quote", "");
+                        if (p >= sbuf + sizeof(sbuf) - 1) {
+                                *p = '\0';
+                                execerror("string too long", sbuf);
+                        }
+                        *p = backslash(c);
+                }
+                *p = 0;
+                yylval.sym = (Symbol *)emalloc(strlen(sbuf)+1);
+                strcpy(yylval.sym, sbuf);
+                return STRING;
+        }
+        switch (c) {
+        case '>':       return follow('=', GE, GT);
+        case '<':       return follow('=', LE, LT);
+        case '=':       return follow('=', EQ, '=');
+        case '!':       return follow('=', NE, NOT);
+        case '|':       return follow('|', OR, '|');
+        case '&':       return follow('&', AND, '&');
+        case '\n':      lineno++; return '\n';
+        default:        return c;
+        }
+}
+
+backslash(c)    /* get next char with \'s interpreted */
+        int c;
+{
+        char *index();  /* `strchr()' in some systems */
+        static char transtab[] = "b\bf\fn\nr\rt\t";
+        if (c != '\\')
+                return c;
+        c = getc(fin);
+        if (islower(c) && index(transtab, c))
+                return index(transtab, c)[1];
+        return c;
+}
+
+follow(expect, ifyes, ifno)     /* look ahead for >=, etc. */
+{
+        int c = getc(fin);
+
+        if (c == expect)
+                return ifyes;
+        ungetc(c, fin);
+        return ifno;
+}
+
+defnonly(s)     /* warn if illegal definition */
+        char *s;
+{
+        if (!indef)
+                execerror(s, "used outside definition");
+}
+
+yyerror(s)      /* report compile-time error */
+        char *s;
+{
+        warning(s, (char *)0);
+}
+
+execerror(s, t) /* recover from run-time error */
+        char *s, *t;
+{
+        warning(s, t);
+        fseek(fin, 0L, 2);              /* flush rest of file */
+        longjmp(begin, 0);
+}
+
+fpecatch()      /* catch floating point exceptions */
+{
+        execerror("floating point exception", (char *) 0);
+}
+
+main(argc, argv)        /* hoc6 */
+        char *argv[];
+{
+        int i, fpecatch();
+
+        progname = argv[0];
+        if (argc == 1) {        /* fake an argument list */
+                static char *stdinonly[] = { "-" };
+
+                gargv = stdinonly;
+                gargc = 1;
+        } else {
+                gargv = argv+1;
+                gargc = argc-1;
+        }
+        init();
+        while (moreinput())
+                run();
+        return 0;
+}
+
+moreinput()
+{
+        if (gargc-- <= 0)
+                return 0;
+        if (fin && fin != stdin)
+                fclose(fin);
+        infile = *gargv++;
+        lineno = 1;
+        if (strcmp(infile, "-") == 0) {
+                fin = stdin;
+                infile = 0;
+        } else if ((fin=fopen(infile, "r")) == NULL) {
+                fprintf(stderr, "%s: can't open %s\n", progname, infile);
+                return moreinput();
+        }
+        return 1;
+}
+
+run()   /* execute until EOF */
+{
+        setjmp(begin);
+        signal(SIGFPE, fpecatch);
+        for (initcode(); yyparse(); initcode())
+                execute(progbase);
+}
+
+warning(s, t)   /* print warning message */
+        char *s, *t;
+{
+        fprintf(stderr, "%s: %s", progname, s);
+        if (t)
+                fprintf(stderr, " %s", t);
+        if (infile)
+                fprintf(stderr, " in %s", infile);
+        fprintf(stderr, " near line %d\n", lineno);
+        while (c != '\n' && c != EOF)
+                c = getc(fin);  /* flush rest of input line */
+        if (c == '\n')
+                lineno++;
+}
+
+
+***** hoc.h ****************************************************************
+
+typedef struct Symbol {  /* symbol table entry */
+        char    *name;
+        short   type;
+        union {
+                double  val;            /* VAR */
+                double  (*ptr)();       /* BLTIN */
+                int     (*defn)();      /* FUNCTION, PROCEDURE */
+                char    *str;           /* STRING */
+        } u;
+        struct Symbol   *next;  /* to link to another */
+} Symbol;
+Symbol  *install(), *lookup();
+
+typedef union Datum {   /* interpreter stack type */
+        double  val;
+        Symbol  *sym;
+} Datum;
+extern  Datum pop();
+extern  eval(), add(), sub(), mul(), div(), negate(), power();
+
+typedef int (*Inst)();
+#define STOP    (Inst) 0
+
+extern  Inst *progp, *progbase, prog[], *code();
+extern  assign(), bltin(), varpush(), constpush(), print(), varread();
+extern  prexpr(), prstr();
+extern  gt(), lt(), eq(), ge(), le(), ne(), and(), or(), not();
+extern  ifcode(), whilecode(), call(), arg(), argassign();
+extern  funcret(), procret();
+
+***** symbol.c *************************************************************
+
+#include "hoc.h"
+#include "y.tab.h"
+
+static Symbol *symlist = 0;  /* symbol table: linked list */
+
+Symbol *lookup(s)       /* find s in symbol table */
+        char *s;
+{
+        Symbol *sp;
+
+        for (sp = symlist; sp != (Symbol *) 0; sp = sp->next)
+                if (strcmp(sp->name, s) == 0)
+                        return sp;
+        return 0;       /* 0 ==> not found */   
+}
+
+Symbol *install(s, t, d)  /* install s in symbol table */
+        char *s;
+        int t;
+        double d;
+{
+        Symbol *sp;
+        char *emalloc();
+
+        sp = (Symbol *) emalloc(sizeof(Symbol));
+        sp->name = emalloc(strlen(s)+1); /* +1 for '\0' */
+        strcpy(sp->name, s);
+        sp->type = t;
+        sp->u.val = d;
+        sp->next = symlist; /* put at front of list */
+        symlist = sp;
+        return sp;
+}
+
+char *emalloc(n)        /* check return from malloc */
+        unsigned n;
+{
+        char *p, *malloc();
+
+        p = malloc(n);
+        if (p == 0)
+                execerror("out of memory", (char *) 0);
+        return p;
+}
+
+***** code.c ***************************************************************
+
+#include "hoc.h"
+#include "y.tab.h"
+#include <stdio.h>
+
+#define NSTACK  256
+
+static Datum stack[NSTACK];     /* the stack */
+static Datum *stackp;           /* next free spot on stack */
+
+#define NPROG   2000
+Inst    prog[NPROG];    /* the machine */
+Inst    *progp;         /* next free spot for code generation */
+Inst    *pc;            /* program counter during execution */
+Inst    *progbase = prog; /* start of current subprogram */
+int     returning;      /* 1 if return stmt seen */
+
+typedef struct Frame {  /* proc/func call stack frame */
+        Symbol  *sp;    /* symbol table entry */
+        Inst    *retpc; /* where to resume after return */
+        Datum   *argn;  /* n-th argument on stack */
+        int     nargs;  /* number of arguments */
+} Frame;
+#define NFRAME  100
+Frame   frame[NFRAME];
+Frame   *fp;            /* frame pointer */
+
+initcode() {
+        progp = progbase;
+        stackp = stack;
+        fp = frame;
+        returning = 0;
+}
+
+push(d)
+        Datum d;
+{
+        if (stackp >= &stack[NSTACK])
+                execerror("stack too deep", (char *)0);
+        *stackp++ = d;
+}
+
+Datum pop()
+{
+        if (stackp == stack)
+                execerror("stack underflow", (char *)0);
+        return *--stackp;
+}
+
+constpush()
+{
+        Datum d;
+        d.val = ((Symbol *)*pc++)->u.val;
+        push(d);
+}
+
+varpush()
+{
+        Datum d;
+        d.sym = (Symbol *)(*pc++);
+        push(d);
+}
+
+whilecode()
+{
+        Datum d;
+        Inst *savepc = pc;
+
+        execute(savepc+2);      /* condition */
+        d = pop();
+        while (d.val) {
+                execute(*((Inst **)(savepc)));  /* body */
+                if (returning)
+                        break;
+                execute(savepc+2);      /* condition */
+                d = pop();
+        }
+        if (!returning)
+                pc = *((Inst **)(savepc+1)); /* next stmt */
+}
+
+ifcode() 
+{
+        Datum d;
+        Inst *savepc = pc;      /* then part */
+
+        execute(savepc+3);      /* condition */
+        d = pop();
+        if (d.val)
+                execute(*((Inst **)(savepc)));  
+        else if (*((Inst **)(savepc+1))) /* else part? */
+                execute(*((Inst **)(savepc+1)));
+        if (!returning)
+                pc = *((Inst **)(savepc+2)); /* next stmt */
+}
+
+define(sp)      /* put func/proc in symbol table */
+        Symbol *sp;
+{
+        sp->u.defn = (Inst)progbase;    /* start of code */
+        progbase = progp;       /* next code starts here */
+}
+
+call()          /* call a function */
+{
+        Symbol *sp = (Symbol *)pc[0]; /* symbol table entry */
+                                      /* for function */
+        if (fp++ >= &frame[NFRAME-1])
+                execerror(sp->name, "call nested too deeply");
+        fp->sp = sp;
+        fp->nargs = (int)pc[1];
+        fp->retpc = pc + 2;
+        fp->argn = stackp - 1;  /* last argument */
+        execute(sp->u.defn);
+        returning = 0;
+}
+
+ret()           /* common return from func or proc */
+{
+        int i;
+        for (i = 0; i < fp->nargs; i++)
+                pop();  /* pop arguments */
+        pc = (Inst *)fp->retpc;
+        --fp;
+        returning = 1;
+}
+
+funcret()       /* return from a function */
+{
+        Datum d;
+        if (fp->sp->type == PROCEDURE)
+                execerror(fp->sp->name, "(proc) returns value");
+        d = pop();      /* preserve function return value */
+        ret();
+        push(d);
+}
+
+procret()       /* return from a procedure */
+{
+        if (fp->sp->type == FUNCTION)
+                execerror(fp->sp->name,
+                        "(func) returns no value");
+        ret();
+}
+
+double *getarg()        /* return pointer to argument */
+{
+        int nargs = (int) *pc++;
+        if (nargs > fp->nargs)
+            execerror(fp->sp->name, "not enough arguments");
+        return &fp->argn[nargs - fp->nargs].val;
+}
+
+arg()   /* push argument onto stack */
+{
+        Datum d;
+        d.val = *getarg();
+        push(d);
+}
+
+argassign()     /* store top of stack in argument */
+{
+        Datum d;
+        d = pop();
+        push(d);        /* leave value on stack */
+        *getarg() = d.val;
+}
+
+bltin() 
+{
+
+        Datum d;
+        d = pop();
+        d.val = (*(double (*)())*pc++)(d.val);
+        push(d);
+}
+
+eval()          /* evaluate variable on stack */
+{
+        Datum d;
+        d = pop();
+        if (d.sym->type != VAR && d.sym->type != UNDEF)
+                execerror("attempt to evaluate non-variable", d.sym->name);
+        if (d.sym->type == UNDEF)
+                execerror("undefined variable", d.sym->name);
+        d.val = d.sym->u.val;
+        push(d);
+}
+
+add()
+{
+        Datum d1, d2;
+        d2 = pop();
+        d1 = pop();
+        d1.val += d2.val;
+        push(d1);
+}
+
+sub()
+{
+        Datum d1, d2;
+        d2 = pop();
+        d1 = pop();
+        d1.val -= d2.val;
+        push(d1);
+}
+
+mul()
+{
+        Datum d1, d2;
+        d2 = pop();
+        d1 = pop();
+        d1.val *= d2.val;
+        push(d1);
+}
+
+div()
+{
+        Datum d1, d2;
+        d2 = pop();
+        if (d2.val == 0.0)
+                execerror("division by zero", (char *)0);
+        d1 = pop();
+        d1.val /= d2.val;
+        push(d1);
+}
+
+negate()
+{
+        Datum d;
+        d = pop();
+        d.val = -d.val;
+        push(d);
+}
+
+gt()
+{
+        Datum d1, d2;
+        d2 = pop();
+        d1 = pop();
+        d1.val = (double)(d1.val > d2.val);
+        push(d1);
+}
+
+lt()
+{
+        Datum d1, d2;
+        d2 = pop();
+        d1 = pop();
+        d1.val = (double)(d1.val < d2.val);
+        push(d1);
+}
+
+ge()
+{
+        Datum d1, d2;
+        d2 = pop();
+        d1 = pop();
+        d1.val = (double)(d1.val >= d2.val);
+        push(d1);
+}
+
+le()
+{
+        Datum d1, d2;
+        d2 = pop();
+        d1 = pop();
+        d1.val = (double)(d1.val <= d2.val);
+        push(d1);
+}
+
+eq()
+{
+        Datum d1, d2;
+        d2 = pop();
+        d1 = pop();
+        d1.val = (double)(d1.val == d2.val);
+        push(d1);
+}
+
+ne()
+{
+        Datum d1, d2;
+        d2 = pop();
+        d1 = pop();
+        d1.val = (double)(d1.val != d2.val);
+        push(d1);
+}
+
+and()
+{
+        Datum d1, d2;
+        d2 = pop();
+        d1 = pop();
+        d1.val = (double)(d1.val != 0.0 && d2.val != 0.0);
+        push(d1);
+}
+
+or()
+{
+        Datum d1, d2;
+        d2 = pop();
+        d1 = pop();
+        d1.val = (double)(d1.val != 0.0 || d2.val != 0.0);
+        push(d1);
+}
+
+not()
+{
+        Datum d;
+        d = pop();
+        d.val = (double)(d.val == 0.0);
+        push(d);
+}
+
+power()
+{
+        Datum d1, d2;
+        extern double Pow();
+        d2 = pop();
+        d1 = pop();
+        d1.val = Pow(d1.val, d2.val);
+        push(d1);
+}
+
+assign()
+{
+        Datum d1, d2;
+        d1 = pop();
+        d2 = pop();
+        if (d1.sym->type != VAR && d1.sym->type != UNDEF)
+                execerror("assignment to non-variable",
+                        d1.sym->name);
+        d1.sym->u.val = d2.val;
+        d1.sym->type = VAR;
+        push(d2);
+}
+
+print() /* pop top value from stack, print it */
+{
+        Datum d;
+        d = pop();
+        printf("\t%.8g\n", d.val);
+}
+
+prexpr()        /* print numeric value */
+{
+        Datum d;
+        d = pop();
+        printf("%.8g ", d.val);
+}
+
+prstr()         /* print string value */ 
+{
+        printf("%s", (char *) *pc++);
+}
+
+varread()       /* read into variable */
+{
+        Datum d;
+        extern FILE *fin;
+        Symbol *var = (Symbol *) *pc++;
+  Again:
+        switch (fscanf(fin, "%lf", &var->u.val)) {
+        case EOF:
+                if (moreinput())
+                        goto Again;
+                d.val = var->u.val = 0.0;
+                break;
+        case 0:
+                execerror("non-number read into", var->name);
+                break;
+        default:
+                d.val = 1.0;
+                break;
+        }
+        var->type = VAR;
+        push(d);
+}
+
+Inst *code(f)   /* install one instruction or operand */
+        Inst f;
+{
+        Inst *oprogp = progp;
+        if (progp >= &prog[NPROG])
+                execerror("program too big", (char *)0);
+        *progp++ = f;
+        return oprogp;
+}
+
+execute(p)
+        Inst *p;
+{
+        for (pc = p; *pc != STOP && !returning; )
+                (*((++pc)[-1]))();
+}
+
+***** init.c ***************************************************************
+
+#include "hoc.h"
+#include "y.tab.h"
+#include <math.h>
+
+extern double   Log(), Log10(), Sqrt(), Exp(), integer();
+
+static struct {         /* Keywords */
+        char    *name;
+        int     kval;
+} keywords[] = {
+        "proc",         PROC,
+        "func",         FUNC,
+        "return",       RETURN,
+        "if",           IF,
+        "else",         ELSE,
+        "while",        WHILE,
+        "print",        PRINT,
+        "read",         READ,
+        0,              0,
+};
+
+static struct {         /* Constants */
+        char *name;
+        double cval;
+} consts[] = {
+        "PI",    3.14159265358979323846,
+        "E",     2.71828182845904523536,
+        "GAMMA", 0.57721566490153286060,  /* Euler */
+        "DEG",  57.29577951308232087680,  /* deg/radian */
+        "PHI",   1.61803398874989484820,  /* golden ratio */
+        0,       0
+};
+
+static struct {         /* Built-ins */
+        char *name;
+        double  (*func)();
+} builtins[] = {
+        "sin",  sin,
+        "cos",  cos,
+        "atan", atan,
+        "log",  Log,    /* checks range */
+        "log10", Log10, /* checks range */
+        "exp",  Exp,    /* checks range */
+        "sqrt", Sqrt,   /* checks range */
+        "int",  integer,
+        "abs",  fabs,
+        0,      0
+};
+
+init()  /* install constants and built-ins in table */
+{
+        int i;
+        Symbol *s;
+        for (i = 0; keywords[i].name; i++)
+                install(keywords[i].name, keywords[i].kval, 0.0);
+        for (i = 0; consts[i].name; i++)
+                install(consts[i].name, VAR, consts[i].cval);
+        for (i = 0; builtins[i].name; i++) {
+                s = install(builtins[i].name, BLTIN, 0.0);
+                s->u.ptr = builtins[i].func;
+        }
+}
+
+***** math.c ***************************************************************
+
+#include <math.h>
+#include <errno.h>
+extern  int     errno;
+double  errcheck();
+
+double Log(x)
+        double x;
+{
+        return errcheck(log(x), "log");
+}
+double Log10(x)
+        double x;
+{
+        return errcheck(log10(x), "log10");
+}
+
+double Sqrt(x)
+        double x;
+{
+        return errcheck(sqrt(x), "sqrt");
+}
+
+double Exp(x)
+        double x;
+{
+        return errcheck(exp(x), "exp");
+}
+
+double Pow(x, y)
+        double x, y;
+{
+        return errcheck(pow(x,y), "exponentiation");
+}
+
+double integer(x)
+        double x;
+{
+        return (double)(long)x;
+}
+
+double errcheck(d, s)   /* check result of library call */
+        double d;
+        char *s;
+{
+        if (errno == EDOM) {
+                errno = 0;
+                execerror(s, "argument out of domain");
+        } else if (errno == ERANGE) {
+                errno = 0;
+                execerror(s, "result out of range");
+        }
+        return d;
+}
+
+***** makefile *************************************************************
+
+CC = lcc
+YFLAGS = -d
+OBJS = hoc.o code.o init.o math.o symbol.o
+
+hoc6:   $(OBJS)
+        $(CC) $(CFLAGS) $(OBJS) -lm -o hoc6
+
+hoc.o code.o init.o symbol.o:   hoc.h
+
+code.o init.o symbol.o: x.tab.h
+
+x.tab.h:        y.tab.h
+        -cmp -s x.tab.h y.tab.h || cp y.tab.h x.tab.h
+
+pr:     hoc.y hoc.h code.c init.c math.c symbol.c
+        @pr $?
+        @touch pr
+
+clean:
+        rm -f $(OBJS) [xy].tab.[ch] 
+
+\end{verbatim}

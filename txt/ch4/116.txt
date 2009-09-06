@@ -1,0 +1,53 @@
+
+        $ sed 3q /etc/password | awk -F: '{ print $1 }'
+        root
+        ken
+        dmr
+        $
+
+The handling of blanks and tabs is intentionally special. By default, both
+blanks and tabs are separators, and leading separators are discarded. If the
+separator is set to anything other than blanks, however, then leading separators
+are counted in determining the fields. In particular, if the separator is a tab,
+then blanks are not separator characters, leading blanks are part of the field,
+and each tab defines a field.
+
+Printing
+
+awk keeps track of other interesting quantities besides the number of input
+fields. The built-in variable NR is the number of the current input "record" or
+line. So to add line number to an input stream, use this:
+
+        $ awk '{ print NR, $0 }'
+
+The field $0 is the entire input line, unchanged. In a print statement items
+separated by commas are printed separated by the output field separator, which
+is by default a blank.
+
+The formatting that print does is often acceptable, but if it isn't, you can use
+a statement called printf for complete control of your output. For example, to
+print line numbers in a field four digits wide, you might use the following:
+
+        $ awk '{ printf "%4d %s\n", NR, $0 }'
+
+%4d specifies a decimal integer (NR) in a field four digits wide, %s a string of
+characters ($0), and \n a newline character, since printf doesn't print any
+spaces or newlines automatically. The printf statement in awk is like the C
+function; see printf(3).
+
+We could have written the first version of ind (from early in this chapter) as
+
+        awk '{ printf "\t%s\n", $0 }' $*
+
+which prints a tab (\t) and the input record.
+
+
+Patterns
+
+Suppose you want to look in /etc/passwd for people who have no passwords. The
+encrypted password is the second field, so the program is just a pattern:
+
+        $ awk -F: '$2 == ""' /etc/passwd
+
+The pattern asks if the second field is an empty string ('==' is the equality
+test

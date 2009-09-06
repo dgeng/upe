@@ -1,0 +1,54 @@
+
+another), it only makes one pass over the data, it's not possible to go
+backwards, there's no way to do forward references like /.../+1, and it provides
+no facilities for manipulating numbers --- it is purely a text editor.
+
+Exercise 4-5. Modify older and newer so they don't include the argument file in
+their output. Change them so the files are listed in the opposite order.
+
+Exercise 4-6. Use sed to make bundle robust. Hint: in here document, the end
+marking word is recognized only when it matches the lines exactly.
+
+
+4.4 The awk pattern scanning and processing language
+
+Some of the limitations of sed are remedied by awk. The idea in awk is much the
+same as in sed, but the detials are based more on the C programming language
+than on a text editor. Usage is just like sed:
+
+        $ awk 'program' filenames ...
+
+but the program is different:
+
+        pattern { action }
+        pattern { action }
+        ...
+
+awk reads the input in the filenames one line at a time. Each line is compared
+with each pattern in order; for each pattern that matches the line, the
+corresponding action is performed. Like sed, awk does not alter its input files.
+
+The patterns can be regular expressions exactly as in egrep, or they can be more
+complicated conditions reminiscent of C. As a simple example, thought,
+
+        $ awk '/regular expression/ { print }' filenames ...
+
+does what egrep does: it prints every line that matches the regular expression.
+
+Either the pattern or the action is optional. If the action is omitted, the
+default action is to print matched lines, so
+
+        $ awk '/regular expression/' filenames ...
+
+does the same job as the previous example. Conversely, if the pattern is
+omitted, then the action part is done for every input line. So
+
+        $ awk '{ print }' filenames ...
+
+does what cat does, albeit more slowly.
+
+One final note before we get on to interesting examples. As with sed, it is
+possible to present the program to awk from a file:
+
+        $ awk -f cmdfile filenames ...
+

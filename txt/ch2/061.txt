@@ -1,0 +1,44 @@
+
+links would reflect the change. cp makes copies of files:
+
+        $ cp junk copyofjunk
+        $ ls -li
+        total 3
+        15850 -rw-rw-rw- 1 you         2 Sep 27 13:13 copyofjunk
+        15768 -rw-rw-rw- 1 you         2 Sep 27 12:37 junk
+        15274 drwxrwxrwx 4 you        64 Sep 27 09:34 recipes
+        $
+
+The i-numbers of junk and copyofjunk are different, because they are different
+files, even though they currently have the same contents. It's often a good idea
+to change the permissions on a backup copy so it's harder to remove it
+accidentally.
+
+        $ chmod -w copyofjunk           Turn off writ permission
+        $ ls -li
+        total 3
+        15850 -r--r--r-- 1 you         2 Sep 27 13:13 copyofjunk
+        15768 -rw-rw-rw- 1 you         2 Sep 27 12:37 junk
+        15274 drwxrwxrwx 4 you        64 Sep 27 09:34 recipes
+        $ rm copyofjunk
+        rm: copyofjunk 444 mode n       No! It's precious
+        $ date >junk
+        $ ls -li
+        total 3
+        15850 -r--r--r-- 1 you         2 Sep 27 13:13 copyofjunk
+        15768 -rw-rw-rw- 1 you        29 Sep 27 13:16 junk
+        15274 drwxrwxrwx 4 you        64 Sep 27 09:34 recipes
+        $ rm copyofjunk
+        rm: copyofjunk 444 mode y       Well, maybe not so precious
+        $ ls -li
+        total 2
+        15768 -rw-rw-rw- 1 you        29 Sep 27 13:16 junk
+        15274 drwxrwxrwx 4 you        64 Sep 27 09:34 recipes
+        $
+
+Changing the copy of a file doesn't change the original, and removing the copy
+has no effect on the original. Notice that because copyofjunk had write
+permission turned off, rm asked for confirmation before removing the file.
+
+There is one more common command for manipulating files: mv moves or renames
+files, simply by rearranging the links. Its syntax is the same as cp and ln:

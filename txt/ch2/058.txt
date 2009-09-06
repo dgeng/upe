@@ -1,0 +1,54 @@
+
+        $ date
+        Thu Jan  1 19:39:48 EST 1970
+        $ date >junk
+        $ ls -l junk
+        -rw-rw-rw- 1 you        29 Sep 27 12:07 junk
+        $ ls -lu junk
+        -rw-rw-rw- 1 you        29 Sep 27 06:11 junk
+        $ ls -lc junk
+        -rw-rw-rw- 1 you        29 Sep 27 12:07 junk
+        $
+
+Changing the contents of a file does not affect its usage time, as reported by
+ls -lu, and changing the permissions affects only the inode change time, as
+reported by ls -lc.
+
+        $ chmod 444 junk
+        $ ls -lu junk
+        -r--r--r-- 1 you        29 Sep 27 06:11 junk
+        $ ls -lc junk
+        -r--r--r-- 1 you        29 Sep 27 12:11 junk
+        $ chmod 666 junk
+        $
+
+The -t option to ls, which sorts the files according to time, by default that of
+last modification, can be combined with -c or -u to report the order in which
+inodes were changed or files were read:
+
+        $ ls recipes
+        cookie
+        pie
+        $ ls -lut
+        total 2
+        drwxrwxrwx 4 you        64 Sep 27 12:11 recipes
+        -rw-rw-rw- 1 you        29 Sep 27 06:11 junk
+        $
+
+recipes is most recently used, because we just looked at its contents.
+
+It is important to understand inodes, not only to appreciate the options on ls,
+but because in a strong sense the inodes are the files. All the directory
+hierarchy does is provide convenient names for files. The system's internal name
+for a file is its i-number: the number of the inode holding the file's
+information. ls -i reports the i-number in decimal:
+
+        $ date >x
+        $ ls -i
+        15768 junk
+        15274 recipes
+        15852 x
+        $
+
+It is the i-number that is stored in the first two bytes of a directory, before
+the

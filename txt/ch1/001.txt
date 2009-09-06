@@ -1,0 +1,42 @@
+
+				CHAPTER 1: UNIX FOR BEGINNERS
+
+What is "UNIX"? In the narrowest sense, it is a time-sharing operating system
+kernel: a program that controls the resources of a computer and allocates them
+among its users. It lets users run their programs; it controls the peripheral
+devices (discs, terminals, printers, and the like) connected to the machine; and
+it provides a file system that manages the long-term storage of information such
+as programs, data, and documents.
+
+In a broader sense, "UNIX" is often taken to include not only the kernel, but
+also essential programs like compilers, editors, command languages, programs for
+copying and printing files, and so on.
+
+Still more broadly, "UNIX" may even include programs developed by you or other
+users to be run on your system, such as tools for document preparation, routines
+for statistical analysis, and graphics packages.
+
+Which of these uses of the name "UNIX" is correct depends on which level of the
+system you are considering. When we use "UNIX" in the rest of this book, context
+should indicate which meaning is implied.
+
+The UNIX system sometimes looks more difficult than it is --- it's hard for a
+newcomer to know how to make the best use of the facilities available. But
+fortunately it's not hard to get started --- knowledge of only a few programs
+should get you off the ground. This chapter is meant to help you to start using
+the system as quickly as possible. It's an overview, not a manual; we'll cover
+most of the material again in more detail in later chapters. We'll talk about
+these major areas:
+
+* basics --- logging in and out, simple commands, correcting typing mistakes,
+  mail, inter-terminal communication.
+  
+* day-to-day use --- files and file system, printing files, directories,
+  commonly-used commands.
+  
+* the command interpreter or shell --- filename shorthands, redirecting intput
+  and output, pipes, setting erase and kill characters, and defining your own
+  search path for commands.
+  
+If you've used a UNIX system before, most of this chapter should be familiar;
+you might want to skip straight to Chapter 2.

@@ -1,0 +1,48 @@
+
+        $ cat /usr/you/bin/games
+        PATH=$PATH:/usr/games                      Append /usr/games to PATH
+        $ echo $PATH
+        :/usr/you/bin:/bin:/usr/bin
+        $ . games
+        $ echo $PATH
+        :/usr/you/bin:/bin:/usr/bin:/usr/games
+        $
+
+The file for the '.' command is searched for with the PATH mechanism, so it can
+be placed in your bin directory.
+
+When a file is executing with '.', it is only superficially like running a shell
+file. The file is not "executed" in the usual sense of the word. Instead, the
+commands in it are interpreted exactly as if you had typed them interactively
+--- the standard output of the shell is temporarily redirected to come from the
+file. Since the file is read but not executed, it need not have execute
+permissions. Another difference is that the file does not receive command line
+arguments; instead $1, $2 and the rest are empty. It would be nice if arguments
+were passed, but they are not.
+
+        $ echo 'echo $x' >echox
+        $ cx echox
+        $ echo $x
+        Hello                       As before
+        $ echox
+                                    x not set in sub-shell
+        $ x=Hi echox
+        Hi                          Value of x passed to sub-shell
+        $
+
+(Originally, assignments anywhere in the command line were passed to the
+command, but this interfered with dd(1).)
+
+The '.' mechanism should be used to change the value of a variable permanently,
+while in-line assignments should be used for temporary changes. As an example,
+consider again searching /usr/games for commands, with the directory not in your
+PATH:
+
+        $ ls /usr/games | grep fort
+        fortune                                      Fortune cookie command
+        $ fortune
+        fortune: not found
+        $ echo $PATH
+        :/usr/you/bin:/bin:/usr/bin                  /usr/games not in PATH
+        $ PATH=/usr/games fortune
+        Ring the bell; close the book; quench the candle.

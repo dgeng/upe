@@ -1,0 +1,49 @@
+
+        $ ls /usr/you
+
+you should get exactly the same list of file names as you get from a plain
+ls. When no arguments are provided, ls lists the contents of the current
+directory; given the name of the directory, it lists the contents of that
+directory.
+
+Next, try
+
+        $ ls /usr
+
+This should print a long series of names, among which is your own login
+directory you.
+
+The next step is to try listing the root itself. You should get a response
+similar to this:
+
+	$ ls /
+	bin
+	boot
+	dev
+	etc
+	lib
+	tmp
+	unix
+	usr
+	$ 
+
+(Don't be confused by the two meanings of /: it's both the name of the root and
+separator in filenames.) Most of these are directories, but unix is actually a
+file containing the executable form of the UNIX kernel.More on this in Chapter
+2.
+
+Now try
+
+	$ cat /usr/you/junk
+
+(if junk is still in your directory). The name
+
+    	 /usr/you/junk
+
+is called the pathname of the file. "Pathname" has an intuitive meaning: it
+represents the full name of the path from the root through the tree of
+directories to a particular file. It is a universal rule in the UNIX system that
+wherever you can use an ordinary filename, you can use a pathname.
+
+The file system is structured like a genealogical tree; here is a picture that
+may make it clearer.

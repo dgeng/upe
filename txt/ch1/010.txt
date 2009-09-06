@@ -1,0 +1,53 @@
+
+        Mary's terminal:                Your terminal
+        $ write you
+                                        $ Message from mary tty7...
+                                        write mary
+        Message	from you ttya...
+        did you forget lunch? (o)
+                                        did you forget lunch? (o)
+                                        five@
+                                        ten minutes (o)
+        ten minutes (o)
+        ok (oo)
+                                        ok (oo)
+                                        ctl-d
+        EOF
+        ctl-d
+                                        $ EOF
+        $
+
+You can also exit from write by pressing DELETE. Notice that your typing errors
+do not appear on Mary's terminal.
+
+If you try to write to someone who isn't logged in, or who doesn't want to be
+disturbed, you'll be told. If the target is logged in but doesn't answer after a
+decent interval, the person may be busy or away from the terminal; simply type
+ctl-d or DELETE. If you don't want to be disturbed, use mesg(1).
+
+News
+
+Many UNIX systems provide a news service, to keep users abreast of interesting
+and not so interesting events. Try typing
+
+        $ news
+
+There is also a large network of UNIX systems that keep in touch through
+telephone calls; ask a local expert about netnews and USENET.
+
+The manual
+
+The UNIX programmer's manual describes most of what you need to know about the
+system. Section q deals with commands, including those we discuss in this
+chapter. Section 2 describes the system calls, the subject of Chapter 7, and
+Section 6 has information about games. The remaining sections talk about
+functions for use by C programmers, file formats, and system maintenance. (The
+numbering of these sections varies from system to system.) Don't forget the
+permuted index at the beginning; you can skim it quickly for commands that might
+be relevant to what you want to do. There is also an introduction to the system
+that gives an overview of how things work.
+
+Often the manual is kept on-line so that you can read it on your terminal. If
+you get stuck on something, and can't find an expert to help, you can print any
+manual page on your terminal with the command man command-name.
+

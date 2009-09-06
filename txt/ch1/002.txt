@@ -1,0 +1,48 @@
+
+You will need a copy of the UNIX Programmer's Manual, even as you read this
+chapter; it's often easier for us to tell you to read about something in the
+manual than to repeat its contents here. This book is not supposed to replace
+it, but to show you how to make best use of the commands described in
+it. Furthermore, there may be differences between what we say here and what is
+true on your system. The manual has a permuted index at the beginning that's
+indispensable for finding the right programs to apply to a problem; learn to use
+it.
+
+Finally, a word of advice: don't be afraid to experiment. If you are a beginner,
+there are very few accidental things you can do to hurt yourself or other
+users. So learn how things work by trying them. This is a long chapter, and the
+best way to read it is a few pages at a time, trying things out as you go.
+
+1.1 Getting started
+
+Some prerequisites about terminals and typing
+
+To avoid explaining everything about using computers, we must assume you have
+some familiarity with computer terminals and how to use them. If any of the
+following statements are mystifying, you should ask a local expert for help.
+
+The UNIX system is full duplex: the characters you type on the keyboard are sent
+to the system, which sends them back to the terminal to be printed on the
+screen. Normally, this echo process copies the characters directly to the
+screen, so you can see what you are typing, but sometimes, such as when you are
+typing a secret password, the echo is turned off so the characters do not appear
+on the screen.
+
+Most of the keyboard characters are ordinary printing characters with no special
+significance, but a few tell the computer how to interpret your typing. By far
+the most important of these is the RETURN key. The RETURN key signifies the end
+of a line of input; the system echoes it by moving the terminal's cursor to the
+beginning of the next line on the screen. RETURN must be pressed before the
+system will interpret the characters you have types.
+
+RETURN is an example of a control character --- an invisible character that
+controls some aspect of input and output on the terminal. On any reasonable
+terminal, RETURN has a key of its own, but most control characters do not.
+Instead, they must be typed by holding down the CONTROL key, sometimes called
+CTL or CNTL or CTRL, then pressing another key, usually a letter. For example,
+RETURN may be typed by pressing the RETURN key or, equivalently, holding down
+the CONTROL key and typing an 'm'. RETURN might therefore be called a control-m,
+which we will write as ctl-m. Other control characters include ctl-d, which
+tells a program that there is no more input; ctl-g, which rings the bell on the
+terminal; ctl-h, often called backspace, which can be used to correct typing
+mistakes; and ctl-i, often called tab, which

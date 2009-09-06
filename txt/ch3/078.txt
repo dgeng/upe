@@ -1,0 +1,56 @@
+
+what is requested. This would make it easy to issue prompts from the shell:
+
+        $ pure-echo Enter a command:
+        Enter a command:                        No trailing newline
+
+but has the disadvantage that the most common case --- providing a newline ---
+is not the default and takes extra typing:
+
+        $ pure-echo 'Hello!
+        > '
+        Hello!
+        $
+
+Since a command should by default execute its most commonly used function, the
+real echo appends the final newline automatically.
+
+But what if it isn't desired? The 7th Edition echo has a single option, -n, to
+suppress the last newline:
+
+        $ echo -n Enter a command:
+        Enter a command:$                       Prompt on same line
+        $ echo -
+        -                                       Only -n is special
+        $
+
+The only tricky case is echoing -n followed by a newline:
+
+        $ echo -n '-n
+        > '
+        -n
+        $
+
+It's ugly, but it works, and this is a rare situation anyway.
+
+A different approach, take in System V, is for echo to interpret C-like
+backslash sequences, such as \b for backspace and \c (which isn't actually in
+the C language) to suppress the last newline:
+
+        $ echo 'Enter a command:\c'             System V version
+        'Enter a command:$
+
+Although this mechanism avoids confusion about echoing a minus sign, it has
+other problems. echo is often used as a diagnostic aid, and backslashes are
+interpreted by so many programs that having echo look at them too just adds to
+the confusion.
+
+Still, both designs of echo have good and bad points. We shall use the 7th
+Edition version (-n), so if your local echo obeys a different convention, a
+couple of our programs will need minor revision.
+
+Another question of philosophy is what echo should do if given no arguments ---
+specifically, should it print a blank line or nothing at all? All the current
+echo implementations we know print a blank line, but past versions didn't, and
+there were once great debates on the subject. Doug McIlroy imparted the right
+feelings of mysticism in his discussion of the topic:

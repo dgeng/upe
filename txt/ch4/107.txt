@@ -1,0 +1,54 @@
+
+Options invoke special ways to process the duplications: uniq -d prints only
+those lines that are duplicated; uniq -u prints only those that are unique
+(i.e., not duplicated); and uniq -c counts the number of occurrences of each
+line. We'll see an example shortly.
+
+The comm command is a file comparison program. Given two sorted input files f1
+and f2, comm prints three columns of output: lines that occur only in f1, lines
+that occur only in f2, and lines that occur in both files. Any of these columns
+can be suppressed by an option:
+
+        $ comm -12 f1 f2
+
+prints only those lines that are in both files, and
+
+        $ comm -23 f1 f2
+
+prints the lines that are in the first file but not in the second. This is
+useful for comparing directories and for comparing a word list with a
+dictionary.
+
+The tr command transliterates the characters in its input. By far the most
+common use of tr is case conversion:
+
+        $ tr a-z A-Z                    Map lower case to upper
+        $ tr A-Z a-z                    Map upper case to lower
+
+The dd command is rather different from all of the other commands we have looked
+at. It is intended primarily for processing tape data from other systems --- its
+very name is a reminder of OS/360 job control language. dd will do case
+conversion (with a syntax very different from tr); it will convert from ASCII to
+EBCDIC and vice versa; and it will read or write data in the fixed size records
+with blank padding that characterize non-UNIX systems. In practice, dd is often
+used to deal with raw, unformatted data, whatever the source; it encapsulates a
+set of facilities for dealing with binary data.
+
+To illustrate what can be accomplished by combining filters, consider the
+following pipeline, which prints the 10 most frequent words in its input:
+
+        cat $* |
+        tr -sc A-Za-z '\012' |  Compress runs of non-letters into newline
+        sort |
+        uniq -c |
+        sort -n |
+        tail |
+        5
+
+cat collects the files, since tr only reads its standard input. The tr command
+is from the manual: it compresses adjacent non-letters into newlines, thus
+converting the input into one word per line. The words are then sorted and uniq
+-c compresses each group of identical words into one line prefixed by a count,
+which becomes the sort field for sort -n. (This combination of two sorts around
+a uniq occurs often enough to be called an idiom.) The result is the unique
+words in the document, sorted in increasing frequency. tail

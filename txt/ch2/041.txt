@@ -1,0 +1,36 @@
+
+				CHAPTER 2: THE FILE SYSTEM
+
+Everything in the UNIX system is a file. That is less of an oversimplification
+than you might think. When the first version of the system was being designed,
+before it even had a name, the discussions focused on the structure of a file
+system that would be clean and easy to use. The file system is central to the
+success and convenience of the UNIX system. It is one of the best examples of
+the "keep it simple" philosophy, showing the power achieved by careful
+implementation of a few well-chosen ideas.
+
+To talk comfortably about commands and their interrelationships, we need a good
+background in the structure and outer workings of the file system. This chapter
+covers most of the details of using the file system --- what files are, how they
+are represented, directories and the file system hierarchy, permissions, inodes
+(the system's internal record of files) and device files. Because most use of
+the UNIX system deals with manipulating files, there are many commands for file
+manipulation and rearrangement; this chapter introduces the more commonly used
+ones.
+
+
+2.1 The basics of files
+
+A file is a sequence of bytes. (A byte is small chunk of information, typically
+8 bits long. For out purposes, a byte is equivalent to a character.) No
+structure is imposed on a file by the system, and no meaning is attached to its
+contents --- the meaning of the bytes depends solely on the programs that
+interpret the file. Furthermore, as we shall see, this is true not just of disc
+files but of peripheral devices as well. Magnetic tapes, mail messages,
+characters typed on the keyboard, line printer output, data flowing in pipes ---
+each of these is just a sequence of bytes as far as the system and the programs
+in it are concerned.
+
+The best way to learn about file is to play with them, so start by creating a
+small file:
+

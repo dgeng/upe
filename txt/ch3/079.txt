@@ -1,0 +1,66 @@
+
+                             The UNIX and the Echo
+
+There dwelt in the land of New Jersey the UNIX, a fair maid who savants traveled
+far to admire. Dazzled by her purity, all sought to espouse her, one for her
+virginal grace, another for her polished civility, yet another for her agility
+in performing exacting tasks seldom accomplished even much richer land. So large
+of heart and accommodating of nature was she that the UNIX adopted all but the
+most insufficiently rich of her suitors. Soon many offspring grew and prospered
+and spread to the ends of the earth.
+
+Nature herself smiled and answered to the UNIX more eagerly than to other mortal
+beings. Humbler folk, who knew little of more courtly manners, delighted in her
+echo, so precise and crystal clear they scarce believed she could be answered by
+the same rocks and woods that so garbled their own shouts into the
+wilderness. And the compliant UNIX obliged with perfect echoes of whatever she
+was asked.
+
+When one impatient swain asked the UNIX, 'Echo nothing,' the UNIX obligingly
+opened her mouth, echoed nothing, and closed it again.
+
+'Whatever do you mean,' The youth demanded, 'opening your mouth like that?
+Henceforth never open your mouth when you are supposed to echo nothing!' And the
+UNIX obliged.
+
+'But I want a perfect performance, even when you echo nothing,' pleaded a
+sensitive youth, 'and no perfect echoes can come from a closed mouth.' not
+wishing to offend either one, the UNIX agreed to say different nothings for the
+impatient youth and the sensitive youth. She called the sensitive nothing '\n.'
+
+Yet now when she said '\n,' she was really not saying nothing so she had to open
+her mouth twice, once to say '\n,' and once to say nothing, and so she did not
+please the sensitive youth, who said forthwith, "The \n sounds like a perfect
+nothing to me, but the second one ruins it. I want you to take back one of
+them.' So the UNIX, who could not abide offending, agreed to undo some echoes,
+and called that '\c.' Now the sensitive youth could hear a perfect echo of
+nothing by asking for '\n' and '\c' together. But they say that he died of a
+surfeit of notation before he ever heard one.
+
+
+Exercise 3-3. Predict what each of the following grep commands will do, then
+verify your understanding.
+
+        grep \$                 grep \\
+        grep \\$                grep \\\\
+        grep \\\$               grep "\$"
+        grep '\$'               grep '"$'
+        grep '\'$'              grep "$"
+
+A file containing these commands themselves makes a good test case if you want
+to experiment.
+
+Exercise 3-4. How do you tell grep to search for a pattern beginning with a '-'?
+Why doesn't quoting the argument help? Hint: investigate the -e option.
+
+Exercise 3-5. Consider
+
+        $ echo */*
+
+Does this produce all names in all directories? In what order do the names
+appear?
+
+Exercise 3-6. (Trick question) How do you get a / into a filename (i.e., a /
+that doesn't separate components of the path)?
+
+Exercise 3-7. What happens with

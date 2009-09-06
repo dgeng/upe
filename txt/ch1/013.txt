@@ -1,0 +1,55 @@
+
+What files are out there?
+
+Let's create two files, junk and temp, so we know what we have:
+
+        $ ed
+        a
+        To be or not to be
+        .
+        w junk
+        19
+        q
+        $ ed
+        a
+        What is a question.
+        .
+        w temp
+        22
+        q
+        $
+
+The characters counts from ed include the characters at the end of each line,
+called newline, which is how the system represents RETURN.
+
+The ls command lists the names (not contents) of files:
+
+        $ ls
+        junk
+        temp
+        $
+
+which are indeed the two files just created. (There might be other as well that
+you didn't create yourself.) The names are sorted into alphabetical order
+automatically.
+
+ls, like other commands, has options that may be used to alter its default
+behavior. Options follow the command name on the command line, and are usually
+made up of an initial minus sign '-' and a single letter meant to suggest the
+meaning. For example, ls -t causes the files to be listed in "time" order: the
+order in which there were last changed, most recent first.
+
+        $ ls -t
+        temp
+        junk
+        $
+
+The -l options gives a "long" listing that provides more information about each
+file:
+
+        $ ls -l
+        total 2
+        -rw-r--r--  1 you            19 Sep 26  16:25 junk
+        -rw-r--r--  1 you            22 Sep 26  16:26 temp
+        $
+

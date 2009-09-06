@@ -1,0 +1,51 @@
+
+advances the cursor to the next tab stop, much as on a regular typewriter. Tab
+stops on UNIX systems are eight spaces apart. Both the backspaces and tab
+characters have their keys on the terminals.
+
+Two other keys have special meaning: DELETE, sometimes called RUBOUT or some
+abbreviation, and BREAK, sometimes called INTERRUPT. On most UNIX systems, the
+DELETE key stops a program immediately, without waiting for it to finish. On
+some systems, ctl-c provides this device. And on some systems, depending on how
+the terminals are connected, BREAK is synonym for DELETE or ctl-c.
+
+
+A Session with UNIX
+
+Let's begin with an annotated dialog between you and your UNIX system.
+Throughout the examples in this book, what you type is printed in slanted
+letters, computer responses are in typewriter-style characters, and explanations
+are in italics.
+
+        Establish a connection: dial a phone or turn on a switch as necessary.
+        Your system should say
+        login: you                 Type your name, then press RETURN
+        Password:                  Your password won't be echoed as you type it
+        You have mail.             There's mail to be read after you log in
+        $                          The system is now ready for your commands
+        $                          Press RETURN a couple of times
+        $ date                     What is the date and time?
+        Sun Sep 25 23:02:57 EDT 1983
+        $ who                      Who's using the computer?
+        jlb      ttyO    Sep 25 13:59
+        you      tty2    Sep 25 23:01
+        mary     tty4    Sep 25 19:03
+        doug     tty5    Sep 25 19:22
+        egb      tty7    Sep 25 17:17
+        bob      tty8    Sep 25 20:48
+        $ mail                     Read your mail
+        From doug Sun Sep 25 20:53 EDT 1983
+        give me a call sometime monday
+
+        ?                          RETURN moves on to the next message
+        From mary Sun Sep 25 19:07 EDT 1983     Next message
+
+        ? d                        Delete this message
+        $                          No more mail
+        $ mail mary                Send mail to mary
+        lunch at 12 is fine
+        ctl-d                      End of mail
+        $                          Hang up phone or turn off terminal
+                                   and that's the end
+
+Sometimes that's all there is to a session, though occasionally people do

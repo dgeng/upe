@@ -1,0 +1,54 @@
+
+
+2.2 What's in a file?
+
+The format of a file is determined by the programs that use it; there is a wide
+variety of file types, perhaps because there is a wide variety of programs. But
+since file types are not determined by the file system, the kernel can't tell
+you the type of a file: it doesn't know it. The file command makes an educated
+guess (we'll explain how shortly):
+
+        $ file /bin /bin/ed /usr/src/cmd/ed.c /usr/man/man1/ed.1
+        /bin:   directory
+        /bin/ed:        pure executable
+        /usr/src/cmd/ed.c:      c program text
+        /usr/man/man1/ed.1:     roff, nroff, or eqn input text
+        $ 
+
+There are four fairly typical files, all related to the editor: the directory in
+which it resides (/bin), the "binary" or runnable program itself (/bin/ed), the
+"source" or C statements that define the program (/usr/src/cmd/ed.c) and the
+manual page (/usr/man/man1/ed.1).
+
+To determine the types, file didn't pay attention to the names (although it
+could have), because naming conventions are just conventions, and thus not
+perfectly reliable. For example, files suffixed .c are almost always C source,
+but there is nothing to prevent you from creating a .c file with arbitrary
+contents. Instead, file reads the first few hundred bytes of a file and looks
+for clues to the file type. (As we will show later on, files with special system
+properties, suck as directories, can be identified by asking the system, but
+file could identify a directory by reading it.)
+
+Sometimes the clues are obvious. A runnable program is marked by binary "magic
+number" at its beginning. od with no options dumps the file in 16-bit, or
+2-byte, words and makes the magic number visible:
+
+        $ od /bin/ed
+        0000000 000410 025000 000462 011444 000000 000000 000000 000001
+        0000020 170011 016600 000002 005060 177776 010600 162706 000004
+        0000040 016616 000004 005720 010066 000002 005720 001376 020076
+        ...
+        $
+
+The octal value 410 marks a pure executable program, one for which the
+executable code may be shared by several processes. (Specific magic numbers are
+system dependent.) The bit pattern represented by 410 is not ASCII text, so this
+value could not be created inadvertently by a program like an editor. But you
+could certainly create such a file by running a program of your own, and the
+system understands the convention that such files are program binaries.
+
+For text files, the clues may be deeper in the file, so file looks for words
+like #include to identify C source, or lines beginning with a period to identify
+nroff or troff input.
+
+You might wonder why the system doesn't track file types more carefully,

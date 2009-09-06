@@ -1,0 +1,57 @@
+
+selects the 10 most common words (the end of the sorted list) and 5 prints them
+in five columns.
+
+By the way, notice that ending a line with | is a valid way to continue it.
+
+Exercise 4-3. Use the tools in this section to write a simple spelling checker,
+using /usr/dict/words. What are its shortcomings, and how would you address
+them?
+
+Exercise 4-4. Write a word-counting program in your favorite programming
+language and compare its size, speed and maintainability with the word-counting
+pipeline. How easily you convert it into a spelling checker?
+
+
+4.3 The stream editor sed
+
+Let us now turn to sed. Since it is derived directly from ed, it should be easy
+to learn, and it will consolidate your knowledge of ed.
+
+The basic idea of sed is simple:
+
+        $ sed 'list of sed commands' filenames ...
+
+reads lines one at a time from the input files; it applies the commands from the
+list, in order, to each line and writes its edited form on the standard output.
+So, for instance, you can change UNIX to UNIX(TM) everywhere it occurs in a set
+of files with
+
+        $ sed 's/UNIX/UNIX(TM)/g' filenames ... >output
+
+Do not misinterpret what happens here. sed does not alter the contents of its
+input files. It writes on the standard output, so the original files are not
+changed. By now you have enough shell experience to realize that
+
+        $ sed '...' file >file
+
+is bad idea: to replace the contents of the files, you must use a temporary
+file, or another program. (We will talk later about a program to encapsulate the
+idea of overwriting an existing file; look at overwrite in Chapter 5.)
+
+sed outputs each line automatically, so no p was needed after the substitute
+command above; indeed, if there had been one, each modified line would have been
+printed twice. Quotes are almost always necessary, however, since so many sed
+metacharacters mean something to the shell as well. For example, consider using
+du -a to generate a list of filenames. Normally, du prints the size and the
+filenames.
+
+        $ du -a ch4*
+        18      ch4.1
+        13      ch4.2
+        14      ch4.3
+        17      ch4.4
+        2       ch4.9
+        $
+
+You can use sed to discard the size part, but the editing command needs

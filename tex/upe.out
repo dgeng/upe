@@ -1,0 +1,93 @@
+\BOOKMARK [0][-]{chapter*.1}{PREFACE}{}
+\BOOKMARK [0][-]{chapter.1}{1 UNIX for Beginners}{}
+\BOOKMARK [1][-]{section.1.1}{1.1 Getting Started}{chapter.1}
+\BOOKMARK [2][-]{subsection.1.1.1}{1.1.1 Some prerequisites about terminals and typing}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.2}{1.1.2 A Session with UNIX}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.3}{1.1.3 Logging in}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.4}{1.1.4 Typing commands}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.5}{1.1.5 Strange terminal behavior}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.6}{1.1.6 Mistakes in typing}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.7}{1.1.7 Type-ahead}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.8}{1.1.8 Stopping a program}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.9}{1.1.9 Logging out}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.10}{1.1.10 Mail}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.11}{1.1.11 Writing to other users}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.12}{1.1.12 News}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.13}{1.1.13 The manual}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.14}{1.1.14 Computer-aided instruction}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.15}{1.1.15 Games}{section.1.1}
+\BOOKMARK [1][-]{section.1.2}{1.2 Day-to-day use: files and common commands}{chapter.1}
+\BOOKMARK [1][-]{section.1.3}{1.3 More about files: directories}{chapter.1}
+\BOOKMARK [1][-]{section.1.4}{1.4 The shell}{chapter.1}
+\BOOKMARK [1][-]{section.1.5}{1.5 The rest of the UNIX system}{chapter.1}
+\BOOKMARK [0][-]{chapter.2}{2 The File System}{}
+\BOOKMARK [1][-]{section.2.1}{2.1 The basics of files}{chapter.2}
+\BOOKMARK [1][-]{section.2.2}{2.2 What's in a file?}{chapter.2}
+\BOOKMARK [1][-]{section.2.3}{2.3 Directories and filenames}{chapter.2}
+\BOOKMARK [1][-]{section.2.4}{2.4 Permissions}{chapter.2}
+\BOOKMARK [1][-]{section.2.5}{2.5 Inodes}{chapter.2}
+\BOOKMARK [1][-]{section.2.6}{2.6 The directory hierarchy}{chapter.2}
+\BOOKMARK [1][-]{section.2.7}{2.7 Devices}{chapter.2}
+\BOOKMARK [0][-]{chapter.3}{3 Using the Shell}{}
+\BOOKMARK [1][-]{section.3.1}{3.1 Command line structure}{chapter.3}
+\BOOKMARK [1][-]{section.3.2}{3.2 Metacharacters}{chapter.3}
+\BOOKMARK [1][-]{section.3.3}{3.3 Creating new commands}{chapter.3}
+\BOOKMARK [1][-]{section.3.4}{3.4 Command arguments and arameters}{chapter.3}
+\BOOKMARK [1][-]{section.3.5}{3.5 Program output as arguments}{chapter.3}
+\BOOKMARK [1][-]{section.3.6}{3.6 Shell variables}{chapter.3}
+\BOOKMARK [1][-]{section.3.7}{3.7 More on I/O redirection}{chapter.3}
+\BOOKMARK [1][-]{section.3.8}{3.8 Looping in shell program}{chapter.3}
+\BOOKMARK [1][-]{section.3.9}{3.9 bundle: putting it all together}{chapter.3}
+\BOOKMARK [1][-]{section.3.10}{3.10 Why a programmable shell}{chapter.3}
+\BOOKMARK [0][-]{chapter.4}{4 Filters}{}
+\BOOKMARK [1][-]{section.4.1}{4.1 The grep family}{chapter.4}
+\BOOKMARK [1][-]{section.4.2}{4.2 Other filters}{chapter.4}
+\BOOKMARK [1][-]{section.4.3}{4.3 The stream editor sed}{chapter.4}
+\BOOKMARK [1][-]{section.4.4}{4.4 The awk pattern scanning and processing language}{chapter.4}
+\BOOKMARK [1][-]{section.4.5}{4.5 Good files and good filters}{chapter.4}
+\BOOKMARK [0][-]{chapter.5}{5 Shell Programming}{}
+\BOOKMARK [1][-]{section.5.1}{5.1 Customizing the cal command}{chapter.5}
+\BOOKMARK [1][-]{section.5.2}{5.2 Which command is which?}{chapter.5}
+\BOOKMARK [1][-]{section.5.3}{5.3 while and until loops: watching for things}{chapter.5}
+\BOOKMARK [1][-]{section.5.4}{5.4 Traps: catching interrupts}{chapter.5}
+\BOOKMARK [1][-]{section.5.5}{5.5 Replacing a file: overwrite}{chapter.5}
+\BOOKMARK [1][-]{section.5.6}{5.6 zap: killing processes by name}{chapter.5}
+\BOOKMARK [1][-]{section.5.7}{5.7 The pick command: blank vs. arguments}{chapter.5}
+\BOOKMARK [1][-]{section.5.8}{5.8 The news command: community service messages}{chapter.5}
+\BOOKMARK [1][-]{section.5.9}{5.9 get and put: tracking file changes}{chapter.5}
+\BOOKMARK [1][-]{section.5.10}{5.10 A look back}{chapter.5}
+\BOOKMARK [0][-]{chapter.6}{6 Programming with Standard I/O}{}
+\BOOKMARK [1][-]{section.6.1}{6.1 Standard input and output: vis}{chapter.6}
+\BOOKMARK [1][-]{section.6.2}{6.2 Program arguments: vis version 2}{chapter.6}
+\BOOKMARK [1][-]{section.6.3}{6.3 File access: vis version 3}{chapter.6}
+\BOOKMARK [1][-]{section.6.4}{6.4 A screen-at-a-time printer: p}{chapter.6}
+\BOOKMARK [1][-]{section.6.5}{6.5 An example: pick}{chapter.6}
+\BOOKMARK [1][-]{section.6.6}{6.6 On bugs and debugging}{chapter.6}
+\BOOKMARK [1][-]{section.6.7}{6.7 An example: zap}{chapter.6}
+\BOOKMARK [1][-]{section.6.8}{6.8 An interactive file comparison program: idiff}{chapter.6}
+\BOOKMARK [1][-]{section.6.9}{6.9 Accessing the environment}{chapter.6}
+\BOOKMARK [0][-]{chapter.7}{7 UNIX System Calls}{}
+\BOOKMARK [1][-]{section.7.1}{7.1 Low-level I/O}{chapter.7}
+\BOOKMARK [1][-]{section.7.2}{7.2 File system: directories}{chapter.7}
+\BOOKMARK [1][-]{section.7.3}{7.3 File system: inodes}{chapter.7}
+\BOOKMARK [1][-]{section.7.4}{7.4 Processes}{chapter.7}
+\BOOKMARK [1][-]{section.7.5}{7.5 Signals and interrupts}{chapter.7}
+\BOOKMARK [0][-]{chapter.8}{8 Program Development}{}
+\BOOKMARK [1][-]{section.8.1}{8.1 Stage 1: A four-function calculator}{chapter.8}
+\BOOKMARK [1][-]{section.8.2}{8.2 Stage 2: Variables and error recovery}{chapter.8}
+\BOOKMARK [1][-]{section.8.3}{8.3 Stage 3: Arbitrary variable names; built-in functions}{chapter.8}
+\BOOKMARK [1][-]{section.8.4}{8.4 Stage 4: Compilation into a machine}{chapter.8}
+\BOOKMARK [1][-]{section.8.5}{8.5 Stage 5: Control flow and relational operators}{chapter.8}
+\BOOKMARK [1][-]{section.8.6}{8.6 Stage 6: Functions and procedures; input/output}{chapter.8}
+\BOOKMARK [1][-]{section.8.7}{8.7 Performance evaluation}{chapter.8}
+\BOOKMARK [1][-]{section.8.8}{8.8 A look back}{chapter.8}
+\BOOKMARK [0][-]{chapter.9}{9 Document preparation}{}
+\BOOKMARK [1][-]{section.9.1}{9.1 The ms macro package}{chapter.9}
+\BOOKMARK [1][-]{section.9.2}{9.2 The troff level}{chapter.9}
+\BOOKMARK [1][-]{section.9.3}{9.3 The tbl and eqn preprocessors}{chapter.9}
+\BOOKMARK [1][-]{section.9.4}{9.4 The manual page}{chapter.9}
+\BOOKMARK [1][-]{section.9.5}{9.5 Other document preparation tools}{chapter.9}
+\BOOKMARK [0][-]{chapter.10}{10 Epilog}{}
+\BOOKMARK [0][-]{appendix.A}{A Editor Summary}{}
+\BOOKMARK [0][-]{appendix.B}{B hoc Manual}{}
+\BOOKMARK [0][-]{appendix.C}{C hoc Listing}{}

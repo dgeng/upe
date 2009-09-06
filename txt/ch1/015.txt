@@ -1,0 +1,49 @@
+        $ ed junk                       
+        19                              ed reports 19 characters in junk
+        1,$p                            Print lines 1 through last
+        To be or not to be              File has only one line
+        q                               All done
+        $
+
+ed begins by reporting the number of characters in junk; the command 1,$p tells
+it to print all the lines in the file. After you learn how to use the editor,
+you can be selective about the parts you print.
+
+There are times when it's not feasible to use an editor for printing. For
+example, there is limit --- several thousand lines --- on how big a file ed can
+handle. Furthermore, it will only print one file at a time, and sometimes you
+want to print several, one after another without pausing. So here are a couple
+of alternatives.
+
+First is cat, the simplest of all the printing commands. cat prints the contents
+of all the files names by its arguments:
+
+        $ cat junk
+        To be or not to be
+        $ cat temp
+        That is the question.
+        $ cat junk temp
+        To be or not to be
+        That is the question.
+        $
+        
+The named file or files are catenated+ (hence the name "cat") onto the terminal
+one after another with nothing between.
+
+There's no problem with short files, but for long ones, if you have a high-speed
+connection to your computer, you have to be quick with ctl-s to stop output from
+cat before it flows off your screen. There is no "standard" command to print a
+file on video terminal one screenful at a time, though almost every UNIX system
+has one. Your system might have one called pg or more. Ours is called p; we'll
+show you its implementation in Chapter 6.
+
+Like cat, the command pr prints the contents of all the files names in a list,
+but in a form suitable for line printer: every page is 66 lines (1 inches) long,
+with the date and time that the file was changed, the page number, and the
+filename at the top of each page, and extra lines to skip over the fold in the
+paper. Thus, to print junk neatly, then skip to the top of a new page and print
+temp neatly:
+
+
+----------------
++ "Catenate" is slightly obscure synonym for "concatenate."

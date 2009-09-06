@@ -1,0 +1,54 @@
+
+permissions granted to your uid and group-id.
+
+The file /etc/passwd is the password file; it contains all the lo gin
+information about each user. You can discover your uid and group-id, as does the
+system, by looking up your name in /etc/passwd:
+
+        $ grep you /etc/passwd
+        you:gkmbCTrJ04COM:604:1:Y.O.A.People:/usr/you:
+        $
+
+The fields in the password file are separated by colons and are laid out like
+this (as seen in passwd(5)):
+
+    login-id:encrypted-password:uid:group-id:miscellany:login-directory:shell
+
+The file is ordinary text, but the field definitions and separator are a
+convention agreed upon by the programs that user the information in the file.
+
+The shell field is often empty, implying that you use the default shell,
+/bin/sh. The miscellany field may contain anything; often, it has your name and
+address or phone number.
+
+Note that your password appears here in the second field, but only in an
+encrypted form. Anybody can read the password file (you just did), so if your
+password itself were there, anyone would be able to use it to masquerade as
+you. When you give your password to login, it encrypts it and compares the
+result against the encrypted password in /etc/passwd. If they agree, it lets you
+log in. The mechanism works because the encryption algorithm has the property
+that it's easy to go from the clear form to the encrypted form, but very hard to
+go backwards. For example, if your password is ka-boom, it might be encrypted as
+gkmbCTrJ04COM, but given the latter, there's no easy way to get back to the
+original.
+
+The kernel decided that you should be allowed to read /etc/passwd by looking at
+the permissions associated with the file. There are three kinds of permissions
+for each file: read (i.e., examine its contents), write (i.e., change its
+contents), and execute (i.e., run it as a program). Furthermore, different
+permissions can apply to different people. As file owner, you have one set of
+read, write and execute permissions. Your "group" has a separate set. Everyone
+else has a third set.
+
+The -l option of ls prints the permissions information, among other things:
+
+        $ ls -l /etc/passwd
+        -rw-r--r-- 1 root     5115 Aug 30 10:40 /etc/passwd
+        $ ls -lg /etc/passwd
+        -rw-r--r-- 1 adm      5115 Aug 30 10:40 /etc/passwd
+        $
+
+These two lines may be collectively interpreted as: /etc/passwd is owned by
+login-id root, group adm, is 5115 bytes long, was last modified on August 30 at
+10:40 AM, and has one link (one name in the file system; we'll discuss links
+

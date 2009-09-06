@@ -1,0 +1,49 @@
+
+Our version of cal decides how many arguments are present, processes alphabetic
+month names, then calls the real cal. The shell variable $# holds the number of
+arguments that a shell file was called with; other special shell variables are
+listed in Table 5.1
+
+        $ cat cal
+        # cal:  nicer interface to /usr/bin/cal
+
+        case $# in
+        0)      set `date`; m=$2; y=$6 ;;   # no args: use today
+        1)      m=$1; set `date`; y=$6 ;;   # 1 arg: use this year
+        *)      m=$1; y=$2 ;;               # 2 args: month and year
+        esac
+
+        case $m in
+        jan*|Jan*)      m=1 ;;
+        feb*|Feb*)      m=2 ;;
+        mar*|Mar*)      m=3 ;;
+        apr*|Apr*)      m=4 ;;
+        may*|May*)      m=5 ;;
+        jun*|Jun*)      m=6 ;;
+        jul*|Jul*)      m=7 ;;
+        aug*|Aug*)      m=8 ;;
+        sep*|Sep*)      m=9 ;;
+        oct*|Oct*)      m=10 ;;
+        nov*|Nov*)      m=11 ;;
+        dec*|Dec*)      m=12 ;;
+        [1-9]|10|11|12) ;;                # numeric month
+        *)              y=$m; m="" ;;     # plain year
+        esac
+
+        /usr/bin/cal $m $y                # run the real one
+        $
+
+The first case checks the number of arguments, $#, and chooses the appropriate
+action. The final * pattern in the first case is a catch-all: if the number of
+arguments is neither 0 or 1, the last case will be executed. (Since patterns are
+scanned in order, the catch-all must be last.) This sets m and y to the month
+and year --- given two arguments, our cal is going to act the same as the
+original.
+
+The first case statement has a couple of tricky lines containing
+
+        set `date`
+
+Although not obvious from appearance, it is easy to see what this statement does
+by trying it:
+

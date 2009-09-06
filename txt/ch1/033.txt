@@ -1,0 +1,51 @@
+
+        $ who >sort
+
+
+Processes
+
+The shell does quite a few things besides setting up pipes. Let us turn briefly
+to the basics of running more than one program at a time, since we have already
+seen a bit of that with pipes. For example, you can run two programs with one
+command line by separating the commands with a semicolon; the shell recognizes
+the semicolon and breaks the line into two commands.
+
+        $ date; who
+        Tue Sep 27 01:03:17 EDT 1983
+        ken      tty0    Sep 27 00:43
+        dmr      tty1    Sep 26 23:45
+        rob      tty2    Sep 26 23:59
+        bwk      tty3    Sep 27 00:06
+        jj       tty4    Sep 26 23:31
+        you      tty5    Sep 26 23:04
+        ber      tty7    Sep 26 23:34
+        $
+
+Both commands are executed (in sequence) before the shell returns with a prompt
+character.
+
+You have also have more than one program running simultaneously if you wish. For
+example, suppose you want to do something time-consuming like counting the words
+in your book, but you don't want to wait for wc to finish before you start
+something else. Then you can say
+
+        $ wc ch* >wc.out &
+        6944                    Process-id printed by the shell
+        $
+
+The ampersand & at the end of a command line says to the shell "start this
+command running, then take further commands from the terminal immediately," that
+is, don't wait for it to complete. Thus the command will begin, but you can do
+something else while it's running. Directing the output into the file wc.out
+keeps it from interfering with whatever you're doing at the same time.
+
+An instance of a running program is called a process. The number printed by the
+shell for a command initiated with & is called the process-id; you can use it in
+other commands to refer to a specific running program.
+
+It's important to distinguish between programs and processes. wc is a program;
+each time you run the program wc, that creates a new process. If several
+instances of the same program are running at the same time, each is a separate
+process with a different process-id.
+
+If a pipeline is initiated with &, as in

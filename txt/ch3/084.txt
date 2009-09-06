@@ -1,0 +1,52 @@
+
+will be null, and no arguments at all will be passed to wc or mail. With or
+without arguments, the command is invoked properly:
+
+        $ cl /usr/you/bin/*
+              1 /usr/you/bin/cx
+              2 /usr/you/bin/lc
+              2 /usr/you/bin/m
+              1 /usr/you/bin/nu
+              2 /usr/you/bin/what
+              1 /usr/you/bin/where
+              9 total
+        $ ls /usr/you/bin | lc
+              6
+        $
+
+These commands and the others in this chapter are examples of personal programs,
+the sort of things you write for yourself and put in your bin, but are unlikely
+to make publicly available because they are too dependent on personal taste. In
+Chapter 5 we will address the issues of writing shell programs suitable for
+public use.
+
+The arguments to a shell file need not be filenames. For example, consider
+searching a personal telephone directory. If you have a file named
+/usr/you/lib/phone-book that contains lines like
+
+        dial-a-joke  212-976-3838
+        dial-a-prayer  212-246-4200
+        dial santa  212-976-3636
+        dow jones report  212-976-4141
+
+then the grep command can be used to search it. (your own lib directory is a
+good place to store such personal data bases.) Since grep doesn't care about the
+format of information, you can search for names, addresses, zip codes or
+anything else that you like. Let's make a directory assistance program, which
+we'll call 411 in honor of the telephone directory assistance number where we
+live:
+
+        $ echo 'grep $* /usr/you/lib/phone-book' >411
+        $ cx 411
+        $ 4111 joke
+        dial-a-joke  212-976-3838
+        $ 411 dial
+        dial-a-joke  212-976-3838
+        dial-a-prayer  212-246-4200
+        dial santa  212-976-3636
+        $ 411 'dow jones'
+        grep: can't open jones                  Something is wrong
+        $
+
+The final example is included to show a potential problem: even though dow jones
+is presented to 411 as a single argument, it contains a space and is no

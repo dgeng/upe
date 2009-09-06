@@ -1,0 +1,54 @@
+
+like cat or ls, except that they have been collected into a couple of
+directories to be easy to find the administer. To verify this, try to execute
+some of these programs by using their full pathnames:
+
+        $ /bin/date
+        Mon Sep 26 23:29:32 EDT 1983
+        $ /bin/who
+        srm      tty1    Sep 26 22:20
+        cvw      tty4    Sep 26 22:40
+        you      tty5    Sep 26 23:04
+        $
+
+Exercise 1-3. Try
+
+         $ ls /usr/games
+
+and do whatever comes naturally. Things might be more fun outside of normal
+working hours.
+
+
+Changing directory --- cd
+
+if you work regularly with Mary on information in her directory, you can say "I
+want to work on Mary's files instead of my own." This is done by changing your
+current directory with the cd command:
+
+        $ cd /usr/mary
+
+Now when you use a filename (without /'s) as an argument to cat or pr, it refers
+to the file in Mary's directory. Changing directories doesn't affect any
+permissions associated with a file --- if you couldn't access a file from your
+own directory, changing to another directory won't alter that fact.
+
+It is usually convenient to arrange your own files so that all the files related
+to one thing are in directory separate from other projects. For example, if you
+want to write a book, you might want to keep all the text in a directory called
+book. The command mkdir makes a new directory.
+
+$ mkdir book                  Make a directory
+$ cd book                     Go to it
+$ pwd                         Make sure you're in the right place
+/usr/you/book
+
+...                           Write the book (several minutes pass)
+$ cd ..
+$ pwd
+/usr/you
+$
+
+'..' refers to the parent of whatever directory you are currently in, the
+directory one level closer to the root. '.' a synonym for the current directory.
+
+$ cd                          Return to home directory

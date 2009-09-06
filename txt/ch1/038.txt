@@ -1,0 +1,56 @@
+
+        TERM=adm3
+
+to your .profile file.
+
+It is also possible to use variables for abbreviation. If you find yourself
+frequently referring to some directory with long name, it might be worthwhile
+adding a line like
+
+        d=/horribly/long/directory/name
+
+to your profile, so that you can say things like
+
+        $ cd $d
+
+Personal variables like d are conventionally spelled in lower case to
+distinguish them from those used by the shell itself, like PATH.
+
+Finally, it's necessary to tell the shell that you intend to use the variable in
+other programs; this is done with the command export, to which we will return in
+Chapter 3:
+
+        export MAIL PATH TERM
+
+To summarize, here is what a typical .profile file might look like:
+
+	$ cat .profile
+	stty erase '^h' -tabs
+	MAIL=/usr/spool/mail/you
+	PATH=:$HOME/bin:/bin:/usr/bin:/usr/games
+	TERM=adm3
+	b=$HOME/book
+	export MAIL PATH TERM b
+	date
+	who | wc -l
+	$
+
+We have by no means exhausted the services that the shell provides. One of the
+most useful is that yo can create your own commands by packaging existing
+commands into a file to be processed by the shell. It is remarkable how much can
+be a achieved by this fundamentally simple mechanism. Our discussion of it
+begins in Chapter 3.
+
+
+
+1.5 The rest of the UNIX system
+
+There's much more to the UNIX system than we've addressed in this chapter, but
+then there's much more to this book. By now, you should feel comfortable with
+the system and, particularly, with the manual. When you have specific questions
+about when or how to use commands, the manual is the place to look.
+
+It is also worth browsing in the manual occasionally, to refresh your knowledge
+of familiar commands and to discover new ones. The manual describes many
+programs we won't illustrate, including compilers for languages
+

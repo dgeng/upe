@@ -1,0 +1,37 @@
+
+
++------------------------------------------------------------------------------+
+|               Table 4.3 awk Built-in Variables                               |
+|                                                                              |
+| FILENAME      name of current input file                                     |
+| FS            field separator in input record                                |
+| NF            number of fields in input record                               |
+| NR            number of input record                                         |
+| OFMT          output format for numbers (default %g; see printf(3))          |
+| OFS           output field separator string (default blank)                  |
+| ORS           output record separator string (default newline)               |
+| RS            input record separator character (default newline)             |
++------------------------------------------------------------------------------+
+
+
++------------------------------------------------------------------------------+
+|       Table 4.4 awk Operators (increasing order of precedence)               |
+|                                                                              |
+| + += -= *= /= %=           assignment; v op= expr is v = v op (expr)         |
+| ||                         OR: expr1 || expr2 true is either is;             |
+|                             expr2 not evaluated if expr1 is true             |
+| &&                         AND: expr1 && expr2 true if both are;             |
+|                             expr2 not evaluated if expr1 is false            |
+| !                          negate value of expression                        |
+| > >= < <= == != ~ !~       relational operators                              |
+|                             ~ and !~ are match and non-match                 |
+| nothing                    string concatenation                              |
+| + -                        plus, minus                                       |
+| * / %                      multiply, divide, remainder                       |
+| ++ --                      increment, decrement (prefix or postfix)          |
++------------------------------------------------------------------------------+
+
+
+the components of the Writer's Workbench family of programs, called double,
+looks for pairs of identical adjacent words. Here is an implementation of double
+in awk:

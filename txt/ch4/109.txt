@@ -1,0 +1,54 @@
+
+quotes to protect a * and a tab from being interpreted by the shell:
+
+        $ du -a ch4.* | sed 's/.*->//'
+        ch4.1
+        ch4.2
+        ch4.3
+        ch4.4
+        ch4.9
+        $
+
+The substitution deletes all characters (.*) up to and including the rightmost
+tab (shown in the pattern as ->).
+
+In a similar way, you could select the user names and login times from the
+output the who:
+
+        $ who
+        ir       tty1    Sep 29 07:41
+        ron      tty3    Sep 29 10:31
+        you      tty4    Sep 29 08:36
+        td       tty5    Sep 29 08:47
+        $ who | sed 's/ .* / /'
+        ir 07:14
+        ron 10:31
+        you 08:36
+        td 08:47
+        $
+
+The s command replaces a blank and everything that follows it (as much as
+possible, including more blanks) up to another blank by a single blank. Again,
+quotes are needed.
+
+Almost the same sed command can be used to make a program getname that will
+return your user name:
+
+        $ cat getname
+        who am i | sed 's/ .*//'
+        $ getname
+        you
+        $
+
+Another sed sequence is used so frequently that we have made it into a shell
+file called ind. The ind command indents its input one tab stop; it is handy for
+moving something over to fit better onto line-printer paper.
+
+The implementation of ind is easy --- stick a tab at the front of each line:
+
+        sed 's/^/->/' $*                    Version 1 of ind
+
+This version even puts a tab on each empty line, which seems unnecessary. A
+better version uses sed's ability to select the lines to be modified. If you
+prefix a pattern to the command, only the lines that match the pattern will be
+affected:

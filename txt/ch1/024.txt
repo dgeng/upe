@@ -1,0 +1,40 @@
+
+Your file named junk is unrelated to Paul's or to Mary's.
+
+Pathnames aren't too exciting if all the files of interest are in your own
+directory, but if you work with someone else or on several projects
+concurrently, they become handy indeed. For example, your friends can print your
+junk by saying
+
+        $ cat /usr/you/junk
+
+Similarly, you can find out what files May has by saying
+
+        $ ls /usr/mary
+        data
+        junk
+        $
+
+or make your own copy of one of her files by
+
+        $ cp /usr/mary/data data
+
+or edit her file:
+
+        $ ed /usr/mary/data
+
+if Mary doesn't want you poking around in her files, or vise versa, privacy can
+be arranged. Each file and directory has read-write-execute permissions for the
+owner, a group, and everyone else, which can be used to control access. (Recall
+ls -l.) In our local system, most users most of the time find openness of more
+benefit than privacy, but policy may be different on your system, so we'll get
+back to this in Chapter 2.
+
+As a final set of experiments with pathnames, try
+
+        $ ls /bin/ /usr/bin
+
+Do some of the names look familiar? When you run a command by typing its name
+after the prompt, the system looks for a file of that name. It normally looks
+first in your current directory (where is probably doesn't find it), then in
+/bin/, and finally in /usr/bin. There is nothing special about commands

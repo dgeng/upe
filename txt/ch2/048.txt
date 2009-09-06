@@ -1,0 +1,40 @@
+
+Non-text files definitely have their place. For example, very large databases
+usually need extra address information for rapid access, this has to be binary
+for efficiency. But every file format that is not text must have its own family
+of support programs to do things that the standard tools could perform if the
+format were text. Text files may be a little less efficient in machine cycles,
+but this must be balanced against the cost of extra software to maintain more
+specialized formats. If you design a file format, you should think carefully
+before choosing a non-textual representation. (You should also think about
+making your programs robust in the face of long input lines.)
+
+
+2.3 Directories and filenames
+
+All the files you own have unambiguous names, starting with /usr/you, but if the
+only file you have is junk, and you type ls, it doesn't print /usr/you/junk; the
+filename is printed without any prefix:
+
+        $ ls
+	junk
+	$
+
+The current directory is an attribute of a process, not a person or a program
+--- people have login directories, processes have current directories. If a
+process creates child process, the child inherit the current directory of its
+parent. But if the child then changes to a new directory, the parent is
+unaffected --- its current directory remains the same no matter what the child
+does.
+
+The notion of a current directory is certainly a notational convenience, because
+it can save a lot of typing, but its real purpose is organizational. Related
+files belong together in the same directory. /usr is often the top directory of
+the user file system. (user is abbreviated to usr in the same spirit as cmp, ls,
+etc.) /usr/you is your login directory, your current directory when you first
+login. /usr/src/ contains source for system programs, /usr/src/cmd contains
+source for UNIX commands, /usr/src/cmd/sh contains the source files for the
+shell, and so on. Whenever you embark on a new project, or whenever you have a
+set of related files, say a set of recipes, you could create a new directory
+with mkdir and put the files there.
+

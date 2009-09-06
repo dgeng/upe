@@ -1,0 +1,36 @@
+
+The shell --- the program that interprets your requests to run programs --- is
+the most important program for most UNIX users; with the possible exception of
+your favorite text editor, you will spend more time working with the shell than
+any other program. In this chapter and in Chapter 5, we will spend a fair amount
+of time on the shell's capabilities. The main point we want to make is that you
+can accomplish a lot without much hard work, and certainly without resorting to
+programming in a conventional language like C, if you know how to use the shell.
+
+We have divided our coverage of the shell into two chapters. This chapter goes
+one step beyond the necessities covered in Chapter 1 to some fancier but
+commonly used shell features, such as metacharacters, quoting, creating new
+commands, passing arguments to them, the use of shell variables, and some
+elementary control flow. These are topics you should know for your own use of
+the shell. The material in Chapter 5 is heavier going --- it is intended for
+writing serious shell programs, ones that are bullet-proofed for use by
+others. The division between the two chapters is somewhat arbitrary, of course,
+so both should be read eventually.
+
+
+3.1 Command line structure 
+
+To proceed, we need a slightly better understanding of just what a command is,
+and how it is interpreted by the shell. This section is more formal coverage,
+with new information, of the shell basics introduced in the frst chapter.
+
+The simplest command is a single work, usually naming a file for execution
+(later we will see some other types of commands):
+
+	$ who  	   	      	       Execute the file /bin/who 
+	you      tty2    Sep 28 07:51 
+	jpl      tty4    Sep 28 08:32 
+	$ 
+
+A command usually ends with a new line, but semicolon; is also a command
+terminator:

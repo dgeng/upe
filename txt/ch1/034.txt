@@ -1,0 +1,54 @@
+
+	$ pr ch* | lpr &
+	6951 	         Process-id of lpr
+	$
+
+the processes in it are all started at once --- the & applies to the whole
+pipeline. Only one process-id is printed, however, for the last procedure in the
+sequence.
+
+The command
+
+        $ wait
+
+waits until all processes initiated with & have finished. If it doesn't return
+immediately, you have commands still running. You can interrupt wait with
+DELETE.
+
+you can use the process-id printed by the shell to stop a process initiated with
+&:
+
+        $ kill 6944
+
+If you forget the process-id, you can use the command ps to tell you about
+everything you have running. If you are desperate, kill 0 will kill all your
+processes except your login shell. And if you're curious about what other users
+are doing, ps -ag will tell you about all processes that are currently
+running. Here is some sample output:
+
+	$ ps -ag
+	   PID TTY TIME CMD
+	    36 co  6:29	/etc/cron
+	  6423 5   0:02 -sh
+	  6704 1   0:04 -sh
+	  6722 1   0:12 vi paper
+	  4430 2   0:03 -sh
+	  6612 7   0:03 -sh
+	  6628 7   1:13 rogue
+	  6843 2   0:02 write dmr
+	  6949 4   0:01 login bimmler
+	  6952 5   0:08 pr ch1.1 ch1.2 ch1.3 ch1.4
+	  6951 5   0:03 lpr
+	  6959 5   0:02 ps -ag
+	  6844 1   0:02 write rob
+	$
+
+PID is the process-id; TTY is the terminal associated with the process (as in
+who); TIME is the processor time used in minutes and seconds; and the rest is
+the command being run. ps is one of those commands that is different on
+different versions of the system, so your output may not be formatted like this.
+Even the arguments may be different --- the manual page ps(1).
+
+Processes have the same sort of hierarchical structure that files do: each
+process has parent, and may well have children. Your shell was created by a
+process associated with whatever terminal line connects you to the system. As

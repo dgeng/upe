@@ -1,0 +1,50 @@
+
+        $ pr junk temp
+        
+        
+        Sep 26 16:25  1983  junk Page 1
+        
+        
+        To be or not to be
+                (60 more blank lines)
+        
+        
+        Sep 26 16:26  1983  temp page 1
+        
+        
+        That is the question.
+                (60 more blank lines)
+        $
+
+pr can also produce multi-column output:
+
+        pr -3 filenames
+
+prints each file in 3-column format. You can get any reasonable number in place
+of "3" and pr will do its best. (The word filenames is a place-holder for a list
+of names of files.) pr -m will print a set of files in parallel columns. See
+pr(1).
+
+It should be noted that pr is not a formatting program in the sense of
+rearranging lines and justifying margins. The true formatters are nroff and
+troff, which are discussed in Chapter 9.
+
+There are also commands that print files on a high-speed printer. Look in your
+manual under names line lp and lpr, or look up "printer" in the permuted
+index. Which to use depends on what equipment is attached to your machine. pr
+and lpr are often used together; after pr formats the information properly, lpr
+handles the mechanics of getting it to the line printer. We will return to this
+a little later.
+
+
+Moving, copying, removing files --- mv, cp, rm
+
+Let's look at some other commands. The first thing is to change the name of a
+file. Renaming a file is done by "moving" it from one name to another, like
+this:
+
+        $ mv junk precious
+
+This means that the file that used to be called junk is now called precious;
+that contents are unchanged. If you run ls now, you will see a different list:
+junk is not there but precious is.
